@@ -1,0 +1,18 @@
+.tabs {
+  display: flex;
+  max-width: 600px;
+}
+
+.components {
+  max-width: 600px;
+}
+
+.listElements {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  column-gap: 24px;
+  margin: 0;
+  flex-wrap: wrap;
+}
