@@ -37,9 +37,16 @@ function BurgerIngredients() {
               }
             })}
           </ul>
+          <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
+          <ul className={styles.listElements}>
+            {data.map(obj => {
+              if(obj.type === "main") {
+                return <Ingredient key={obj._id} {...obj} />
+              }
+            })}
+          </ul>
         </div>
-    </div>
-    
+    </div> 
   )
 }
 
