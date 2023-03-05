@@ -1,16 +1,8 @@
 .content {
+  box-sizing: border-box;
   margin-top: 100px;
-  width: 100%;
-}
-
-.elements {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  min-width: 600px;
+  padding-left: 16px;
 }
 
 .element {
@@ -20,11 +12,57 @@
   column-gap: 8px;
 }
 
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+  max-height: 480px;
+  overflow-y: scroll;
+}
+
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+
+.borderElement {
+  padding-left: 32px;
+  margin-bottom: 16px;
+}
+
 .dots {
-  background-image: url(../../images/Vector.svg);
+  background-image: url(../../images/dots.svg);
   background-repeat: no-repeat;
   background-position: center;
   width: 24px;
   height: 24px;
   cursor: pointer;
+}
+
+.order {
+  margin: 40px 0 0 194px;
+  display: flex;
+  align-items: center;
+  column-gap: 40px;
+}
+
+.resultSum{
+  display: flex;
+  column-gap: 8px;
+}
+
+.diamond {
+  background-image: url(../../images/diamond.svg);
+  width: 36px;
+  height: 36px;
+  background-repeat: no-repeat;
 }
