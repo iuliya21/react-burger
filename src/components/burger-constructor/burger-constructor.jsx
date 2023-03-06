@@ -1,7 +1,6 @@
 import styles from "./burger-constructor.module.css";
 import data from '../utils/data';
-import { ConstructorElement, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from 'prop-types';
+import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function BurgerConstructor() {
   return(
@@ -10,7 +9,7 @@ function BurgerConstructor() {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={data[0].name}
+            text={data[0].name + '\n(верх)'}
             price={data[0].price}
             thumbnail={data[0].image}
           />
@@ -20,7 +19,7 @@ function BurgerConstructor() {
             if(obj.type !== "bun") {
               return (
                 <li key={obj._id} className={styles.element}>
-                  <div className={styles.dots}></div>
+                  <DragIcon type="primary" />
                   <ConstructorElement
                     text={obj.name}
                     price={obj.price}
@@ -35,7 +34,7 @@ function BurgerConstructor() {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={data[0].name}
+            text={data[0].name + '\n(низ)'}
             price={data[0].price}
             thumbnail={data[0].image}
           />

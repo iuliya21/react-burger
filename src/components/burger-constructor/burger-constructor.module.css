@@ -39,15 +39,6 @@
   margin-bottom: 16px;
 }
 
-.dots {
-  background-image: url(../../images/dots.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-}
-
 .order {
   margin: 40px 0 0 194px;
   display: flex;

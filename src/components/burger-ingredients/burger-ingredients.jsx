@@ -3,7 +3,6 @@ import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import data from '../utils/data';
 import Ingredient from '../ingredient/ingredient';
-import PropTypes from 'prop-types';
 
 function BurgerIngredients() {
   const [current, setCurrent] = React.useState('one');
