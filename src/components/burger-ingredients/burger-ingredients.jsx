@@ -1,11 +1,13 @@
 import React from 'react';
 import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import data from '../utils/data';
+//import data from '../utils/data';
 import Ingredient from '../ingredient/ingredient';
 
-function BurgerIngredients() {
+function BurgerIngredients({ data }) {
+
   const [current, setCurrent] = React.useState('one');
+
   return(
     <div>
       <h1 className="text text_type_main-large mb-5 mt-10">Соберите бургер</h1>
