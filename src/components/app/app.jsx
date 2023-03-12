@@ -12,7 +12,12 @@ function App() {
   React.useEffect(() => {
     const getData = async () => {
       return await fetch(UrlAdress)
-        .then(res => res.json())
+        .then((res) => {
+          if(res.ok) {
+            return res.json()
+          }
+          return Promise.reject(`Ошибка ${res.status}`);
+        })
         .then(data => setItems(data.data))
         .catch(err => console.log(err));
     }
@@ -24,7 +29,6 @@ function App() {
     <>
       <AppHeader />
       <Main data={items}/>
-      <ModalOverlay />
     </>
   );
 }

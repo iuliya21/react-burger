@@ -1,20 +1,12 @@
-
-import React from "react";
-import { createPortal } from "react-dom";
 import styles from "./modal-overlay.module.css";
-import Modal from "../modal/modal";
 
+function ModalOverlay({ children, onClosePopup }) {
 
-const modalRoot = document.getElementById("react-modals");
-
-function ModalOverlay() {
-
-  return createPortal((
-    <div className={styles.overlay}>
-      <Modal/>
+  return (
+    <div className={styles.overlay} onClick={onClosePopup}>
+      {children}
     </div>
-  ), modalRoot)
-  
+  )
 }
 
 export default ModalOverlay;

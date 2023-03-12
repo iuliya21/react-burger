@@ -1,8 +1,22 @@
+import React from "react";
 import styles from "./burger-constructor.module.css";
 import data from '../utils/data';
 import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import Modal from "../modal/modal";
 
-function BurgerConstructor() {
+
+function BurgerConstructor({ items }) {
+
+  const [openModal, setOpenModal] = React.useState(false);
+
+  const showModal = () => {
+    setOpenModal(true);
+  }
+
+  const hideModal = () => {
+    setOpenModal(false);
+  }
+
   return(
     <div className={styles.content}>
         <div className={styles.borderElement}>
@@ -44,12 +58,17 @@ function BurgerConstructor() {
             <p className="text text_type_digits-medium">610</p>
             <div className={styles.diamond}></div>
           </div>
-          <Button htmlType="button" type="primary" size="large">
+          <Button htmlType="button" type="primary" size="large" onClick={showModal}>
             Оформить заказ
           </Button>
         </div>
-    </div>
 
+        {openModal && (
+      <Modal onClosePopup={hideModal}>
+        блаблабла
+      </Modal>
+    )}
+    </div>
   )
 }
 
