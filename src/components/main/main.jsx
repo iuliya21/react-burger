@@ -6,8 +6,8 @@ function Main({ items }) {
 
   return(
     <main className={styles.main}>
-      <BurgerIngredients data={items}/>
-      <BurgerConstructor data={items}/>
+      <BurgerIngredients items={items}/>
+      <BurgerConstructor items={items}/>
     </main>
   );
 }
