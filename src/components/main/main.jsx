@@ -2,12 +2,12 @@ import styles from './main.module.css';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 
-function Main(props) {
+function Main({ items }) {
 
   return(
     <main className={styles.main}>
-      <BurgerIngredients data={props.data}/>
-      <BurgerConstructor data={props.data}/>
+      <BurgerIngredients data={items}/>
+      <BurgerConstructor data={items}/>
     </main>
   );
 }

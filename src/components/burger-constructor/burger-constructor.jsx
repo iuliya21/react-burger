@@ -5,7 +5,7 @@ import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-develo
 import Modal from "../modal/modal";
 
 
-function BurgerConstructor({ items }) {
+function BurgerConstructor({data}) {
 
   const [openModal, setOpenModal] = React.useState(false);
 
