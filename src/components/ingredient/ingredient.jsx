@@ -20,6 +20,7 @@ Ingredient.propTypes = {
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
+  openModal: PropTypes.func.isRequired,
 };
 
 export default Ingredient;

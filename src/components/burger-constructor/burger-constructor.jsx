@@ -3,6 +3,7 @@ import styles from "./burger-constructor.module.css";
 import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import PropTypes from "prop-types";
 
 function BurgerConstructor({ items }) {
 
@@ -38,7 +39,6 @@ function BurgerConstructor({ items }) {
         thumbnail={item.image}
       />
     )
-
   })
 
   return(
@@ -83,6 +83,10 @@ function BurgerConstructor({ items }) {
         
     </div>
   )
+}
+
+BurgerConstructor.propTypes = {
+  items: PropTypes.array.isRequired,
 }
 
 export default BurgerConstructor;

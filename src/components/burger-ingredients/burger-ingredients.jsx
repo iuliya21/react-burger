@@ -4,14 +4,17 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import PropTypes from "prop-types";
 
 function BurgerIngredients({ items }) {
 
   const [current, setCurrent] = React.useState('bun');
-  const [openModal, setOpenModal] = React.useState(true);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [currentIngredient, setCurrentIngredient] = React.useState({});
 
-  const showModal = () => {
+  const showModal = (element) => {
     setOpenModal(true);
+    setCurrentIngredient(element);
   }
 
   const hideModal = () => {
@@ -37,7 +40,7 @@ function BurgerIngredients({ items }) {
         <ul className={styles.listElements}>
           {items.map(obj => {
             if(obj.type === "bun") {
-              return <Ingredient key={obj._id} {...obj} openModal={showModal} />
+              return <Ingredient key={obj._id} {...obj} openModal={() => showModal(obj)} />
             }
           })}
         </ul>
@@ -45,7 +48,7 @@ function BurgerIngredients({ items }) {
         <ul className={styles.listElements}>
           {items.map(obj => {
             if(obj.type === "sauce") {
-              return <Ingredient key={obj._id} {...obj} openModal={showModal} />
+              return <Ingredient key={obj._id} {...obj} openModal={() => showModal(obj)} />
             }
           })}
         </ul>
@@ -53,19 +56,23 @@ function BurgerIngredients({ items }) {
         <ul className={styles.listElements}>
           {items.map(obj => {
             if(obj.type === "main") {
-              return <Ingredient key={obj._id} {...obj} openModal={showModal} />
+              return <Ingredient key={obj._id} {...obj} openModal={() => showModal(obj)} />
             }
           })}
         </ul>
       </div>
 
       {openModal && 
-          (<Modal onClosePopup={hideModal}>
-            <h2 className="text text_type_main-large">Детали ингредиента</h2>
-          </Modal>)
+          <Modal onClosePopup={hideModal}>
+            <IngredientDetails currentElement={currentIngredient}/>
+          </Modal>
         }
     </div> 
   )
+}
+
+BurgerIngredients.propTypes = {
+  items: PropTypes.array.isRequired,
 }
 
 export default BurgerIngredients;

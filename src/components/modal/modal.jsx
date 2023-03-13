@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
+import PropTypes from "prop-types";
 
 const modalRoot = document.getElementById("react-modals");
 
@@ -33,6 +34,10 @@ function Modal({ children, onClosePopup }) {
     </ModalOverlay>,
     modalRoot
   )
+}
+
+Modal.propTypes = {
+  onClosePopup: PropTypes.func.isRequired
 }
 
 export default Modal;
