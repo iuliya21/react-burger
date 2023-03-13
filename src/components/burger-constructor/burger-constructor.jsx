@@ -2,11 +2,11 @@ import React from "react";
 import styles from "./burger-constructor.module.css";
 import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
-import OrderDetails from '../order-details/order-details';
+import OrderDetails from "../order-details/order-details";
 
 function BurgerConstructor({ items }) {
 
-  const [openModal, setOpenModal] = React.useState(true);
+  const [openModal, setOpenModal] = React.useState(false);
 
   const showModal = () => {
     setOpenModal(true);

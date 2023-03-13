@@ -3,11 +3,12 @@ import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
 function BurgerIngredients({ items }) {
 
   const [current, setCurrent] = React.useState('bun');
-  const [openModal, setOpenModal] = React.useState(false);
+  const [openModal, setOpenModal] = React.useState(true);
 
   const showModal = () => {
     setOpenModal(true);
@@ -60,7 +61,7 @@ function BurgerIngredients({ items }) {
 
       {openModal && 
           (<Modal onClosePopup={hideModal}>
-            Второе модальное окно
+            <h2 className="text text_type_main-large">Детали ингредиента</h2>
           </Modal>)
         }
     </div> 

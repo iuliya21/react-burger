@@ -1,3 +1,7 @@
-.text {
-  color: aliceblue;
+.icon {
+  width: 120px;
+  height: 120px;
+  background-image: url(../../images/order.png);
+  background-repeat: no-repeat;
+  background-position: center;
 }

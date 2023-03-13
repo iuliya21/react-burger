@@ -1,1 +1,7 @@
-import styles from "./ingredient-detils.module.css";
+import styles from "./ingredient-details.module.css";
+
+function IngredientDetails() {
+
+}
+
+export default IngredientDetails;
