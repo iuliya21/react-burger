@@ -17,7 +17,11 @@ function BurgerConstructor({ items }) {
     setOpenModal(false);
   }
 
-  const bunUp = items.map((item) => {
+  const buns = items.filter((item) => {
+    return item.type === 'bun';
+  })
+
+  const bunUpper = buns.map((item) => {
     return (
       <ConstructorElement
         type="top"
@@ -29,7 +33,7 @@ function BurgerConstructor({ items }) {
     )
   })
 
-  const bunBottom = items.map((item) => {
+  const bunBottom = buns.map((item) => {
     return (
       <ConstructorElement
         type="bottom"
@@ -44,7 +48,7 @@ function BurgerConstructor({ items }) {
   return(
     <div className={styles.content}>
         <div className={styles.borderElement}>
-          {bunUp[0]}
+          {bunUpper[0]}
         </div>
         <ul className={styles.list}>
           {items.map(obj => {
