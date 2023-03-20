@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import PropTypes from "prop-types";
+import BurgerContext from "../burger-context";
 
-function BurgerIngredients({ items }) {
+function BurgerIngredients() {
+
+  const items = useContext(BurgerContext);
 
   const [current, setCurrent] = React.useState('bun');
   const [openModal, setOpenModal] = React.useState(false);
@@ -71,8 +74,8 @@ function BurgerIngredients({ items }) {
   )
 }
 
-BurgerIngredients.propTypes = {
-  items: PropTypes.array.isRequired,
-}
+// BurgerIngredients.propTypes = {
+//   items: PropTypes.array.isRequired,
+// }
 
 export default BurgerIngredients;

@@ -1,13 +1,16 @@
-import React from "react";
+import { useContext, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
+import BurgerContext from "../burger-context";
 
-function BurgerConstructor({ items }) {
+function BurgerConstructor() {
 
-  const [openModal, setOpenModal] = React.useState(false);
+  const items = useContext(BurgerContext);
+
+  const [openModal, setOpenModal] = useState(false);
 
   const showModal = () => {
     setOpenModal(true);
@@ -84,13 +87,12 @@ function BurgerConstructor({ items }) {
             <OrderDetails />
           </Modal>
         )}
-        
     </div>
   )
 }
 
-BurgerConstructor.propTypes = {
-  items: PropTypes.array.isRequired,
-}
+// BurgerConstructor.propTypes = {
+//   items: PropTypes.array.isRequired,
+// }
 
 export default BurgerConstructor;

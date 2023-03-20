@@ -3,18 +3,18 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import PropTypes from "prop-types";
 
-function Main({ items }) {
+function Main() {
 
   return(
     <main className={styles.main}>
-      <BurgerIngredients items={items}/>
-      <BurgerConstructor items={items}/>
+      <BurgerIngredients />
+      <BurgerConstructor />
     </main>
   );
 }
 
-Main.propTypes = {
-  items: PropTypes.array.isRequired,
-}
+// Main.propTypes = {
+//   items: PropTypes.array.isRequired,
+// }
 
 export default Main;

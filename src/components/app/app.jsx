@@ -1,6 +1,7 @@
 import React from "react";
 import AppHeader from "../app-header/app-header.jsx";
 import Main from "../main/main.jsx";
+import BurgerContext from '../burger-context';
 
 const UrlAdress = 'https://norma.nomoreparties.space/api/ingredients';
 
@@ -27,7 +28,9 @@ function App() {
   return(
     <>
       <AppHeader />
-      <Main items={items}/>
+      <BurgerContext.Provider value={items}>
+        <Main />
+      </BurgerContext.Provider>
     </>
   );
 }
