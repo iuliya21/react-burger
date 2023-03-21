@@ -6,19 +6,14 @@ import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
 import BurgerContext from "../burger-context";
 
-const initialState = { sum: 0 };
-
-function reducer(state, action) {
-  switch(action.type) {
-    case 'bun': return { sum: 1 };
-  }
-}
 
 function BurgerConstructor() {
 
-  const items = useContext(BurgerContext); // Данные приходят через API в компоненте App, передаются в этот компонент через Context
+  const items = useContext(BurgerContext); // данные приходят через API в компоненте App, передаются в этот компонент через Context
 
-  const [sumOrder, setSumOrder] = useReducer(reducer, initialState);
+  // const [sumOrder, setSumOrder] = useReducer(reducer, initialState);
+
+  // console.log(items);
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -34,9 +29,19 @@ function BurgerConstructor() {
     return item.type === 'bun';
   })
 
-  let numberBun = 0; // индекс из массив булок, чтобы булки были одинаковыми
+  const numberBun = 0; // индекс из массива булок, чтобы булки были одинаковыми
+
+  const totalPrice = (items) => { // расчет цены
+    let price = 0;
+    items.map(item => {
+      if(item.type !== 'bun') {
+        price += item.price;
+      }});
+    return price + buns[0].price * 2;
+  }
 
   const bunUpper = buns.map((item) => {
+
     return (
       <ConstructorElement
         type="top"
@@ -59,7 +64,7 @@ function BurgerConstructor() {
       />
     )
   })
-
+  
   return(
     <div className={styles.content}>
         <div className={styles.borderElement}>
@@ -86,7 +91,7 @@ function BurgerConstructor() {
         </div>
         <div className={styles.order}>
           <div className={styles.resultSum}>
-            <p className="text text_type_digits-medium">600</p>
+            <p className="text text_type_digits-medium">{totalPrice(items)}</p>
             <div className={styles.diamond}></div>
           </div>
           <Button htmlType="button" type="primary" size="large" onClick={showModal}>
