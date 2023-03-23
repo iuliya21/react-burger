@@ -1,10 +1,11 @@
-import { useContext, useState, useReducer } from "react";
+import { useContext, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 // import PropTypes from "prop-types";
 import BurgerContext from "../burger-context";
+
 
 const UrlPost = 'https://norma.nomoreparties.space/api/orders';
 
@@ -13,6 +14,7 @@ function BurgerConstructor() {
   const items = useContext(BurgerContext); // данные приходят через API в компоненте App, передаются в этот компонент через Context
 
   const [openModal, setOpenModal] = useState(false);
+  const [numberOrder, setNumberOrder] = useState(''); // состояние номера заказа
 
   const showModal = () => {
     setOpenModal(true);
@@ -22,17 +24,16 @@ function BurgerConstructor() {
     setOpenModal(false);
   }
 
-  const getIngredient = () => {
+  const getIngredient = () => { // достать _id ингредиентов
     const ingId = [];
     items.forEach(obj => {
       ingId.push(obj._id);
     })
-    console.log(ingId);
     return ingId;
   }
 
-  const getPost = () => {  // отправка запроса POST
-    return fetch(UrlPost, {
+  const getPost = async () => {  // отправка запроса POST
+    return await fetch(UrlPost, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify({
@@ -55,11 +56,11 @@ function BurgerConstructor() {
 
   const numberBun = 0; // индекс из массива булок, чтобы при рендере булки были одинаковыми
 
-  const totalPrice = (items) => { // расчет цены
+  const totalPrice = (items) => { // расчет цены бургера
     let priceBuns = [];
     let price = 0;
 
-    items.forEach(obj => {  // массив стоимостей всех ингридиентов из данных api
+    items.forEach(obj => {  // массив стоимостей всех ингредиентов из данных
       if(obj.type === 'bun') {
         priceBuns.push(obj.price); // массив стоимостей булок
       } else {
@@ -68,10 +69,10 @@ function BurgerConstructor() {
     })
     
     const result = price + (priceBuns[numberBun] * 2);
-    return result;
+    return result.toString(); // если убираю перевод в строку, консоль ругается
   }
 
-  const bunUpper = buns.map((item) => {
+  const bunUpper = buns.map((item) => { // создаём разметку для верхней булки
     return (
       <ConstructorElement
         type="top"
@@ -83,7 +84,7 @@ function BurgerConstructor() {
     )
   })
 
-  const bunBottom = buns.map((item) => {
+  const bunBottom = buns.map((item) => { // создаем разметку для нижней булки
     return (
       <ConstructorElement
         type="bottom"
@@ -132,7 +133,7 @@ function BurgerConstructor() {
 
         {openModal && (
           <Modal onClosePopup={hideModal}>
-            <OrderDetails />
+            <OrderDetails numberOrder={numberOrder}/>
           </Modal>
         )}
     </div>
