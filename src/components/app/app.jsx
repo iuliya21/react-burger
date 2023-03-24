@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import AppHeader from "../app-header/app-header.jsx";
 import Main from "../main/main.jsx";
 import BurgerContext from '../burger-context';
-import data from "../utils/data";
 
 const UrlAdress = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
 
   const [items, setItems] = useState([]); // список всех ингредиентов с сервера
-  const [listIngredients, setListIngredients] = useState([]); // список выбранных ингредиентов пользователем, пока выбираем что ходим
+  const [listIngredients, setListIngredients] = useState([]); // список выбранных ингредиентов пользователем, пока выбираем что хотим
 
   React.useEffect(() => {
     const getData = async () => {

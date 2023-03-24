@@ -14,7 +14,7 @@ function BurgerConstructor() {
   const items = useContext(BurgerContext); // данные приходят через API в компоненте App, передаются в этот компонент через Context
 
   const [openModal, setOpenModal] = useState(false);
-  const [numberOrder, setNumberOrder] = useState(''); // состояние номера заказа
+  const [numberOrder, setNumberOrder] = useState(); // состояние номера заказа
 
   const showModal = () => {
     setOpenModal(true);
@@ -24,7 +24,7 @@ function BurgerConstructor() {
     setOpenModal(false);
   }
 
-  const getIngredient = () => { // достать _id ингредиентов
+  const getIngredient = () => { // достать _id ингредиентов из списка
     const ingId = [];
     items.forEach(obj => {
       ingId.push(obj._id);
@@ -46,7 +46,7 @@ function BurgerConstructor() {
       }
       return Promise.reject(`Ошибка ${res.status}`);
     })
-    .then((data) => console.log(data))
+    .then((data) => setNumberOrder(data.order.number))
     .catch((err) => console.log(err));
   }
 
@@ -69,7 +69,7 @@ function BurgerConstructor() {
     })
     
     const result = price + (priceBuns[numberBun] * 2);
-    return result.toString(); // если убираю перевод в строку, консоль ругается
+    return result.toString(); // если убираю перевод в строку, консоль выводит предупреждение
   }
 
   const bunUpper = buns.map((item) => { // создаём разметку для верхней булки

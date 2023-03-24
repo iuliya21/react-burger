@@ -1,4 +1,5 @@
 import styles from "./order-details.module.css";
+import PropTypes from "prop-types";
 
 function OrderDetails({ numberOrder }) {
   return (
@@ -10,6 +11,10 @@ function OrderDetails({ numberOrder }) {
       <p className="text text_type_main-default text_color_inactive">Дождитесь готовности на орбитальной станции</p>
     </div>
   )
+}
+
+OrderDetails.propTypes = {
+  numberOrder: PropTypes.number.isRequired,
 }
 
 export default OrderDetails;
