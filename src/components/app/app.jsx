@@ -3,7 +3,8 @@ import AppHeader from "../app-header/app-header.jsx";
 import Main from "../main/main.jsx";
 import BurgerContext from '../burger-context';
 
-const UrlAdress = 'https://norma.nomoreparties.space/api/ingredients';
+//const UrlAdress = 'https://norma.nomoreparties.space/api/ingredients';
+const UrlAdress = 'https://norma.nomoreparties.space/api';
 
 function App() {
 
@@ -12,7 +13,7 @@ function App() {
 
   React.useEffect(() => {
     const getData = async () => {
-      return await fetch(UrlAdress)
+      return await fetch(`${UrlAdress}/ingredients`)
         .then((res) => {
           if(res.ok) {
             return res.json()
