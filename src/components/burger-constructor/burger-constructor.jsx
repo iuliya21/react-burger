@@ -1,13 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useMemo } from "react";
 import styles from "./burger-constructor.module.css";
 import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-// import PropTypes from "prop-types";
 import BurgerContext from "../burger-context";
+import { getPost } from "../utils/burger-api";
 
-
-const UrlPost = 'https://norma.nomoreparties.space/api/orders';
 
 function BurgerConstructor() {
 
@@ -24,7 +22,7 @@ function BurgerConstructor() {
     setOpenModal(false);
   }
 
-  const getIngredient = () => { // достать _id ингредиентов из списка
+  const getIngredient = () => { // достать _id ингредиентов из списка пользователя
     const ingId = [];
     items.forEach(obj => {
       ingId.push(obj._id);
@@ -32,20 +30,8 @@ function BurgerConstructor() {
     return ingId;
   }
 
-  const getPost = async () => {  // отправка запроса POST
-    return await fetch(UrlPost, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'}, 
-      body: JSON.stringify({
-        "ingredients": getIngredient()
-      })
-    })
-    .then((res) => {
-      if(res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
-    })
+  const getNumberOrder = async () => {  // получить номер заказ / отправка запроса POST
+    return await getPost({getIngredient})
     .then((data) => setNumberOrder(data.order.number))
     .catch((err) => console.log(err));
   }
@@ -73,16 +59,17 @@ function BurgerConstructor() {
   }
 
   const bunUpper = buns.map((item) => { // создаём разметку для верхней булки
-    return (
-      <ConstructorElement
-        type="top"
-        isLocked={true}
-        text={item.name + '\n(верх)'}
-        price={item.price}
-        thumbnail={item.image}
-      />
-    )
-  })
+      return (
+        <ConstructorElement
+          type="top"
+          isLocked={true}
+          text={item.name + '\n(верх)'}
+          price={item.price}
+          thumbnail={item.image}
+        />
+      )
+    })
+
 
   const bunBottom = buns.map((item) => { // создаем разметку для нижней булки
     return (
@@ -126,7 +113,7 @@ function BurgerConstructor() {
             <p className="text text_type_digits-medium">{totalPrice(items)}</p>
             <div className={styles.diamond}></div>
           </div>
-          <Button htmlType="button" type="primary" size="large" onClick={() => {showModal(); getPost()}}>
+          <Button htmlType="button" type="primary" size="large" onClick={() => {showModal(); getNumberOrder()}}>
             Оформить заказ
           </Button>
         </div>
@@ -139,9 +126,5 @@ function BurgerConstructor() {
     </div>
   )
 }
-
-// BurgerConstructor.propTypes = {
-//   items: PropTypes.array.isRequired,
-// }
 
 export default BurgerConstructor;

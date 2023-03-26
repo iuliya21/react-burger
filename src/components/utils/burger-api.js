@@ -1,34 +1,27 @@
-const UrlPost = 'https://norma.nomoreparties.space/api/orders';
+const UrlAdress = 'https://norma.nomoreparties.space/api';
 
-const checkResponse(res) { // метод проверки запроса
+const checkResponse = (res) => { // проверка запроса
   if(res.ok) {
     return res.json();
   } else {
-    return Promise.reject(`Ошибка ${res.status}`);
+    return Promise.reject(res);
   }
 }
 
-const getData = async () => {
-  return await fetch(`${UrlAdress}/ingredients`)
-    .then((res) => {
-      if(res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
-    })}
+export const getIngredients = () => { // запрос на получение списка ингредиентов с сервера
+  return fetch(`${UrlAdress}/ingredients`)
+  .then((res) => 
+    checkResponse(res)
+  ) 
+}
 
-
-const getPost = async () => {  // отправка запроса POST
-  return await fetch(UrlPost, {
+export const getPost = ({getIngredient}) => { // POST-запрос для получения номера заказа
+  return fetch(`${UrlAdress}/orders`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'}, 
     body: JSON.stringify({
       "ingredients": getIngredient()
     })
   })
-  .then((res) => {
-    
-  })
-  .then((data) => setNumberOrder(data.order.number))
-  .catch((err) => console.log(err));
+  .then((res) => checkResponse(res))
 }
