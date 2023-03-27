@@ -1,33 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import AppHeader from "../app-header/app-header.jsx";
 import Main from "../main/main.jsx";
-
-const UrlAdress = 'https://norma.nomoreparties.space/api/ingredients';
+import BurgerContext from '../burger-context';
+import { getIngredients } from '../utils/burger-api';
 
 function App() {
 
-  const [items, setItems] = React.useState([]);
+  const [items, setItems] = useState([]); // список всех ингредиентов с сервера
+  const [listIngredients, setListIngredients] = useState([]); // список выбранных ингредиентов пользователем, пока выбираем что хотим
 
   React.useEffect(() => {
     const getData = async () => {
-      return await fetch(UrlAdress)
-        .then((res) => {
-          if(res.ok) {
-            return res.json()
-          }
-          return Promise.reject(`Ошибка ${res.status}`);
-        })
+      return await getIngredients()
         .then((data) => setItems(data.data))
         .catch((err) => console.log(err));
     }
-
     getData();
   }, [])
+
 
   return(
     <>
       <AppHeader />
-      <Main items={items}/>
+      <BurgerContext.Provider value={items}>
+        <Main />
+      </BurgerContext.Provider>
     </>
   );
 }
