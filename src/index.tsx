@@ -1,30 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { legacy_createStore as createStore, compose, applyMiddleware } from 'redux';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import App from './components/app/app';
-import { rootReducer } from './services/reducers';
+import store from './services/store';
 
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
 
-const enhancer = composeEnhancers();
-
-const store = createStore(rootReducer, enhancer); // создание хранилища
-
-const root = ReactDOM.createRoot(
+const root = createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>
+  </StrictMode>
 );
 
 reportWebVitals();

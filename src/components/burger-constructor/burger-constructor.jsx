@@ -1,24 +1,24 @@
-import { useContext, useState, useMemo } from "react";
+import { useContext, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./burger-constructor.module.css";
 import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import BurgerContext from "../burger-context";
 import { getPost } from "../utils/burger-api";
 
 
 function BurgerConstructor() {
 
-  const items = useContext(BurgerContext); // данные приходят через API в компоненте App, передаются в этот компонент через Context
+  const items = useSelector(store => store.ingredients.data);
 
   const [openModal, setOpenModal] = useState(false);
   const [numberOrder, setNumberOrder] = useState(); // состояние номера заказа
 
-  const showModal = () => {
+  const showModal = () => { // открыть модальное окно
     setOpenModal(true);
   }
 
-  const hideModal = () => {
+  const hideModal = () => { // скрыть модальное окно
     setOpenModal(false);
   }
 
@@ -36,29 +36,16 @@ function BurgerConstructor() {
     .catch((err) => console.log(err));
   }
 
-  const buns = items.filter((item) => {  // в массиве хранятся только ингредиенты с типом "bun"
-    return item.type === 'bun';
-  })
-
+  const buns = items.filter(item => item.type === 'bun'); // массив булок
   const numberBun = 0; // индекс из массива булок, чтобы при рендере булки были одинаковыми
+  const priceBuns = buns[numberBun]?.price * 2; //цена 2х булок
+  const ingredients = items.filter(item => item.type !== 'bun'); // массив ингредиентов
 
-  const totalPrice = (items) => { // расчет цены бургера
-    let priceBuns = [];
-    let price = 0;
+  const burger = [buns[numberBun], ...ingredients, buns[numberBun]];
 
-    items.forEach(obj => {  // массив стоимостей всех ингредиентов из данных
-      if(obj.type === 'bun') {
-        priceBuns.push(obj.price); // массив стоимостей булок
-      } else {
-        price += obj.price; // стоимость ингредиентов
-      }
-    })
-    
-    const result = price + (priceBuns[numberBun] * 2);
-    return result.toString(); // если убираю перевод в строку, консоль выводит предупреждение
-  }
+  const totalPrice = ingredients.reduce((sum, ingredient) => sum + ingredient.price, priceBuns).toString();
 
-  const bunUpper = buns.map((item) => { // создаём разметку для верхней булки
+  const bunUpper = buns.map((item) => { // разметка для верхней булки
       return (
         <ConstructorElement
           type="top"
@@ -70,8 +57,7 @@ function BurgerConstructor() {
       )
     })
 
-
-  const bunBottom = buns.map((item) => { // создаем разметку для нижней булки
+  const bunBottom = buns.map((item) => { // разметка для нижней булки
     return (
       <ConstructorElement
         type="bottom"
@@ -82,7 +68,6 @@ function BurgerConstructor() {
       />
     )
   })
-
 
   return(
     <div className={styles.content}>
@@ -110,7 +95,7 @@ function BurgerConstructor() {
         </div>
         <div className={styles.order}>
           <div className={styles.resultSum}>
-            <p className="text text_type_digits-medium">{totalPrice(items)}</p>
+            <p className="text text_type_digits-medium">{totalPrice}</p>
             <div className={styles.diamond}></div>
           </div>
           <Button htmlType="button" type="primary" size="large" onClick={() => {showModal(); getNumberOrder()}}>

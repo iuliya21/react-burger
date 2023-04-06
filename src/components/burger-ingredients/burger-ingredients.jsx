@@ -1,19 +1,18 @@
-import React, { useContext } from 'react';
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from "../ingredient-details/ingredient-details";
-//import PropTypes from "prop-types";
-import BurgerContext from "../burger-context";
 
 function BurgerIngredients() {
 
-  const items = useContext(BurgerContext);
+  const ingredients = useSelector(store => store.ingredients.data); // список ингредиентов с сервера
 
-  const [current, setCurrent] = React.useState('bun');
-  const [openModal, setOpenModal] = React.useState(false);
-  const [currentIngredient, setCurrentIngredient] = React.useState({});
+  const [current, setCurrent] = useState('bun');
+  const [openModal, setOpenModal] = useState(false);
+  const [currentIngredient, setCurrentIngredient] = useState({});
 
   const showModal = (element) => {
     setOpenModal(true);
@@ -41,7 +40,7 @@ function BurgerIngredients() {
       <div className={styles.components}>
         <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
         <ul className={styles.listElements}>
-          {items.map(obj => {
+          {ingredients.map(obj => {
             if(obj.type === "bun") {
               return <Ingredient key={obj._id} {...obj} openModal={() => showModal(obj)} />
             }
@@ -49,7 +48,7 @@ function BurgerIngredients() {
         </ul>
         <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
         <ul className={styles.listElements}>
-          {items.map(obj => {
+          {ingredients.map(obj => {
             if(obj.type === "sauce") {
               return <Ingredient key={obj._id} {...obj} openModal={() => showModal(obj)} />
             }
@@ -57,7 +56,7 @@ function BurgerIngredients() {
         </ul>
         <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
         <ul className={styles.listElements}>
-          {items.map(obj => {
+          {ingredients.map(obj => {
             if(obj.type === "main") {
               return <Ingredient key={obj._id} {...obj} openModal={() => showModal(obj)} />
             }
@@ -73,9 +72,5 @@ function BurgerIngredients() {
     </div> 
   )
 }
-
-// BurgerIngredients.propTypes = {
-//   items: PropTypes.array.isRequired,
-// }
 
 export default BurgerIngredients;

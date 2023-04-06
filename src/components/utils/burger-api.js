@@ -8,12 +8,12 @@ const checkResponse = (res) => { // проверка запроса
   }
 }
 
-export const getIngredients = () => { // запрос на получение списка ингредиентов с сервера
-  return fetch(`${UrlAdress}/ingredients`)
-  .then((res) => 
-    checkResponse(res)
-  ) 
-}
+// export const getIngredients = () => { // запрос на получение списка ингредиентов с сервера
+//   return fetch(`${UrlAdress}/ingredients`)
+//   .then((res) => 
+//     checkResponse(res)
+//   ) 
+// }
 
 export const getPost = ({getIngredient}) => { // POST-запрос для получения номера заказа
   return fetch(`${UrlAdress}/orders`, {
