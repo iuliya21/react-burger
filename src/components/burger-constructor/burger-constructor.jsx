@@ -1,20 +1,25 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./burger-constructor.module.css";
 import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import { setOrder } from "../../services/actions";
 import { getPost } from "../utils/burger-api";
 
 
 function BurgerConstructor() {
 
-  const items = useSelector(store => store.ingredients.data);
+  const dispatch = useDispatch();
+  const ingredients = useSelector(store => store.burgerIngredients.ingredients);
+  const buns = useSelector(store => store.burgerIngredients.bun);
+  const numberOrder = useSelector(store => store.numberOrder.order);
+  const burger = [...buns, ...ingredients];
 
   const [openModal, setOpenModal] = useState(false);
-  const [numberOrder, setNumberOrder] = useState(); // состояние номера заказа
 
   const showModal = () => { // открыть модальное окно
+    dispatch(setOrder(burger.map(item => item._id)));
     setOpenModal(true);
   }
 
@@ -22,28 +27,10 @@ function BurgerConstructor() {
     setOpenModal(false);
   }
 
-  const getIngredient = () => { // достать _id ингредиентов из списка пользователя
-    const ingId = [];
-    items.forEach(obj => {
-      ingId.push(obj._id);
-    })
-    return ingId;
-  }
-
-  const getNumberOrder = async () => {  // получить номер заказ / отправка запроса POST
-    return await getPost({getIngredient})
-    .then((data) => setNumberOrder(data.order.number))
-    .catch((err) => console.log(err));
-  }
-
-  const buns = items.filter(item => item.type === 'bun'); // массив булок
   const numberBun = 0; // индекс из массива булок, чтобы при рендере булки были одинаковыми
   const priceBuns = buns[numberBun]?.price * 2; //цена 2х булок
-  const ingredients = items.filter(item => item.type !== 'bun'); // массив ингредиентов
 
-  const burger = [buns[numberBun], ...ingredients, buns[numberBun]];
-
-  const totalPrice = ingredients.reduce((sum, ingredient) => sum + ingredient.price, priceBuns).toString();
+  const totalPrice = (ingredients.length > 0 && buns.length > 0) && ingredients.reduce((sum, ingredient) => sum + ingredient.price, priceBuns).toString();
 
   const bunUpper = buns.map((item) => { // разметка для верхней булки
       return (
@@ -75,19 +62,17 @@ function BurgerConstructor() {
           {bunUpper[numberBun]}
         </div>
         <ul className={styles.list}>
-          {items.map(obj => {
-            if(obj.type !== "bun") {
-              return (
-                <li key={obj._id} className={styles.element}>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    text={obj.name}
-                    price={obj.price}
-                    thumbnail={obj.image}
+          {ingredients.map(ing => {
+            return (
+              <li key={ing._id} className={styles.element}>
+                <DragIcon type="primary" />
+                <ConstructorElement
+                    text={ing.name}
+                    price={ing.price}
+                    thumbnail={ing.image}
                   />
-                </li>
-              )
-            }
+              </li>
+            )
           })}
         </ul>
         <div className="pl-8 mt-4">
@@ -98,7 +83,7 @@ function BurgerConstructor() {
             <p className="text text_type_digits-medium">{totalPrice}</p>
             <div className={styles.diamond}></div>
           </div>
-          <Button htmlType="button" type="primary" size="large" onClick={() => {showModal(); getNumberOrder()}}>
+          <Button htmlType="button" type="primary" size="large" onClick={() => {showModal()}}>
             Оформить заказ
           </Button>
         </div>

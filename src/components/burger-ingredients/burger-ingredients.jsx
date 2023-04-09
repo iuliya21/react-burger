@@ -1,44 +1,67 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import { getDetailsIngredient, deleteDetailsIngredient } from "../../services/actions";
 
 function BurgerIngredients() {
 
-  const ingredients = useSelector(store => store.ingredients.data); // список ингредиентов с сервера
+  const ingredients = useSelector(store => store.ingredients.data); // список ингредиентов с сервера, хранится в сторе
 
   const [current, setCurrent] = useState('bun');
   const [openModal, setOpenModal] = useState(false);
-  const [currentIngredient, setCurrentIngredient] = useState({});
+  const container = useRef();
+  const bunsRef = useRef();
+  const saucesRef = useRef();
+  const mainRef = useRef();
 
-  const showModal = (element) => {
+  const dispatch = useDispatch();
+
+  const showModal = (element) => { // открытие модального окна
+    dispatch(getDetailsIngredient(element));
     setOpenModal(true);
-    setCurrentIngredient(element);
   }
 
-  const hideModal = () => {
+  const hideModal = () => { // закрытие модального окна
+    dispatch(deleteDetailsIngredient());
     setOpenModal(false);
   }
+
+  const handleScroll = () => {
+    if (container.current.getBoundingClientRect().top > bunsRef.current.getBoundingClientRect().top) {
+      setCurrent('bun');
+    }
+    if (container.current.getBoundingClientRect().top > saucesRef.current.getBoundingClientRect().top) {
+      setCurrent('sauce');
+    }
+    if (container.current.getBoundingClientRect().top > mainRef.current.getBoundingClientRect().top) {
+      setCurrent('main');
+    }
+  };
+
+  const setTab = (state, element) => {
+    element.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <div>
       <h1 className="text text_type_main-large mb-5 mt-10">Соберите бургер</h1>
       <div className={styles.tabs}>
-        <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
+        <Tab value="bun" active={current === 'bun'} onClick={(e) => {setTab(e, bunsRef)}} id={"bun"}>
           Булки
         </Tab>
-        <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
+        <Tab value="sauce" active={current === 'sauce'} onClick={(e) => {setTab(e, saucesRef)}} id={"sauce"}>
           Соусы
         </Tab>
-        <Tab value="main" active={current === 'main'} onClick={setCurrent}>
+        <Tab value="main" active={current === 'main'} onClick={(e) => {setTab(e, mainRef)}} id={"main"}>
           Начинки
         </Tab>
       </div>
-      <div className={styles.components}>
-        <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
+      <div className={styles.components} ref={container} onScroll={handleScroll}>
+        <h2 className="text text_type_main-medium mt-10 mb-6" ref={bunsRef}>Булки</h2>
         <ul className={styles.listElements}>
           {ingredients.map(obj => {
             if(obj.type === "bun") {
@@ -46,7 +69,7 @@ function BurgerIngredients() {
             }
           })}
         </ul>
-        <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
+        <h2 className="text text_type_main-medium mt-10 mb-6" ref={saucesRef}>Соусы</h2>
         <ul className={styles.listElements}>
           {ingredients.map(obj => {
             if(obj.type === "sauce") {
@@ -54,7 +77,7 @@ function BurgerIngredients() {
             }
           })}
         </ul>
-        <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
+        <h2 className="text text_type_main-medium mt-10 mb-6" ref={mainRef}>Начинки</h2>
         <ul className={styles.listElements}>
           {ingredients.map(obj => {
             if(obj.type === "main") {
@@ -66,7 +89,7 @@ function BurgerIngredients() {
 
       {openModal && 
           <Modal onClosePopup={hideModal}>
-            <IngredientDetails currentElement={currentIngredient}/>
+            <IngredientDetails />
           </Modal>
         }
     </div> 

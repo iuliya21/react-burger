@@ -1,4 +1,4 @@
-import { GET_LIST_INGREDIENTS, GET_INGREDIENTS_SUCCESS, GET_INGREDIENTS_FAILED } from "../actions";
+import { GET_LIST_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS, GET_INGREDIENTS_FAILED } from "../actions";
 
 const initialState = {
   data: [],
@@ -7,7 +7,7 @@ const initialState = {
 
 export const getIngredientsReducer = (state = initialState, action) => {
   switch(action.type) {
-    case GET_LIST_INGREDIENTS: {
+    case GET_LIST_INGREDIENTS_REQUEST: {
       return {
         ...state,
         loading: true,
