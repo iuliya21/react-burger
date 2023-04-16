@@ -1,9 +1,8 @@
-import { ADD_INGREDIENT, ADD_BUN, CLEAR_CONSTRUCTOR } from '../actions';
-import { dataIng, dataBun } from '../../components/utils/data';
+import { ADD_INGREDIENT, ADD_BUN, DELETE_INGREDIENT, MOVE_INGREDIENT } from '../actions';
 
 const initialState = {
-  ingredients: dataIng,
-  bun: dataBun,
+  ingredients: [],
+  bun: [],
 }
 
 export const burgerConstructorReducer = (state = initialState, action) => {
@@ -11,21 +10,35 @@ export const burgerConstructorReducer = (state = initialState, action) => {
     case ADD_INGREDIENT: {
       return {
         ...state,
-        ingredients: [...state.ingredients, {...action.data, keyId: action.keyId}],
+        ingredients: [...state.ingredients, {...action.data}],
       };
     }
     case ADD_BUN: {
       return {
         ...state,
-        bun: action.data,
+        bun: [...state.bun, {...action.data}],
       };
     }
-    case CLEAR_CONSTRUCTOR: {
+    case DELETE_INGREDIENT: {
+      const newIngredientsState = {...state};
+      const indexIngredient = newIngredientsState.ingredients.findIndex(
+        (item) => item._id === action.data
+      );
+      if (indexIngredient !== -1) {
+        newIngredientsState.ingredients.splice(indexIngredient, 1);
+      }
       return {
         ...state,
-        ingredients: action.data,
-        bun: null,
+        ingredients: [...newIngredientsState.ingredients],
       };
+    }
+    case MOVE_INGREDIENT: {
+      const newIngredients = [...state.ingredients];
+      newIngredients.splice(action.itemTo, 0, newIngredients.splice(action.itemFrom, 1)[0]);
+      return {
+        ...state,
+        ingredients: newIngredients
+      }
     }
     default: return state;
   }

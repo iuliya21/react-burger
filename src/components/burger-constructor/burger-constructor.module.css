@@ -3,6 +3,8 @@
   margin-top: 100px;
   min-width: 600px;
   padding-left: 16px;
+  outline: 3px solid;
+  min-height: 800px;
 }
 
 .element {
@@ -20,6 +22,7 @@
   margin: 0;
   max-height: 480px;
   overflow-y: scroll;
+  
 }
 
 .list::-webkit-scrollbar {
