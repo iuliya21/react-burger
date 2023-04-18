@@ -21,14 +21,17 @@ const checkResponse = (res) => { // проверка запроса
   }
 }
 
+const request = (url) => {
+  return fetch(`${UrlAdress}/${url}`).then(res => checkResponse(res))
+}
+
 export const getIngredients = () => {
   return (dispatch) => {
     dispatch({
       type: GET_LIST_INGREDIENTS_REQUEST,
     });
 
-    fetch(`${UrlAdress}/ingredients`)
-      .then(res => checkResponse(res))
+    request('ingredients')
       .then(res => {
         dispatch({
           type: GET_INGREDIENTS_SUCCESS,

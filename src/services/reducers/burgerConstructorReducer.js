@@ -1,4 +1,5 @@
 import { ADD_INGREDIENT, ADD_BUN, DELETE_INGREDIENT, MOVE_INGREDIENT } from '../actions';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
   ingredients: [],
@@ -6,11 +7,12 @@ const initialState = {
 }
 
 export const burgerConstructorReducer = (state = initialState, action) => {
+  
   switch(action.type) {
     case ADD_INGREDIENT: {
       return {
         ...state,
-        ingredients: [...state.ingredients, {...action.data}],
+        ingredients: [...state.ingredients, {...action.data, uuid: action.uuid}],
       };
     }
     case ADD_BUN: {

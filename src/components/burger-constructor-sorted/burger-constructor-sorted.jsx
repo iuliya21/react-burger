@@ -71,7 +71,9 @@ function BurgerConstructorSorted(props) {
 }
 
 BurgerConstructorSorted.propTypes = {
-  props: PropTypes.object,
+  ing: PropTypes.object.isRequired,
+  index: PropTypes.number,
+  moveIngredient: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructorSorted;

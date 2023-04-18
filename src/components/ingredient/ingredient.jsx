@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 function Ingredient(props) {
 
-  const { name, price, image, openModal, _id, type } = props;
+  const {name, price, image, openModal, _id, type} = props;
 
   let countIngredients = useSelector(store => store.burgerIngredients.ingredients.filter(ing => ing._id === _id).length);
   const bun = useSelector(store => store.burgerIngredients.bun);
@@ -36,7 +36,12 @@ function Ingredient(props) {
 }
 
 Ingredient.propTypes = {
-  props: PropTypes.object,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  openModal: PropTypes.func.isRequired,
+  _id: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default Ingredient;

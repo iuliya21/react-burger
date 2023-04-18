@@ -6,13 +6,15 @@ import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getDetailsIngredient, deleteDetailsIngredient } from "../../services/actions";
+import { useModal } from "../../hooks/useModal";
 
 function BurgerIngredients() {
+
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const ingredients = useSelector(store => store.ingredients.data); // список ингредиентов с сервера, хранится в сторе
 
   const [current, setCurrent] = useState('bun');
-  const [openModal, setOpenModal] = useState(false);
   const container = useRef();
   const bunsRef = useRef();
   const saucesRef = useRef();
@@ -22,12 +24,12 @@ function BurgerIngredients() {
 
   const showModal = (element) => { // открытие модального окна
     dispatch(getDetailsIngredient(element));
-    setOpenModal(true);
+    openModal();
   }
 
   const hideModal = () => { // закрытие модального окна
     dispatch(deleteDetailsIngredient());
-    setOpenModal(false);
+    closeModal();
   }
 
   const handleScroll = () => {
@@ -87,7 +89,7 @@ function BurgerIngredients() {
         </ul>
       </div>
 
-      {openModal && 
+      {isModalOpen && 
           <Modal onClosePopup={hideModal}>
             <IngredientDetails />
           </Modal>
