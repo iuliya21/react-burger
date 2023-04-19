@@ -9,6 +9,7 @@ import { setOrder, ADD_INGREDIENT, ADD_BUN, MOVE_INGREDIENT } from "../../servic
 import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constructor-sorted";
 import { v4 as uuidv4 } from 'uuid';
 import { useModal } from "../../hooks/useModal";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 
 function BurgerConstructor() {
@@ -23,13 +24,13 @@ function BurgerConstructor() {
   const numberOrder = useSelector(store => store.numberOrder.order); // номер заказа из стора
   const burger = [...buns, ...ingredients];
 
-  const isBuns = () => {
-    if (buns.length > 0) {
-      return true
-    };
-    return false;
-  }
+  const [disabled, setDisabled] = useState(true);
 
+  const checkBurger = () => {
+    if(bun.length > 0 && ingredients.length > 0) {
+      setDisabled(false)
+    }
+  }
 
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",
@@ -58,6 +59,7 @@ function BurgerConstructor() {
       data: ing.props,
       uuid: uuid,
     })
+    checkBurger();
   }
 
   const moveIngredient = useCallback((dragIndex, hoverIndex) => {
@@ -109,45 +111,41 @@ function BurgerConstructor() {
 
   return(
     <div className={styles.content} ref={dropRef} style={{outlineColor}}>
-        {isBuns
-          ? (
-            <div className={styles.borderElement}>
-              {bunUpper[numberBun]}
-            </div>
+      <div className={styles.borderElement}>
+        {bunUpper[numberBun]}
+      </div>
+      <ul className={styles.list}>
+        {ingredients.map((ing, index) => {
+          ing.index = index;
+          return (
+            <li key={ing.uuid} className={styles.element}>
+              <BurgerConstructorSorted ing={ing} index={index} moveIngredient={moveIngredient} />
+            </li> 
           )
-          : (<div className={`${styles.bunareaTop} text text_type_main-default`}>выберете булку</div>)}
-          <ul className={styles.list}>
-            {ingredients.map((ing, index) => {
-              ing.index = index;
-              return (
-                <li key={ing.uuid} className={styles.element}>
-                  <BurgerConstructorSorted ing={ing} index={index} moveIngredient={moveIngredient} />
-                </li> 
-              )
-            })}
-          </ul>
-        <div className="pl-8 mt-4">
-          {bunBottom[numberBun]}
+        })}
+      </ul>
+      <div className="pl-8 mt-4">
+        {bunBottom[numberBun]}
+      </div>
+      <div className={styles.order}>
+        <div className={styles.resultSum}>
+          {burger.length > 0 && (
+            <>
+              <p className="text text_type_digits-medium">{totalPrice}</p>
+              <div className={styles.diamond}></div>
+            </>
+          )}
         </div>
-        <div className={styles.order}>
-          <div className={styles.resultSum}>
-            {burger.length > 0 && (
-              <>
-                <p className="text text_type_digits-medium">{totalPrice}</p>
-                <div className={styles.diamond}></div>
-              </>
-            )}
-          </div>
-          <Button htmlType="button" type="primary" size="large" onClick={() => {showModal()}}>
-            Оформить заказ
-          </Button>
-        </div>
+        <Button htmlType="button" type="primary" size="large" onClick={() => {showModal()}} disabled={disabled}>
+          Оформить заказ
+        </Button>
+      </div>
 
-        {isModalOpen && (
-          <Modal onClosePopup={hideModal}>
-            <OrderDetails numberOrder={numberOrder}/>
-          </Modal>
-        )}
+      {isModalOpen && (
+        <Modal onClosePopup={hideModal}>
+          <OrderDetails numberOrder={numberOrder}/>
+        </Modal>
+      )}
     </div>
   )
 }

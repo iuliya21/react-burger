@@ -1,5 +1,4 @@
-import { ADD_INGREDIENT, ADD_BUN, DELETE_INGREDIENT, MOVE_INGREDIENT } from '../actions';
-import { v4 as uuidv4 } from 'uuid';
+import { ADD_INGREDIENT, ADD_BUN, DELETE_INGREDIENT, MOVE_INGREDIENT, CLEAR_CONSTRUCTOR } from '../actions';
 
 const initialState = {
   ingredients: [],
@@ -40,6 +39,13 @@ export const burgerConstructorReducer = (state = initialState, action) => {
       return {
         ...state,
         ingredients: newIngredients
+      }
+    }
+    case CLEAR_CONSTRUCTOR: {
+      return {
+        ...state,
+        ingredients: [],
+        bun: [],
       }
     }
     default: return state;

@@ -7,6 +7,7 @@ export const GET_NUMBER_ORDER_FAILED = 'GET_NUMBER_ORDER_FAILED';
 export const ADD_INGREDIENT = 'ADD_INGREDIENT';
 export const ADD_BUN = 'ADD_BUN';
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
+export const CLEAR_CONSTRUCTOR = 'CLEAR_CONSTRUCTOR';
 export const MOVE_INGREDIENT = "MOVE_INGREDIENT";
 export const SELECT_INGREDIENT = 'SELECT_INGREDIENT';
 export const DELETE_INFO_INGREDIENT = 'DELETE_INFO_INGREDIENT';
@@ -59,11 +60,14 @@ export const setOrder = (ingredients) => {
         "ingredients": ingredients
       })
     })
-    .then(res => checkResponse(res))
+    .then((res) => checkResponse(res))
     .then(res => {
       dispatch({
         type: GET_NUMBER_ORDER_SUCCESS,
         order: res.order.number,
+      });
+      dispatch({
+        type: CLEAR_CONSTRUCTOR,
       });
     })
     .catch(err => {
