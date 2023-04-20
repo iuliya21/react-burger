@@ -1,65 +1,92 @@
-import { useContext, useState, useMemo } from "react";
+import { useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
 import styles from "./burger-constructor.module.css";
-import { ConstructorElement, Button, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorElement, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import BurgerContext from "../burger-context";
-import { getPost } from "../utils/burger-api";
+import { setOrder, ADD_INGREDIENT, ADD_BUN, MOVE_INGREDIENT } from "../../services/actions";
+import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constructor-sorted";
+import { v4 as uuidv4 } from 'uuid';
+import { useModal } from "../../hooks/useModal";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 
 function BurgerConstructor() {
 
-  const items = useContext(BurgerContext); // данные приходят через API в компоненте App, передаются в этот компонент через Context
+  const { isModalOpen, openModal, closeModal } = useModal();
 
-  const [openModal, setOpenModal] = useState(false);
-  const [numberOrder, setNumberOrder] = useState(); // состояние номера заказа
+  const dispatch = useDispatch();
+  
+  const ingredients = useSelector(store => store.burgerIngredients.ingredients); // ингредиенты из стора
+  const bun = useSelector(store => store.burgerIngredients.bun); // булки из стора
+  const buns = bun.slice(bun.length - 1); // оставляем в массиве только последний элемент
+  const numberOrder = useSelector(store => store.numberOrder.order); // номер заказа из стора
+  const burger = [...buns, ...ingredients];
 
-  const showModal = () => {
-    setOpenModal(true);
+  const [disabled, setDisabled] = useState(true);
+
+  const checkBurger = () => {
+    if(bun.length > 0 && ingredients.length > 0) {
+      setDisabled(false)
+    }
   }
 
-  const hideModal = () => {
-    setOpenModal(false);
-  }
-
-  const getIngredient = () => { // достать _id ингредиентов из списка пользователя
-    const ingId = [];
-    items.forEach(obj => {
-      ingId.push(obj._id);
+  const [{ isHover }, dropRef] = useDrop({
+    accept: "ingredient",
+    drop(item) {
+      if(item.props.type === 'bun') {
+        dispatch({
+          type: ADD_BUN,
+          data: item.props,
+        })
+      } 
+      else {
+        addIngredient(item, uuidv4());
+      }
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
     })
-    return ingId;
-  }
-
-  const getNumberOrder = async () => {  // получить номер заказ / отправка запроса POST
-    return await getPost({getIngredient})
-    .then((data) => setNumberOrder(data.order.number))
-    .catch((err) => console.log(err));
-  }
-
-  const buns = items.filter((item) => {  // в массиве хранятся только ингредиенты с типом "bun"
-    return item.type === 'bun';
   })
 
-  const numberBun = 0; // индекс из массива булок, чтобы при рендере булки были одинаковыми
+  const outlineColor = isHover ? 'lightgreen' : '#131316';
 
-  const totalPrice = (items) => { // расчет цены бургера
-    let priceBuns = [];
-    let price = 0;
-
-    items.forEach(obj => {  // массив стоимостей всех ингредиентов из данных
-      if(obj.type === 'bun') {
-        priceBuns.push(obj.price); // массив стоимостей булок
-      } else {
-        price += obj.price; // стоимость ингредиентов
-      }
+  const addIngredient = (ing) => {
+    const uuid = uuidv4();
+    dispatch({
+      type: ADD_INGREDIENT,
+      data: ing.props,
+      uuid: uuid,
     })
-    
-    const result = price + (priceBuns[numberBun] * 2);
-    return result.toString(); // если убираю перевод в строку, консоль выводит предупреждение
+    checkBurger();
   }
 
-  const bunUpper = buns.map((item) => { // создаём разметку для верхней булки
-      return (
+  const moveIngredient = useCallback((dragIndex, hoverIndex) => {
+    dispatch({
+      type: MOVE_INGREDIENT,
+      itemFrom: dragIndex,
+      itemTo: hoverIndex,
+    })
+  }, [ingredients]);
+
+  const showModal = () => { // открыть модальное окно
+    dispatch(setOrder(burger.map(item => item._id)));
+    openModal();
+  }
+
+  const hideModal = () => { // скрыть модальное окно
+    closeModal();
+  }
+
+  const numberBun = 0; // индекс из массива булок, чтобы при рендере булки были одинаковыми
+  const priceBuns = buns[numberBun]?.price * 2; //цена 2х булок
+
+  const totalPrice = (ingredients.length > 0 && buns.length > 0) && 
+  ingredients.reduce((sum, ingredient) => sum + ingredient.price, priceBuns).toString();
+
+  const bunUpper = buns.map((item) => { // разметка для верхней булки
+    return (
         <ConstructorElement
           type="top"
           isLocked={true}
@@ -70,8 +97,7 @@ function BurgerConstructor() {
       )
     })
 
-
-  const bunBottom = buns.map((item) => { // создаем разметку для нижней булки
+  const bunBottom = buns.map((item) => { // разметка для нижней булки
     return (
       <ConstructorElement
         type="bottom"
@@ -83,46 +109,43 @@ function BurgerConstructor() {
     )
   })
 
-
   return(
-    <div className={styles.content}>
-        <div className={styles.borderElement}>
-          {bunUpper[numberBun]}
+    <div className={styles.content} ref={dropRef} style={{outlineColor}}>
+      <div className={styles.borderElement}>
+        {bunUpper[numberBun]}
+      </div>
+      <ul className={styles.list}>
+        {ingredients.map((ing, index) => {
+          ing.index = index;
+          return (
+            <li key={ing.uuid} className={styles.element}>
+              <BurgerConstructorSorted ing={ing} index={index} moveIngredient={moveIngredient} />
+            </li> 
+          )
+        })}
+      </ul>
+      <div className="pl-8 mt-4">
+        {bunBottom[numberBun]}
+      </div>
+      <div className={styles.order}>
+        <div className={styles.resultSum}>
+          {burger.length > 0 && (
+            <>
+              <p className="text text_type_digits-medium">{totalPrice}</p>
+              <div className={styles.diamond}></div>
+            </>
+          )}
         </div>
-        <ul className={styles.list}>
-          {items.map(obj => {
-            if(obj.type !== "bun") {
-              return (
-                <li key={obj._id} className={styles.element}>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    text={obj.name}
-                    price={obj.price}
-                    thumbnail={obj.image}
-                  />
-                </li>
-              )
-            }
-          })}
-        </ul>
-        <div className="pl-8 mt-4">
-          {bunBottom[numberBun]}
-        </div>
-        <div className={styles.order}>
-          <div className={styles.resultSum}>
-            <p className="text text_type_digits-medium">{totalPrice(items)}</p>
-            <div className={styles.diamond}></div>
-          </div>
-          <Button htmlType="button" type="primary" size="large" onClick={() => {showModal(); getNumberOrder()}}>
-            Оформить заказ
-          </Button>
-        </div>
+        <Button htmlType="button" type="primary" size="large" onClick={() => {showModal()}} disabled={disabled}>
+          Оформить заказ
+        </Button>
+      </div>
 
-        {openModal && (
-          <Modal onClosePopup={hideModal}>
-            <OrderDetails numberOrder={numberOrder}/>
-          </Modal>
-        )}
+      {isModalOpen && (
+        <Modal onClosePopup={hideModal}>
+          <OrderDetails numberOrder={numberOrder}/>
+        </Modal>
+      )}
     </div>
   )
 }

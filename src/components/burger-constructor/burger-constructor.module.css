@@ -3,6 +3,8 @@
   margin-top: 100px;
   min-width: 600px;
   padding-left: 16px;
+  outline: 3px solid;
+  min-height: 800px;
 }
 
 .element {
@@ -20,6 +22,7 @@
   margin: 0;
   max-height: 480px;
   overflow-y: scroll;
+  
 }
 
 .list::-webkit-scrollbar {
@@ -56,4 +59,16 @@
   width: 36px;
   height: 36px;
   background-repeat: no-repeat;
+}
+
+.bunareaTop {
+  border-radius: 88px 88px 40px 40px;
+  background: #2f2f37;
+  border: #8585ad 2px dashed;
+  height: 72px;
+  width: 535px;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
