@@ -22,8 +22,8 @@ const checkResponse = (res) => { // проверка запроса
   }
 }
 
-const request = (url) => {
-  return fetch(`${UrlAdress}/${url}`).then(res => checkResponse(res))
+const request = (url, options) => {
+  return fetch(`${UrlAdress}/${url}`, options).then(res => checkResponse(res))
 }
 
 export const getIngredients = () => {
@@ -53,6 +53,7 @@ export const setOrder = (ingredients) => {
     dispatch({
       type: GET_NUMBER_ORDER,
     });
+    
     fetch(`${UrlAdress}/orders`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'}, 
