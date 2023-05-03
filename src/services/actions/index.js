@@ -26,12 +26,21 @@ const request = (url, options) => {
   return fetch(`${UrlAdress}/${url}`, options).then(res => checkResponse(res))
 }
 
+const dataPost = (ingredients) => {
+  return {
+    method: 'POST',
+      headers: {'Content-Type': 'application/json'}, 
+      body: JSON.stringify({
+        "ingredients": ingredients
+      })
+  }
+}
+
 export const getIngredients = () => {
   return (dispatch) => {
     dispatch({
       type: GET_LIST_INGREDIENTS_REQUEST,
     });
-
     request('ingredients')
       .then(res => {
         dispatch({
@@ -53,15 +62,7 @@ export const setOrder = (ingredients) => {
     dispatch({
       type: GET_NUMBER_ORDER,
     });
-    
-    fetch(`${UrlAdress}/orders`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'}, 
-      body: JSON.stringify({
-        "ingredients": ingredients
-      })
-    })
-    .then((res) => checkResponse(res))
+    request('orders', dataPost(ingredients))
     .then(res => {
       dispatch({
         type: GET_NUMBER_ORDER_SUCCESS,
