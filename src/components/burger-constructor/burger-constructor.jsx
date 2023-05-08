@@ -9,8 +9,6 @@ import { setOrder, ADD_INGREDIENT, ADD_BUN, MOVE_INGREDIENT } from "../../servic
 import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constructor-sorted";
 import { v4 as uuidv4 } from 'uuid';
 import { useModal } from "../../hooks/useModal";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
-
 
 function BurgerConstructor() {
 
@@ -136,7 +134,7 @@ function BurgerConstructor() {
             </>
           )}
         </div>
-        <Button htmlType="button" type="primary" size="large" onClick={() => {showModal()}} disabled={disabled}>
+        <Button htmlType="button" type="primary" size="large" onClick={() => {showModal(); setDisabled(true)}} disabled={disabled}>
           Оформить заказ
         </Button>
       </div>

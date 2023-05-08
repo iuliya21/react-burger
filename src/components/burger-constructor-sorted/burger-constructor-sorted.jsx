@@ -14,7 +14,6 @@ function BurgerConstructorSorted(props) {
   const dispatch = useDispatch();
   const ref = useRef();
 
-
   const removeIngredient = (ing) => {
     dispatch({
       type: DELETE_INGREDIENT,

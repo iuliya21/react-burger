@@ -1,10 +1,10 @@
-import { Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from 'react-router-dom';
 import styles from './app-header.module.css';
 
 function AppHeader() {
   return (
     <header className={styles.header}>
-      
       <div className={styles.container}>
         <div className={styles.leftContainer}>
           <button className={styles.button}>
@@ -20,10 +20,12 @@ function AppHeader() {
           <Logo />
         </div>
         <div className={styles.rightContainer}>
-          <button className={styles.button}>
+          <Link to="/react-burger/login">
+          {/* <button className={styles.button}> */}
             <ProfileIcon type="secondary" />
             <p className="text text_type_main-default text_color_inactive">Личный кабинет</p>
-          </button>
+          {/* </button> */}
+          </Link>
         </div>
       </div>
     </header>

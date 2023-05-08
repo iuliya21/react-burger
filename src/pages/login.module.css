@@ -1,0 +1,9 @@
+.content {
+  max-width: 480px;
+  border: 1px solid red;
+  margin: 160px auto 0;
+}
+
+.title {
+  text-align: center;
+}
