@@ -127,7 +127,12 @@ function BurgerConstructor() {
       </div>
       <div className={styles.order}>
         <div className={styles.resultSum}>
-          {burger.length > 0 && (
+          {bun.length < 1 ? (
+            <p className="text text_type_main-medium">Выберите булку</p>
+          ) : ingredients.length < 2 ? (
+            <p className="text text_type_main-medium">Выберите начинку</p>
+          ) : ''}
+          {burger.length > 2 && (
             <>
               <p className="text text_type_digits-medium">{totalPrice}</p>
               <div className={styles.diamond}></div>

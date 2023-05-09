@@ -1,5 +1,5 @@
 .header {
-  padding: 40px 40px 0 40px;
+  padding: 40px;
   box-sizing: border-box;
   margin: 0 auto 20px;
   background-color: rgba(28, 28, 33, 1);
@@ -45,4 +45,18 @@
 
 .rightContainer {
   display: flex;
+}
+
+.link {
+  display: flex;
+  column-gap: 8px;
+  text-decoration: none;
+  color: #8585AD;
+}
+
+.activeLink {
+  display: flex;
+  column-gap: 8px;
+  text-decoration: none;
+  color: #F2F2F3;
 }
