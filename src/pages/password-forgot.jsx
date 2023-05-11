@@ -10,7 +10,7 @@ function PasswordForgot() {
 
   const dispatch = useDispatch();
   const isSuccessPost = useSelector(store => store.restorePassword.success);
-  console.log(isSuccessPost);
+  
 
   const [valueEmail, setValueEmail] = useState('');
   const onChangeEmail = e => {
@@ -20,7 +20,6 @@ function PasswordForgot() {
   const handlerSubmit = (e) => {
     e.preventDefault();
     dispatch(restorePassword(valueEmail));
-    console.log(isSuccessPost);
   }
 
   return (
