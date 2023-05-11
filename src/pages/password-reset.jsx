@@ -14,7 +14,7 @@ function PasswordReset() {
   const inputRefCode = useRef(null)
 
   return (
-    <div className={styles.content}>
+    <form className={styles.content}>
       <h2 className={`text text_type_main-medium ${styles.title}`}>Восстановление пароля</h2>
       <PasswordInput
         placeholder={"Введите новый пароль"}
@@ -43,7 +43,7 @@ function PasswordReset() {
         Вспомнили пароль? 
         <Link to="/react-burger/login" className={styles.link}> Войти</Link>
       </p>
-    </div>
+    </form>
   )
 }
 

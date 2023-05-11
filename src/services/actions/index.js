@@ -11,6 +11,9 @@ export const CLEAR_CONSTRUCTOR = 'CLEAR_CONSTRUCTOR';
 export const MOVE_INGREDIENT = "MOVE_INGREDIENT";
 export const SELECT_INGREDIENT = 'SELECT_INGREDIENT';
 export const DELETE_INFO_INGREDIENT = 'DELETE_INFO_INGREDIENT';
+export const RESTORE_PASSWORD_REQUEST = 'RESTORE_PASSWORD_REQUEST';
+export const RESTORE_PASSWORD_SUCCESS = 'RESTORE_PASSWORD_SUCCESS';
+export const RESTORE_PASSWORD_FAILED = 'RESTORE_PASSWORD_FAILED';
 
 const UrlAdress = 'https://norma.nomoreparties.space/api';
 
@@ -33,6 +36,16 @@ const dataPost = (ingredients) => {
       body: JSON.stringify({
         "ingredients": ingredients
       })
+  }
+}
+
+const ValuePasswordPost = (inputEmail) => {
+  return {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      "email": inputEmail
+    })
   }
 }
 
@@ -78,6 +91,27 @@ export const setOrder = (ingredients) => {
         error: err.message,
       });
     });
+  }
+}
+
+export const restorePassword = (inputEmail) => {
+  return (dispatch) => {
+    dispatch({
+      type: RESTORE_PASSWORD_REQUEST,
+    });
+    request('password-reset', ValuePasswordPost(inputEmail))
+    .then(res => {
+      dispatch({
+        type: RESTORE_PASSWORD_SUCCESS,
+        success: res.success,
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: RESTORE_PASSWORD_FAILED,
+        error: err.message,
+      })
+    })
   }
 }
 

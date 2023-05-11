@@ -15,7 +15,7 @@ function Login() {
   }
 
   return (
-    <div className={styles.content}>
+    <form className={styles.content}>
       <h2 className={`text text_type_main-medium ${styles.title}`}>Вход</h2>
       <EmailInput
         onChange={onChangeEmail}
@@ -42,7 +42,7 @@ function Login() {
         Забыли пароль? 
         <Link to="/react-burger/forgot-password" className={styles.link}> Восстановить пароль</Link>
       </p>
-    </div>
+    </form>
   )
 }
 

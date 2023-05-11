@@ -18,7 +18,7 @@ function Registration() {
   }
   
   return (
-    <div className={styles.content}>
+    <form className={styles.content}>
       <h2 className={`text text_type_main-medium ${styles.title}`}>Регистрация</h2>
       <Input
         type={'text'}
@@ -53,7 +53,7 @@ function Registration() {
         Уже зарегистрированы?
         <Link to="/react-burger/login" className={styles.link}> Войти</Link>
       </p>
-    </div>
+    </form>
   )
 }
 
