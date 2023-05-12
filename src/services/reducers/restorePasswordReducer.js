@@ -1,4 +1,4 @@
-import { RESTORE_PASSWORD_REQUEST, RESTORE_PASSWORD_SUCCESS,RESTORE_PASSWORD_FAILED } from "../actions";
+import { RESTORE_PASSWORD_REQUEST, RESTORE_PASSWORD_SUCCESS,RESTORE_PASSWORD_FAILED, RESTORE_PASSWORD_RESET } from "../actions";
 
 const initialState = {
   success: false,
@@ -25,6 +25,12 @@ export const restorePasswordReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         data: state.data
+      };
+    }
+    case RESTORE_PASSWORD_RESET: {
+      return {
+        ...state,
+        success: false,
       };
     }
     default: return state;

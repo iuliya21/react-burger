@@ -14,6 +14,7 @@ export const DELETE_INFO_INGREDIENT = 'DELETE_INFO_INGREDIENT';
 export const RESTORE_PASSWORD_REQUEST = 'RESTORE_PASSWORD_REQUEST';
 export const RESTORE_PASSWORD_SUCCESS = 'RESTORE_PASSWORD_SUCCESS';
 export const RESTORE_PASSWORD_FAILED = 'RESTORE_PASSWORD_FAILED';
+export const RESTORE_PASSWORD_RESET = 'RESTORE_PASSWORD_RESET';
 
 const UrlAdress = 'https://norma.nomoreparties.space/api';
 
@@ -25,8 +26,9 @@ const checkResponse = (res) => { // проверка запроса
   }
 }
 
-const request = (url, options) => {
-  return fetch(`${UrlAdress}/${url}`, options).then(res => checkResponse(res))
+const request = async (url, options) => {
+  const res = await fetch(`${UrlAdress}/${url}`, options);
+  return checkResponse(res);
 }
 
 const dataPost = (ingredients) => {

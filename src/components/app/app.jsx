@@ -7,6 +7,8 @@ import Login from "../../pages/login.jsx";
 import Registration from "../../pages/registration.jsx";
 import PasswordForgot from "../../pages/password-forgot.jsx";
 import PasswordReset from "../../pages/password-reset.jsx";
+import Profile from "../../pages/profile.jsx";
+import UserInfo from "../../pages/info-user.jsx";
 
 import { getIngredients } from '../../services/actions';
 
@@ -28,7 +30,10 @@ function App() {
           <Route path="/react-burger/login" element={<Login />}/>
           <Route path="/react-burger/register" element={<Registration />}/>
           <Route path="/react-burger/forgot-password" element={<PasswordForgot />}/>
-          <Route path="/react-burger/forgot-reset" element={<PasswordReset />}/>
+          <Route path="/react-burger/reset-password" element={<PasswordReset />}/>
+          <Route path="/react-burger/profile/*" element={<Profile />}>
+            <Route path="info" element={<UserInfo />}/>
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

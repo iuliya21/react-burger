@@ -22,9 +22,9 @@ function AppHeader() {
           <Logo />
         </div>
         <div className={styles.rightContainer}>
-          <NavLink to="/react-burger/login" className={({isActive}) => isActive ? `${styles.activeLink} text text_type_main-default` 
+          <NavLink to="/react-burger/profile/info" className={({isActive}) => isActive ? `${styles.activeLink} text text_type_main-default` 
           : `${styles.link} text text_type_main-default`}>
-            <ProfileIcon type={location.pathname === "/react-burger/login" ? "primary" : "secondary"} />
+            <ProfileIcon type={location.pathname === "/react-burger/profile/info" ? "primary" : "secondary"} />
             Личный кабинет
           </NavLink>
         </div>
