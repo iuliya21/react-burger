@@ -9,17 +9,28 @@ import PasswordForgot from "../../pages/password-forgot.jsx";
 import PasswordReset from "../../pages/password-reset.jsx";
 import Profile from "../../pages/profile.jsx";
 import UserInfo from "../../pages/info-user.jsx";
-
+import { getCookie } from "../../utils/cookieFunction.js";
+import { updateUserToken, getUser } from "../../services/actions/user.js";
 import { getIngredients } from '../../services/actions';
 
 
 function App() {
 
   const dispatch = useDispatch();
+  const cookie = getCookie('accessToken');
+  const userToken = localStorage.getItem('refreshToken');
 
   useEffect(() => {
     dispatch(getIngredients());
-  }, [dispatch])
+  }, [dispatch]);
+
+  useEffect(() => {
+    if(!cookie && userToken) {
+      dispatch(updateUserToken())
+    } else if(cookie && userToken) {
+      dispatch(getUser());
+    }
+  }, [cookie, userToken]);
 
   return(
     <>

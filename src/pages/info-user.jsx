@@ -1,13 +1,21 @@
 import styles from "./info-user.module.css";
 import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import { NavLink, useLocation } from 'react-router-dom';
 import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function UserInfo() {
-  const [valueName, setValueName] = useState('');
-  const inputRefName = useRef(null);
 
-  const [valueEmail, setValueEmail] = useState('')
+  
+
+  const {name, email} = useSelector(store => store.user);
+
+  const [valueName, setValueName] = useState(name);
+  const onChangeName = e => {
+    setValueName(e.target.value);
+  }
+
+  const [valueEmail, setValueEmail] = useState(email);
   const onChangeEmail = e => {
     setValueEmail(e.target.value);
   }
@@ -20,23 +28,21 @@ function UserInfo() {
   return (
     <form>
         <Input
-          type={'text'}
-          placeholder={'Имя'}
-          onChange={e => setValueName(e.target.value)}
+          onChange={onChangeName}
           value={valueName}
           name={'name'}
           error={false}
-          ref={inputRefName}
-          errorText={'Ошибка'}
-          size={'default'}
-          extraClass="mb-6"
+          errorText={"Ошибка"}
+          placeholder={'Имя'}
           icon={'EditIcon'}
+          disabled = {true}
+          extraClass="mb-6"
         />
         <EmailInput
           onChange={onChangeEmail}
           value={valueEmail}
           name={'email'}
-          isIcon={false}
+          disabled = {true}
           icon={'EditIcon'}
           placeholder={'Логин'}
           extraClass="mb-6"

@@ -1,7 +1,8 @@
 import styles from "./profile.module.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
+
 
 function Profile() {
 

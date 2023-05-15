@@ -11,7 +11,13 @@ import {
   RESET_PASSWORD_FAILED, 
   LOGIN_REQUEST, 
   LOGIN_SUCCESS, 
-  LOGIN_FAILED } from "../actions/user";
+  LOGIN_FAILED, 
+  UPDATE_TOKEN_REQUEST, 
+  UPDATE_TOKEN_SUCCESS, 
+  UPDATE_TOKEN_FAILED, 
+  GET_USER_REQUEST, 
+  GET_USER_SUCCESS, 
+  GET_USER_FAILED } from "../actions/user";
 
 const initialState = {
   loading: false,
@@ -113,7 +119,8 @@ export const userReducer = (state = initialState, action) => {
         accessToken: action.accessToken,
         refreshToken: action.refreshToken,
         email: action.email,
-        name: action.name
+        name: action.name,
+        authorizedUser: true
       };
     }
     case LOGIN_FAILED: {
@@ -123,6 +130,49 @@ export const userReducer = (state = initialState, action) => {
         failed: true,
         error: action.error
       };
+    }
+    case UPDATE_TOKEN_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      }
+    }
+    case UPDATE_TOKEN_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        accessToken: action.accessToken,
+        refreshToken: action.refreshToken,
+      };
+    }
+    case UPDATE_TOKEN_FAILED: {
+      return {
+        ...state,
+        loading: false,
+        failed: true
+      };
+    }
+    case GET_USER_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case GET_USER_SUCCESS: {
+      return {
+        ...state,
+        success: action.success,
+        email: action.email,
+        name: action.name,
+        authorizedUser: true
+      }
+    }
+    case GET_USER_FAILED: {
+      return {
+        ...state,
+        failed: true,
+        loading: false
+      }
     }
     default: return state;
   }

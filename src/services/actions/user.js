@@ -14,6 +14,12 @@ export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
+export const UPDATE_TOKEN_REQUEST = 'UPDATE_TOKEN_REQUEST';
+export const UPDATE_TOKEN_SUCCESS = 'UPDATE_TOKEN_SUCCESS';
+export const UPDATE_TOKEN_FAILED = 'UPDATE_TOKEN_FAILED';
+export const GET_USER_REQUEST = 'GET_USER_REQUEST';
+export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
+export const GET_USER_FAILED = 'GET_USER_FAILED';
 
 const valuePasswordPost = (inputEmail) => {
   return {
@@ -56,6 +62,23 @@ const loginUserPost = (inputEmail, inputPassword) => {
       "email": inputEmail,
       "password": inputPassword
     })
+  }
+}
+
+const refreshToken = () => {
+  return {
+    method: 'POST',
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      token: localStorage.getItem("refreshToken"),
+    })
+  }
+}
+
+const userGet = () => {
+  return {
+    method: 'GET',
+    headers: {"Content-Type": "application/json", authorization: "Bearer " + getCookie("accessToken")}
   }
 }
 
@@ -138,7 +161,6 @@ export const loginUser = (inputEmail, inputPassword) => {
     });
     request('auth/login', loginUserPost(inputEmail, inputPassword))
     .then((res) => {
-      if(res.success) {
         if(!localStorage.length) {
           setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
           localStorage.setItem("refreshToken", res.refreshToken);
@@ -151,7 +173,6 @@ export const loginUser = (inputEmail, inputPassword) => {
             name: res.user.name
           });
         }
-      }
     })
     .catch(err => {
       dispatch({
@@ -159,5 +180,53 @@ export const loginUser = (inputEmail, inputPassword) => {
         error: err.message
       })
     })
+  }
+}
+
+export const updateUserToken = () => {
+  return (dispatch) => {
+    dispatch({
+      type: UPDATE_TOKEN_REQUEST
+    });
+    request('auth/token', refreshToken())
+      .then((res) => {
+        setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
+        localStorage.setItem("refreshToken", res.refreshToken);
+        dispatch({
+          type: UPDATE_TOKEN_SUCCESS,
+          accessToken: res.accessToken,
+          refreshToken: res.refreshToken,
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: UPDATE_TOKEN_FAILED,
+          error: err.message,
+        });
+      })
+  }
+}
+
+export const getUser = () => {
+  return(dispatch) => {
+    dispatch({
+      type: GET_USER_REQUEST
+    })
+    request('auth/user', userGet())
+      .then(res => {
+        dispatch({
+          type: GET_USER_SUCCESS,
+          success: res.success,
+          email: res.user.email,
+          name: res.user.name
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: GET_USER_FAILED,
+          error: err.message
+        })
+        dispatch(updateUserToken());
+      })
   }
 }
