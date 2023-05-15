@@ -15,10 +15,13 @@ export const RESTORE_PASSWORD_REQUEST = 'RESTORE_PASSWORD_REQUEST';
 export const RESTORE_PASSWORD_SUCCESS = 'RESTORE_PASSWORD_SUCCESS';
 export const RESTORE_PASSWORD_FAILED = 'RESTORE_PASSWORD_FAILED';
 export const RESTORE_PASSWORD_RESET = 'RESTORE_PASSWORD_RESET';
+export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
+export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
+export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
 
-const UrlAdress = 'https://norma.nomoreparties.space/api';
+export const UrlAdress = 'https://norma.nomoreparties.space/api';
 
-const checkResponse = (res) => { // проверка запроса
+export const checkResponse = (res) => { // проверка запроса
   if(res.ok) {
     return res.json();
   } else {
@@ -26,7 +29,7 @@ const checkResponse = (res) => { // проверка запроса
   }
 }
 
-const request = async (url, options) => {
+export const request = async (url, options) => {
   const res = await fetch(`${UrlAdress}/${url}`, options);
   return checkResponse(res);
 }
@@ -38,16 +41,6 @@ const dataPost = (ingredients) => {
       body: JSON.stringify({
         "ingredients": ingredients
       })
-  }
-}
-
-const ValuePasswordPost = (inputEmail) => {
-  return {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      "email": inputEmail
-    })
   }
 }
 
@@ -96,26 +89,6 @@ export const setOrder = (ingredients) => {
   }
 }
 
-export const restorePassword = (inputEmail) => {
-  return (dispatch) => {
-    dispatch({
-      type: RESTORE_PASSWORD_REQUEST,
-    });
-    request('password-reset', ValuePasswordPost(inputEmail))
-    .then(res => {
-      dispatch({
-        type: RESTORE_PASSWORD_SUCCESS,
-        success: res.success,
-      });
-    })
-    .catch(err => {
-      dispatch({
-        type: RESTORE_PASSWORD_FAILED,
-        error: err.message,
-      })
-    })
-  }
-}
 
 export const getDetailsIngredient = (ingredient) => {
   return {

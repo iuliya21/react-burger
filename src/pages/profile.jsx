@@ -10,13 +10,13 @@ function Profile() {
       <div className={styles.navigation}>
         <ul className={`text text_type_main-medium ${styles.list}`}>
           <li className={styles.element}>
-            <NavLink to="/react-burger/profile/info" className={({isActive}) => isActive ? `${styles.activeLink} text text_type_main-medium`
+            <NavLink end to="/react-burger/profile" className={({isActive}) => isActive ? `${styles.activeLink} text text_type_main-medium`
             : `${styles.link} text text_type_main-medium`}>
               Профиль
             </NavLink>
           </li>
           <li className={styles.element}>
-            <NavLink to="/react-burger/profile/history" className={({isActive}) => isActive ? `${styles.activeLink} text text_type_main-medium`
+            <NavLink to="/react-burger/profile/orders" className={({isActive}) => isActive ? `${styles.activeLink} text text_type_main-medium`
             : `${styles.link} text text_type_main-medium`}>
               История заказов
             </NavLink>

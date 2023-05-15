@@ -2,18 +2,14 @@ import styles from "./password-forgot.module.css";
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { restorePassword } from "../services/actions";
-import { RESTORE_PASSWORD_RESET } from "../services/actions";
-
+import { Link, Navigate } from 'react-router-dom';
+import { restorePassword } from "../services/actions/user";
 
 function PasswordForgot() {
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const isSuccessPost = useSelector(store => store.restorePassword.success);
+  const isSuccessPost = useSelector(store => store.user.success);
   
-
   const [valueEmail, setValueEmail] = useState('');
   const onChangeEmail = e => {
     setValueEmail(e.target.value);
@@ -25,9 +21,6 @@ function PasswordForgot() {
   }
 
   if (isSuccessPost) {
-    dispatch({
-      type: RESTORE_PASSWORD_RESET
-    });
     return <Navigate to="/react-burger/reset-password"/>;
   }
 

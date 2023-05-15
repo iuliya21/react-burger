@@ -23,18 +23,18 @@ function App() {
 
   return(
     <>
-    <BrowserRouter>
-    <AppHeader />
-        <Routes>
-          <Route path="/react-burger" element={<Main />}/>
-          <Route path="/react-burger/login" element={<Login />}/>
-          <Route path="/react-burger/register" element={<Registration />}/>
-          <Route path="/react-burger/forgot-password" element={<PasswordForgot />}/>
-          <Route path="/react-burger/reset-password" element={<PasswordReset />}/>
-          <Route path="/react-burger/profile/*" element={<Profile />}>
-            <Route path="info" element={<UserInfo />}/>
-          </Route>
-        </Routes>
+      <BrowserRouter>
+        <AppHeader />
+          <Routes>
+            <Route path="/react-burger" element={<Main />}/>
+            <Route path="/react-burger/login" element={<Login />}/>
+            <Route path="/react-burger/register" element={<Registration />}/>
+            <Route path="/react-burger/forgot-password" element={<PasswordForgot />}/>
+            <Route path="/react-burger/reset-password" element={<PasswordReset />}/>
+            <Route path="/react-burger/profile/*" element={<Profile />}>
+              <Route path="" element={<UserInfo />}/>
+            </Route>
+          </Routes>
       </BrowserRouter>
     </>
   );

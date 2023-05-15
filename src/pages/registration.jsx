@@ -1,24 +1,33 @@
 import styles from "./registration.module.css";
 import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
+import { registerUser } from "../services/actions/user";
 
 function Registration() {
+
+  const dispatch = useDispatch();
   const [valueName, setValueName] = useState('');
   const inputRefName = useRef(null);
 
   const [valueEmail, setValueEmail] = useState('')
   const onChangeEmail = e => {
-    setValueEmail(e.target.value)
+    setValueEmail(e.target.value);
   }
 
   const [valuePassword, setValuePassword] = useState('');
   const onChangePassword = e => {
-    setValuePassword(e.target.value)
+    setValuePassword(e.target.value);
+  }
+
+  const handlerSubmit = (e) => {
+    e.preventDefault();
+    dispatch(registerUser(valueEmail, valuePassword, valueName));
   }
   
   return (
-    <form className={styles.content}>
+    <form className={styles.content} onSubmit={handlerSubmit}>
       <h2 className={`text text_type_main-medium ${styles.title}`}>Регистрация</h2>
       <Input
         type={'text'}
@@ -46,7 +55,7 @@ function Registration() {
         extraClass="mt-6 mb-6"
       />
       <Button 
-        htmlType="button" type="primary" size="medium" extraClass={styles.button}>
+        htmlType="submit" type="primary" size="medium" extraClass={styles.button}>
           Зарегистрироваться
       </Button>
       <p className={`text text_type_main-default text_color_inactive ${styles.text}`}>
