@@ -6,16 +6,21 @@ import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-de
 
 function UserInfo() {
 
-  
-
   const {name, email} = useSelector(store => store.user);
 
-  const [valueName, setValueName] = useState(name);
+  const inputRef = useRef(null);
+
+  const onIconClick = () => {
+    setTimeout(() => inputRef.current.focus(), 0);
+    inputRef.current.disabled = false;
+  }
+
+  const [valueName, setValueName] = useState('Марк');
   const onChangeName = e => {
     setValueName(e.target.value);
   }
 
-  const [valueEmail, setValueEmail] = useState(email);
+  const [valueEmail, setValueEmail] = useState('iuliya@mail.ru');
   const onChangeEmail = e => {
     setValueEmail(e.target.value);
   }
@@ -35,7 +40,9 @@ function UserInfo() {
           errorText={"Ошибка"}
           placeholder={'Имя'}
           icon={'EditIcon'}
-          disabled = {true}
+          onIconClick={onIconClick}
+          ref={inputRef}
+          disabled={true}
           extraClass="mb-6"
         />
         <EmailInput
@@ -54,6 +61,11 @@ function UserInfo() {
           placeholder={'Пароль'}
           icon={'EditIcon'}
         />
+        <div className={styles.buttons}>
+          <Button htmlType="button" type="secondary" size="medium">Отмена</Button>
+          <Button htmlType="submit" type="primary" size="medium">Сохранить</Button>
+        </div>
+
       </form>
   )
 }

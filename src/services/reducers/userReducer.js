@@ -17,7 +17,10 @@ import {
   UPDATE_TOKEN_FAILED, 
   GET_USER_REQUEST, 
   GET_USER_SUCCESS, 
-  GET_USER_FAILED } from "../actions/user";
+  GET_USER_FAILED, 
+  LOGOUT_REQUEST, 
+  LOGOUT_SUCCESS, 
+  LOGOUT_FAILED } from "../actions/user";
 
 const initialState = {
   loading: false,
@@ -168,6 +171,26 @@ export const userReducer = (state = initialState, action) => {
       }
     }
     case GET_USER_FAILED: {
+      return {
+        ...state,
+        failed: true,
+        loading: false
+      }
+    }
+    case LOGOUT_REQUEST: {
+      return {
+        ...state,
+        loading: true
+      }
+    }
+    case LOGOUT_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        success: action.success
+      }
+    }
+    case LOGOUT_FAILED: {
       return {
         ...state,
         failed: true,

@@ -24,13 +24,13 @@ function App() {
     dispatch(getIngredients());
   }, [dispatch]);
 
-  useEffect(() => {
-    if(!cookie && userToken) {
-      dispatch(updateUserToken())
-    } else if(cookie && userToken) {
-      dispatch(getUser());
-    }
-  }, [cookie, userToken]);
+  // useEffect(() => {
+  //   if(!cookie && userToken) {
+  //     dispatch(updateUserToken())
+  //   } else if(cookie && userToken) {
+  //     dispatch(getUser());
+  //   }
+  // }, [cookie, userToken]);
 
   return(
     <>

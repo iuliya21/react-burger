@@ -1,10 +1,15 @@
+import { useDispatch } from "react-redux";
 import styles from "./profile.module.css";
-import { useState, useRef, useEffect } from "react";
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import { NavLink, Outlet } from 'react-router-dom';
+import { logoutUser } from "../services/actions/user";
 
 function Profile() {
+
+  const dispatch = useDispatch();
+
+  const handlerLogout = () => {
+    dispatch(logoutUser());
+  }
 
   return (
     <div className={styles.content}>
@@ -23,7 +28,7 @@ function Profile() {
             </NavLink>
           </li>
           <li className={styles.element}>
-            <NavLink to="/react-burger/profile/exit" className={({isActive}) => isActive ? `${styles.activeLink} text text_type_main-medium`
+            <NavLink to="/react-burger/profile/exit" onClick={handlerLogout} className={({isActive}) => isActive ? `${styles.activeLink} text text_type_main-medium`
             : `${styles.link} text text_type_main-medium`}>
               Выход
             </NavLink>

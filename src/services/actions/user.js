@@ -20,6 +20,12 @@ export const UPDATE_TOKEN_FAILED = 'UPDATE_TOKEN_FAILED';
 export const GET_USER_REQUEST = 'GET_USER_REQUEST';
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const GET_USER_FAILED = 'GET_USER_FAILED';
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILED = 'LOGOUT_FAILED';
+export const PATCH_USER_REQUEST = 'PATCH_USER_REQUEST';
+export const PATCH_USER_SUCCESS = 'PATCH_USER_SUCCESS';
+export const PATCH_USER_FAILED = 'PATCH_USER_FAILED';
 
 const valuePasswordPost = (inputEmail) => {
   return {
@@ -28,57 +34,6 @@ const valuePasswordPost = (inputEmail) => {
     body: JSON.stringify({
       "email": inputEmail
     })
-  }
-}
-
-const registerPost = (inputEmail, inputPassword, inputName) => {
-  return {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      "email": inputEmail,
-      "password": inputPassword,
-      "name": inputName
-    })
-  }
-}
-
-const resetPasswordPost = (inputPassword, inputCode) => {
-  return {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      "password": inputPassword,
-      "token": inputCode
-    })
-  }
-}
-
-const loginUserPost = (inputEmail, inputPassword) => {
-  return {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      "email": inputEmail,
-      "password": inputPassword
-    })
-  }
-}
-
-const refreshToken = () => {
-  return {
-    method: 'POST',
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      token: localStorage.getItem("refreshToken"),
-    })
-  }
-}
-
-const userGet = () => {
-  return {
-    method: 'GET',
-    headers: {"Content-Type": "application/json", authorization: "Bearer " + getCookie("accessToken")}
   }
 }
 
@@ -99,6 +54,18 @@ export const restorePassword = (inputEmail) => {
         type: RESTORE_PASSWORD_FAILED,
         error: err.message,
       })
+    })
+  }
+}
+
+const registerPost = (inputEmail, inputPassword, inputName) => {
+  return {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      "email": inputEmail,
+      "password": inputPassword,
+      "name": inputName
     })
   }
 }
@@ -132,6 +99,17 @@ export const registerUser = (inputEmail, inputPassword, inputName) => {
   }
 }
 
+const resetPasswordPost = (inputPassword, inputCode) => {
+  return {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      "password": inputPassword,
+      "token": inputCode
+    })
+  }
+}
+
 export const resetPassword = (inputPassword, inputCode) => {
   return(dispatch) => {
     dispatch({
@@ -153,6 +131,17 @@ export const resetPassword = (inputPassword, inputCode) => {
   }
 }
 
+const loginUserPost = (inputEmail, inputPassword) => {
+  return {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      "email": inputEmail,
+      "password": inputPassword
+    })
+  }
+}
+
 export const loginUser = (inputEmail, inputPassword) => {
   return(dispatch) => {
     dispatch({
@@ -161,7 +150,7 @@ export const loginUser = (inputEmail, inputPassword) => {
     });
     request('auth/login', loginUserPost(inputEmail, inputPassword))
     .then((res) => {
-        if(!localStorage.length) {
+        // if(!localStorage.length) {
           setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
           localStorage.setItem("refreshToken", res.refreshToken);
           dispatch({
@@ -172,13 +161,23 @@ export const loginUser = (inputEmail, inputPassword) => {
             email: res.user.email,
             name: res.user.name
           });
-        }
+        // }
     })
     .catch(err => {
       dispatch({
         type: LOGIN_FAILED,
         error: err.message
       })
+    })
+  }
+}
+
+const refreshToken = () => {
+  return {
+    method: 'POST',
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      "token": localStorage.getItem("refreshToken"),
     })
   }
 }
@@ -207,6 +206,13 @@ export const updateUserToken = () => {
   }
 }
 
+const userGet = () => {
+  return {
+    method: 'GET',
+    headers: {"Content-Type": "application/json", authorization: "Bearer " + getCookie("accessToken")}
+  }
+}
+
 export const getUser = () => {
   return(dispatch) => {
     dispatch({
@@ -227,6 +233,76 @@ export const getUser = () => {
           error: err.message
         })
         dispatch(updateUserToken());
+      })
+  }
+}
+
+const userLogoutData = () => {
+  return {
+    method: 'POST',
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      "token": localStorage.getItem("refreshToken"),
+    })
+  }
+}
+
+export const logoutUser = () => {
+  return(dispatch) => {
+    dispatch({
+      type: LOGOUT_REQUEST
+    });
+    request('auth/logout', userLogoutData())
+      .then(res => {
+        setCookie("accessToken", "");
+        localStorage.removeItem("refreshToken");
+        dispatch({
+          type: LOGOUT_SUCCESS,
+          success: res.success,
+          accessToken: "",
+          refreshToken: ""
+        });
+      })
+    .catch(err => {
+      dispatch({
+        type: LOGOUT_FAILED,
+        error: err.message
+      })
+    })
+  }
+}
+
+const patchUserData = (inputEmail, inputPassword, inputName) => {
+  return {
+    method: "PATCH",
+    headers: {"Content-Type": "application/json", Authorization: "Bearer " + getCookie("accessToken")},
+    body: JSON.stringify({
+      "email": inputEmail,
+      "password": inputPassword,
+      "name": inputName
+    })
+  }
+}
+
+export const patchUser = (inputEmail, inputPassword, inputName) => {
+  return(dispatch) => {
+    dispatch({
+      type: PATCH_USER_REQUEST
+    });
+    request('auth/user', patchUserData(inputEmail, inputPassword, inputName))
+      .then(res => {
+        dispatch({
+          type: PATCH_USER_SUCCESS,
+          email: res.user.email,
+          name: res.user.name,
+          success: res.success
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: PATCH_USER_FAILED,
+          error: err.message
+        });
       })
   }
 }
