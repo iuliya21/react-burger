@@ -13,6 +13,7 @@ function UserInfo() {
   const onIconClick = () => {
     setTimeout(() => inputRef.current.focus(), 0);
     inputRef.current.disabled = false;
+    // inputRef.current.classList.remove('input__textfield-disabled');
   }
 
   const [valueName, setValueName] = useState('Марк');
@@ -43,15 +44,14 @@ function UserInfo() {
           onIconClick={onIconClick}
           ref={inputRef}
           disabled={true}
-          extraClass="mb-6"
+          extraClass={styles.input}
         />
         <EmailInput
           onChange={onChangeEmail}
           value={valueEmail}
           name={'email'}
-          disabled = {true}
-          icon={'EditIcon'}
-          placeholder={'Логин'}
+          isIcon={true}
+          placeholder='Логин'
           extraClass="mb-6"
         />
         <PasswordInput
