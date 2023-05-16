@@ -10,7 +10,6 @@ function Login() {
 
   const isSuccessLogin = useSelector(store => store.user.success);
   const user = useSelector(store => store.user);
-  console.log(user, isSuccessLogin);
 
   const [valueEmail, setValueEmail] = useState('')
   const onChangeEmail = e => {

@@ -1,4 +1,4 @@
-import { UrlAdress, checkResponse, request } from "./index";
+import { request } from "./index";
 import { setCookie, getCookie } from "../../utils/cookieFunction";
 
 export const RESTORE_PASSWORD_REQUEST = 'RESTORE_PASSWORD_REQUEST';
@@ -272,24 +272,24 @@ export const logoutUser = () => {
   }
 }
 
-const patchUserData = (inputEmail, inputPassword, inputName) => {
+const patchUserData = (inputEmail, inputName, inputPassword) => {
   return {
     method: "PATCH",
     headers: {"Content-Type": "application/json", Authorization: "Bearer " + getCookie("accessToken")},
     body: JSON.stringify({
       "email": inputEmail,
-      "password": inputPassword,
-      "name": inputName
+      "name": inputName,
+      "password": inputPassword
     })
   }
 }
 
-export const patchUser = (inputEmail, inputPassword, inputName) => {
+export const patchUser = (inputEmail, inputName, inputPassword) => {
   return(dispatch) => {
     dispatch({
       type: PATCH_USER_REQUEST
     });
-    request('auth/user', patchUserData(inputEmail, inputPassword, inputName))
+    request('auth/user', patchUserData(inputEmail, inputName, inputPassword))
       .then(res => {
         dispatch({
           type: PATCH_USER_SUCCESS,
