@@ -2,14 +2,19 @@ import styles from "./info-user.module.css";
 import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { patchUser, updateUserToken, getUser } from "../services/actions/user";
+import { patchUser, getUser } from "../services/actions/user";
 import { getCookie } from "../utils/cookieFunction";
+import { useModal } from "../hooks/useModal";
+import Modal from "../components/modal/modal";
 
 function UserInfo() {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
 
-  const {name, email} = useSelector(store => store.user);
+  const { isModalOpen, openModal, closeModal } = useModal();
+
+  const {name, email, success} = useSelector(store => store.user);
+  
   const [valueName, setValueName] = useState(name);
   const [valueEmail, setValueEmail] = useState(email);
   const [valuePassword, setValuePassword] = useState('*******');
@@ -19,8 +24,13 @@ function UserInfo() {
     setValueEmail(email);
   }
 
-  const cookie = getCookie('accessToken');
-  const userToken = localStorage.getItem('refreshToken');
+  const showModal = () => {
+    openModal();
+  }
+
+  const hideModal = () => {
+    closeModal();
+  }
 
   useEffect(() => {
     dispatch(getUser());
@@ -60,10 +70,14 @@ function UserInfo() {
   const handlerSubmit = (e) => {
     e.preventDefault();
     dispatch(patchUser(valueEmail, valueName, valuePassword));
+    if(success) {
+      showModal();
+    }
   }
 
   return (
-    <form onSubmit={handlerSubmit}>
+    <>
+      <form onSubmit={handlerSubmit}>
         <Input
           onChange={onChangeName}
           value={valueName}
@@ -97,8 +111,21 @@ function UserInfo() {
           <Button htmlType="button" type="secondary" size="medium" onClick={handlerCancel}>Отмена</Button>
           <Button htmlType="submit" type="primary" size="medium">Сохранить</Button>
         </div>
-
       </form>
+
+      <div>
+        {isModalOpen && 
+          <Modal onClosePopup={hideModal}>
+            <div className={styles.container}>
+              {success 
+              ? <p className="text text_type_main-medium">Ваши данные успешно изменены</p> 
+              : <p className="text text_type_main-medium">Произошла ошибка. Попробуйте снова</p>}
+            </div>
+          </Modal>
+        }
+      </div>
+    </>
+      
   )
 }
 

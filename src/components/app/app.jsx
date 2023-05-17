@@ -12,6 +12,7 @@ import UserInfo from "../../pages/info-user.jsx";
 import { getCookie } from "../../utils/cookieFunction.js";
 import { updateUserToken, getUser } from "../../services/actions/user.js";
 import { getIngredients } from '../../services/actions';
+import ProtectedRouteElement from '../protected-route-element/protected-route-element.jsx';
 
 
 function App() {
@@ -42,9 +43,10 @@ function App() {
             <Route path="/react-burger/register" element={<Registration />}/>
             <Route path="/react-burger/forgot-password" element={<PasswordForgot />}/>
             <Route path="/react-burger/reset-password" element={<PasswordReset />}/>
-            <Route path="/react-burger/profile/*" element={<Profile />}>
+            <Route path="/react-burger/profile/*" element={<ProtectedRouteElement element={<Profile />} />}>
               <Route path="" element={<UserInfo />}/>
             </Route>
+            
           </Routes>
       </BrowserRouter>
     </>
