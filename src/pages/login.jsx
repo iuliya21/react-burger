@@ -8,8 +8,7 @@ import { loginUser } from "../services/actions/user";
 function Login() {
   const dispatch = useDispatch();
 
-  const isSuccessLogin = useSelector(store => store.user.success);
-  const user = useSelector(store => store.user);
+  const isSuccessLogin = useSelector(store => store.user.authorizedUser);
 
   const [valueEmail, setValueEmail] = useState('')
   const onChangeEmail = e => {

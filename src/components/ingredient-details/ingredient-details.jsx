@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./ingredient-details.module.css";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getIngredients } from "../../services/actions";
 
 function IngredientDetails() {
 
@@ -15,8 +14,6 @@ function IngredientDetails() {
   useEffect(()=>{
     setElement(ingredients.find(ing => ing._id === id))
   }, [ingredients]);
-   
-  // const ingredient = ingredients.find((ing) => ing._id === id);
   
   return ingredient ? (
     <div className={styles.container}>

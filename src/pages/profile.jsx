@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import styles from "./profile.module.css";
-import { NavLink, Outlet, Link, Navigate, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { logoutUser } from "../services/actions/user";
 
 function Profile() {
@@ -10,7 +10,7 @@ function Profile() {
 
   const handlerLogout = () => {
     dispatch(logoutUser());
-    navigate('/react-burger');
+    navigate('/react-burger/login');
   }
 
   return (

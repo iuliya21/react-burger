@@ -5,7 +5,7 @@ import {
   RESTORE_PASSWORD_REQUEST, 
   RESTORE_PASSWORD_SUCCESS,
   RESTORE_PASSWORD_FAILED, 
-  RESTORE_PASSWORD_RESET,
+  SUCCESS_RESET,
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED, 
@@ -20,7 +20,9 @@ import {
   GET_USER_FAILED, 
   LOGOUT_REQUEST, 
   LOGOUT_SUCCESS, 
-  LOGOUT_FAILED } from "../actions/user";
+  LOGOUT_FAILED,
+  PATCH_USER_REQUEST,
+  PATCH_USER_SUCCESS } from "../actions/user";
 
 const initialState = {
   loading: false,
@@ -31,7 +33,8 @@ const initialState = {
   refreshToken: "",
   error: "",
   authorizedUser: false,
-  failed: false
+  failed: false,
+  reset: false,
 }
 
 export const userReducer = (state = initialState, action) => {
@@ -71,7 +74,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        success: action.success
+        success: action.success,
       };
     }
     case RESTORE_PASSWORD_FAILED: {
@@ -81,7 +84,7 @@ export const userReducer = (state = initialState, action) => {
         failed: true
       };
     }
-    case RESTORE_PASSWORD_RESET: {
+    case SUCCESS_RESET: {
       return {
         ...state,
         success: initialState.success,
@@ -97,7 +100,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        success: action.success
+        reset: action.reset
       };
     }
     case RESET_PASSWORD_FAILED: {
@@ -187,6 +190,29 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        success: action.success,
+        authorizedUser: false
+      }
+    }
+    case LOGOUT_FAILED: {
+      return {
+        ...state,
+        failed: true,
+        loading: false
+      }
+    }
+    case PATCH_USER_REQUEST: {
+      return {
+        ...state,
+        loading: true
+      }
+    }
+    case PATCH_USER_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        email: action.email,
+        name: action.name,
         success: action.success
       }
     }

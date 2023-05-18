@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import styles from "./burger-constructor.module.css";
@@ -9,12 +9,13 @@ import { setOrder, ADD_INGREDIENT, ADD_BUN, MOVE_INGREDIENT } from "../../servic
 import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constructor-sorted";
 import { v4 as uuidv4 } from 'uuid';
 import { useModal } from "../../hooks/useModal";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getCookie } from "../../utils/cookieFunction";
+import { useNavigate } from "react-router-dom";
 
 function BurgerConstructor() {
 
-  const { isModalOpen, openModal, closeModal } = useModal();
+  // const { isModalOpen, openModal, closeModal } = useModal(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   const dispatch = useDispatch();
   const navigation = useNavigate();
@@ -25,11 +26,15 @@ function BurgerConstructor() {
   const numberOrder = useSelector(store => store.numberOrder.order); // номер заказа из стора
   const burger = [...buns, ...ingredients];
 
-  const [disabled, setDisabled] = useState(true);
+  useEffect(() => {
+    checkBurger();
+  }, [burger])
 
   const checkBurger = () => {
     if(bun.length > 0 && ingredients.length > 0) {
-      setDisabled(false)
+      setDisabled(false);
+    } else {
+      setDisabled(true)
     }
   }
 
@@ -73,11 +78,13 @@ function BurgerConstructor() {
 
   const showModal = () => { // открыть модальное окно
     dispatch(setOrder(burger.map(item => item._id)));
-    openModal();
+    // openModal();
+    setOpenModal(true);
   }
 
   const hideModal = () => { // скрыть модальное окно
-    closeModal();
+    // closeModal();
+    setOpenModal(false);
   }
 
   const onClickHandler = () => {
@@ -155,7 +162,7 @@ function BurgerConstructor() {
         </Button>
       </div>
 
-      {isModalOpen && (
+      {openModal && (
         <Modal onClosePopup={hideModal}>
           <OrderDetails numberOrder={numberOrder}/>
         </Modal>

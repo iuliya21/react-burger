@@ -1,15 +1,15 @@
 import styles from "./password-reset.module.css";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from 'react-router-dom';
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { RESTORE_PASSWORD_RESET } from "../services/actions/user";
+import { SUCCESS_RESET } from "../services/actions/user";
 import { resetPassword } from "../services/actions/user";
 
 function PasswordReset() {
 
   const dispatch = useDispatch();
-  const isSuccessReset = useSelector(store => store.user.success);
+  const isSuccessReset = useSelector(store => store.user.reset);
 
   const [valuePassword, setValuePassword] = useState('');
   const onChangePassword = e => {
@@ -23,13 +23,17 @@ function PasswordReset() {
 
   useEffect(() => {
     dispatch({
-      type: RESTORE_PASSWORD_RESET
+      type: SUCCESS_RESET
     });
-  }, [dispatch]);
+  }, []);
 
   const handlerSubmit = (e) => {
     e.preventDefault();
     dispatch(resetPassword(valuePassword, valueCode));
+  }
+
+  if(isSuccessReset) {
+    return <Navigate to="/react-burger/login" />
   }
 
   return (

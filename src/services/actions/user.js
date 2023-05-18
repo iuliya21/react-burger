@@ -4,7 +4,7 @@ import { setCookie, getCookie } from "../../utils/cookieFunction";
 export const RESTORE_PASSWORD_REQUEST = 'RESTORE_PASSWORD_REQUEST';
 export const RESTORE_PASSWORD_SUCCESS = 'RESTORE_PASSWORD_SUCCESS';
 export const RESTORE_PASSWORD_FAILED = 'RESTORE_PASSWORD_FAILED';
-export const RESTORE_PASSWORD_RESET = 'RESTORE_PASSWORD_RESET';
+export const SUCCESS_RESET = 'SUCCESS_RESET';
 export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
 export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
@@ -77,7 +77,6 @@ export const registerUser = (inputEmail, inputPassword, inputName) => {
     });
     request('auth/register', registerPost(inputEmail, inputPassword, inputName))
     .then(res => {
-      if (res && res.success) {
         setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
         localStorage.setItem("refreshToken", res.refreshToken);
         dispatch({
@@ -88,7 +87,6 @@ export const registerUser = (inputEmail, inputPassword, inputName) => {
           accessToken: res.accessToken,
           refreshToken: res.refreshToken
         })
-      }
     })
     .catch(err => {
       dispatch({
@@ -119,7 +117,7 @@ export const resetPassword = (inputPassword, inputCode) => {
     .then(res => {
       dispatch({
         type: RESET_PASSWORD_SUCCESS,
-        success: res.success,
+        reset: res.success,
       });
     })
     .catch(err => {
@@ -146,22 +144,19 @@ export const loginUser = (inputEmail, inputPassword) => {
   return(dispatch) => {
     dispatch({
       type: LOGIN_REQUEST,
-      authorizedUser: true
     });
     request('auth/login', loginUserPost(inputEmail, inputPassword))
     .then((res) => {
-        // if(!localStorage.length) {
           setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
           localStorage.setItem("refreshToken", res.refreshToken);
           dispatch({
             type: LOGIN_SUCCESS,
-            success: res.success,
+            authorizedUser: res.success,
             accessToken: res.accessToken,
             refreshToken: res.refreshToken,
             email: res.user.email,
             name: res.user.name
           });
-        // }
     })
     .catch(err => {
       dispatch({
@@ -222,9 +217,9 @@ export const getUser = () => {
       .then(res => {
         dispatch({
           type: GET_USER_SUCCESS,
-          success: res.success,
           email: res.user.email,
-          name: res.user.name
+          name: res.user.name,
+          success: res.success
         });
       })
       .catch(err => {
@@ -258,7 +253,6 @@ export const logoutUser = () => {
         localStorage.removeItem("refreshToken");
         dispatch({
           type: LOGOUT_SUCCESS,
-          success: res.success,
           accessToken: "",
           refreshToken: ""
         });

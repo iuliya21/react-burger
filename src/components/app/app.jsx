@@ -15,6 +15,7 @@ import { getIngredients } from '../../services/actions';
 import ProtectedRouteElement from '../protected-route-element/protected-route-element.jsx';
 import LogoutUserRoute from "../logout-user-route/logout-user-route.jsx";
 import IngredientsPage from "../../pages/ingredients.jsx";
+import ErrorPage from "../../pages/not-found.jsx";
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
   const cookie = getCookie('accessToken');
   const userToken = localStorage.getItem('refreshToken');
   let location = useLocation();
-  let background = location.state?.background;  
+  let background = location.state?.background; 
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -43,14 +44,14 @@ function App() {
           <Route path="/react-burger" element={<Main />} location={background || location}>
             <Route path="ingredients/:id" element={<IngredientsPage />}/>
           </Route>
-          <Route path="/react-burger/login"  element={<LogoutUserRoute element={<Login />} />}/>
+          <Route path="/react-burger/login" element={<LogoutUserRoute element={<Login />} />}/>
           <Route path="/react-burger/register" element={<LogoutUserRoute element={<Registration />} />}/>
           <Route path="/react-burger/forgot-password" element={<LogoutUserRoute element={<PasswordForgot />} />}/>
-          {/* <Route path="/react-burger/ingredients/:id" element={<IngredientsPage />}/> */}
           <Route path="/react-burger/reset-password" element={<LogoutUserRoute element={<PasswordReset />} />}/>
           <Route path="/react-burger/profile/*" element={<ProtectedRouteElement element={<Profile />}/>}>
             <Route path="" element={<UserInfo />}/>
           </Route>
+          <Route path="*" element={<ErrorPage />}></Route>
         </Routes>
     </>
   );
