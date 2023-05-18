@@ -38,3 +38,10 @@
   text-decoration: none;
   color: #F2F2F3;
 }
+
+.button {
+  background: none;
+  border: none;
+  color: #8585AD;
+  cursor: pointer;
+}

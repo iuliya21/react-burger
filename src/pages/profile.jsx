@@ -1,14 +1,16 @@
 import { useDispatch } from "react-redux";
 import styles from "./profile.module.css";
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, Link, Navigate, useNavigate } from 'react-router-dom';
 import { logoutUser } from "../services/actions/user";
 
 function Profile() {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handlerLogout = () => {
     dispatch(logoutUser());
+    navigate('/react-burger');
   }
 
   return (
@@ -28,10 +30,9 @@ function Profile() {
             </NavLink>
           </li>
           <li className={styles.element}>
-            <NavLink to="/react-burger/profile/exit" onClick={handlerLogout} className={({isActive}) => isActive ? `${styles.activeLink} text text_type_main-medium`
-            : `${styles.link} text text_type_main-medium`}>
+            <button onClick={handlerLogout} className={`${styles.button} text text_type_main-medium`}>
               Выход
-            </NavLink>
+            </button>
           </li>
         </ul>
         <p className={`text text_type_main-default text_color_inactive ${styles.text}`}>В этом разделе вы можете изменить свои персональные данные</p>

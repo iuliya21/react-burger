@@ -9,12 +9,15 @@ import { setOrder, ADD_INGREDIENT, ADD_BUN, MOVE_INGREDIENT } from "../../servic
 import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constructor-sorted";
 import { v4 as uuidv4 } from 'uuid';
 import { useModal } from "../../hooks/useModal";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getCookie } from "../../utils/cookieFunction";
 
 function BurgerConstructor() {
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const dispatch = useDispatch();
+  const navigation = useNavigate();
   
   const ingredients = useSelector(store => store.burgerIngredients.ingredients); // ингредиенты из стора
   const bun = useSelector(store => store.burgerIngredients.bun); // булки из стора
@@ -75,6 +78,14 @@ function BurgerConstructor() {
 
   const hideModal = () => { // скрыть модальное окно
     closeModal();
+  }
+
+  const onClickHandler = () => {
+    if(!localStorage.getItem("refreshToken")) {
+      navigation('/react-burger/login');
+    } else {
+      showModal(); setDisabled(true); 
+    }
   }
 
   const numberBun = 0; // индекс из массива булок, чтобы при рендере булки были одинаковыми
@@ -139,7 +150,7 @@ function BurgerConstructor() {
             </>
           )}
         </div>
-        <Button htmlType="button" type="primary" size="large" onClick={() => {showModal(); setDisabled(true)}} disabled={disabled}>
+        <Button htmlType="button" type="primary" size="large" onClick={() => {onClickHandler()}} disabled={disabled}>
           Оформить заказ
         </Button>
       </div>

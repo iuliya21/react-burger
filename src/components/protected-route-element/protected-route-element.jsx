@@ -1,12 +1,9 @@
-import { useLocation, Navigate } from "react-router-dom";
-import { getCookie } from "../../utils/cookieFunction";
-import styles from "./protected-route-element.module.css";
+import { Navigate } from "react-router-dom";
 
-function ProtectedRouteElement ( {element} ) {
-  const isLogin= getCookie('refreshToken');
-  const location = useLocation();
+function ProtectedRouteElement ({element}) {
+  const isLogin = localStorage.getItem("refreshToken");
 
-  return isLogin ? element : <Navigate to="/react-burger/login" replace/>;
+  return isLogin ? element : <Navigate to="/react-burger/login"/>;
 }
 
 export default ProtectedRouteElement;

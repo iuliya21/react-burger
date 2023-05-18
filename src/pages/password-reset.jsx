@@ -1,7 +1,7 @@
 import styles from "./password-reset.module.css";
 import { useState, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Navigate } from 'react-router-dom';
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { RESTORE_PASSWORD_RESET } from "../services/actions/user";
 import { resetPassword } from "../services/actions/user";
@@ -9,6 +9,7 @@ import { resetPassword } from "../services/actions/user";
 function PasswordReset() {
 
   const dispatch = useDispatch();
+  const isSuccessReset = useSelector(store => store.user.success);
 
   const [valuePassword, setValuePassword] = useState('');
   const onChangePassword = e => {

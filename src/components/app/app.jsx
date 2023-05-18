@@ -13,7 +13,8 @@ import { getCookie } from "../../utils/cookieFunction.js";
 import { updateUserToken, getUser } from "../../services/actions/user.js";
 import { getIngredients } from '../../services/actions';
 import ProtectedRouteElement from '../protected-route-element/protected-route-element.jsx';
-
+import LogoutUserRoute from "../logout-user-route/logout-user-route.jsx";
+import IngredientsPage from "../../pages/ingredients.jsx";
 
 function App() {
 
@@ -38,15 +39,16 @@ function App() {
       <BrowserRouter>
         <AppHeader />
           <Routes>
-            <Route path="/react-burger" element={<Main />}/>
-            <Route path="/react-burger/login" element={<Login />}/>
-            <Route path="/react-burger/register" element={<Registration />}/>
-            <Route path="/react-burger/forgot-password" element={<PasswordForgot />}/>
-            <Route path="/react-burger/reset-password" element={<PasswordReset />}/>
+            <Route path="/react-burger" element={<Main />}>
+              <Route path="ingredients/:id" element={<IngredientsPage/>}/>
+            </Route>
+            <Route path="/react-burger/login"  element={<LogoutUserRoute element={<Login />} />} />
+            <Route path="/react-burger/register" element={<LogoutUserRoute element={<Registration />} />} />
+            <Route path="/react-burger/forgot-password" element={<LogoutUserRoute element={<PasswordForgot />} />} />
+            <Route path="/react-burger/reset-password" element={<LogoutUserRoute element={<PasswordReset />} />} />
             <Route path="/react-burger/profile/*" element={<ProtectedRouteElement element={<Profile />} />}>
               <Route path="" element={<UserInfo />}/>
             </Route>
-            
           </Routes>
       </BrowserRouter>
     </>

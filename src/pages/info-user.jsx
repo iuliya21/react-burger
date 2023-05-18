@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { patchUser, getUser } from "../services/actions/user";
-import { getCookie } from "../utils/cookieFunction";
 import { useModal } from "../hooks/useModal";
 import Modal from "../components/modal/modal";
 
