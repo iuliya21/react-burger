@@ -3,8 +3,10 @@ import IngredientDetails from "../components/ingredient-details/ingredient-detai
 
 function IngredientsPage () {
   return (
-    <div className={`${styles.container} pt-30`}>
-      <IngredientDetails />
+    <div className={styles.container}>
+      <div className={styles.ingredient}>
+        <IngredientDetails />
+      </div>
     </div>
   )
 }

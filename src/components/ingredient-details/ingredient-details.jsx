@@ -1,14 +1,24 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./ingredient-details.module.css";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getIngredients } from "../../services/actions";
 
 function IngredientDetails() {
 
   const { id } = useParams();
+  const [ingredient, setElement] = useState(undefined);
 
-  const ingredient = useSelector(store => store.ingredientDetails.selectedIngredient);
+  const ingredients = useSelector(store => store.ingredients.data);
 
-  return (
+
+  useEffect(()=>{
+    setElement(ingredients.find(ing => ing._id === id))
+  }, [ingredients]);
+   
+  // const ingredient = ingredients.find((ing) => ing._id === id);
+  
+  return ingredient ? (
     <div className={styles.container}>
       <div className={styles.header}>
         <h2 className="text text_type_main-large">Детали ингредиента</h2>
@@ -34,7 +44,7 @@ function IngredientDetails() {
         </div>
       </div>
     </div>
-  )
+  ) : null
 }
 
 export default IngredientDetails;

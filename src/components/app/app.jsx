@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import AppHeader from "../app-header/app-header.jsx";
 import Main from "../main/main.jsx";
 import Login from "../../pages/login.jsx";
@@ -21,6 +21,8 @@ function App() {
   const dispatch = useDispatch();
   const cookie = getCookie('accessToken');
   const userToken = localStorage.getItem('refreshToken');
+  let location = useLocation();
+  let background = location.state?.background;  
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -36,21 +38,20 @@ function App() {
 
   return(
     <>
-      <BrowserRouter>
-        <AppHeader />
-          <Routes>
-            <Route path="/react-burger" element={<Main />}>
-              <Route path="ingredients/:id" element={<IngredientsPage/>}/>
-            </Route>
-            <Route path="/react-burger/login"  element={<LogoutUserRoute element={<Login />} />} />
-            <Route path="/react-burger/register" element={<LogoutUserRoute element={<Registration />} />} />
-            <Route path="/react-burger/forgot-password" element={<LogoutUserRoute element={<PasswordForgot />} />} />
-            <Route path="/react-burger/reset-password" element={<LogoutUserRoute element={<PasswordReset />} />} />
-            <Route path="/react-burger/profile/*" element={<ProtectedRouteElement element={<Profile />} />}>
-              <Route path="" element={<UserInfo />}/>
-            </Route>
-          </Routes>
-      </BrowserRouter>
+      <AppHeader />
+        <Routes>
+          <Route path="/react-burger" element={<Main />} location={background || location}>
+            <Route path="ingredients/:id" element={<IngredientsPage />}/>
+          </Route>
+          <Route path="/react-burger/login"  element={<LogoutUserRoute element={<Login />} />}/>
+          <Route path="/react-burger/register" element={<LogoutUserRoute element={<Registration />} />}/>
+          <Route path="/react-burger/forgot-password" element={<LogoutUserRoute element={<PasswordForgot />} />}/>
+          {/* <Route path="/react-burger/ingredients/:id" element={<IngredientsPage />}/> */}
+          <Route path="/react-burger/reset-password" element={<LogoutUserRoute element={<PasswordReset />} />}/>
+          <Route path="/react-burger/profile/*" element={<ProtectedRouteElement element={<Profile />}/>}>
+            <Route path="" element={<UserInfo />}/>
+          </Route>
+        </Routes>
     </>
   );
 }

@@ -7,10 +7,16 @@ import Modal from '../modal/modal';
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getDetailsIngredient, deleteDetailsIngredient } from "../../services/actions";
 import { useModal } from "../../hooks/useModal";
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 function BurgerIngredients() {
 
-  const { isModalOpen, openModal, closeModal } = useModal();
+  // const { isModalOpen, openModal, closeModal } = useModal();
+
+  const params = useParams();
+  const location = useLocation();
+  const background = params.id && location.state && location.state.background;
+  const [isModalOpen, setShowModal] = useState(background || false);
 
   const ingredients = useSelector(store => store.ingredients.data); // список ингредиентов с сервера, хранится в сторе
 
@@ -19,17 +25,24 @@ function BurgerIngredients() {
   const bunsRef = useRef();
   const saucesRef = useRef();
   const mainRef = useRef();
+  const navigate = useNavigate();
+  // const params = useParams();
+  // const location = useLocation();
+  // const background = params.id && location.state && location.state.background;
 
   const dispatch = useDispatch();
 
   const showModal = (element) => { // открытие модального окна
     dispatch(getDetailsIngredient(element));
-    openModal();
+    // openModal();
+    setShowModal(true);
   }
 
   const hideModal = () => { // закрытие модального окна
     dispatch(deleteDetailsIngredient());
-    closeModal();
+    setShowModal(false);
+    // closeModal();
+    navigate('/react-burger');
   }
 
   const handleScroll = () => {
