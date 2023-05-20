@@ -5,23 +5,15 @@ import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-de
 import { patchUser, getUser } from "../services/actions/user";
 import { useModal } from "../hooks/useModal";
 import Modal from "../components/modal/modal";
+import { useForm } from "../hooks/useForm";
 
 function UserInfo() {
+  const {name, email, success} = useSelector(store => store.user);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
+  const { values, handleChange, setValues } = useForm({ name: '', email: '', password: ''});
 
   const { isModalOpen, openModal, closeModal } = useModal();
-
-  const {name, email, success} = useSelector(store => store.user);
-  
-  const [valueName, setValueName] = useState(name);
-  const [valueEmail, setValueEmail] = useState(email);
-  const [valuePassword, setValuePassword] = useState('*******');
-
-  const setInputsValue = () => {
-    setValueName(name);
-    setValueEmail(email);
-  }
 
   const showModal = () => {
     openModal();
@@ -33,7 +25,7 @@ function UserInfo() {
 
   useEffect(() => {
     dispatch(getUser());
-    setInputsValue();
+    setValues({name: name, email: email, password: ''})
   }, [name, email]);
 
   const onIconClick = () => {
@@ -47,28 +39,13 @@ function UserInfo() {
     inputRef.current.classList.add('input__textfield-disabled');
   }
 
-  const onChangeName = e => {
-    setValueName(e.target.value);
-  }
-
-
-  const onChangeEmail = e => {
-    setValueEmail(e.target.value);
-  }
-
-  const onChangePassword = e => {
-    setValuePassword(e.target.value);
-  }
-
   const handlerCancel = () => {
-    setValueName(name);
-    setValueEmail(email);
-    setValuePassword('*******');
+    setValues({name: name, email: email, password: '********'})
   }
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-    dispatch(patchUser(valueEmail, valueName, valuePassword));
+    dispatch(patchUser(values.email, values.name, values.password));
     if(success) {
       showModal();
     }
@@ -78,8 +55,8 @@ function UserInfo() {
     <>
       <form onSubmit={handlerSubmit}>
         <Input
-          onChange={onChangeName}
-          value={valueName}
+          onChange={handleChange}
+          value={values.name}
           name={'name'}
           error={false}
           errorText={"Ошибка"}
@@ -92,16 +69,16 @@ function UserInfo() {
           extraClass="mb-6"
         />
         <EmailInput
-          onChange={onChangeEmail}
-          value={valueEmail}
+          onChange={handleChange}
+          value={values.email}
           name={'email'}
           isIcon={true}
           placeholder='Логин'
           extraClass="mb-6"
         />
         <PasswordInput
-          onChange={onChangePassword}
-          value={valuePassword}
+          onChange={handleChange}
+          value={values.password}
           name={'password'}
           placeholder={'Пароль'}
           icon={'EditIcon'}

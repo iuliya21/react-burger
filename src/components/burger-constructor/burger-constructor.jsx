@@ -8,12 +8,10 @@ import OrderDetails from "../order-details/order-details";
 import { setOrder, ADD_INGREDIENT, ADD_BUN, MOVE_INGREDIENT } from "../../services/actions";
 import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constructor-sorted";
 import { v4 as uuidv4 } from 'uuid';
-import { useModal } from "../../hooks/useModal";
 import { useNavigate } from "react-router-dom";
 
 function BurgerConstructor() {
 
-  // const { isModalOpen, openModal, closeModal } = useModal(false);
   const [openModal, setOpenModal] = useState(false);
   const [disabled, setDisabled] = useState(true);
 

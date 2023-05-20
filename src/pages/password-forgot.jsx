@@ -4,20 +4,18 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from 'react-router-dom';
 import { restorePassword } from "../services/actions/user";
+import { useForm } from "../hooks/useForm";
 
 function PasswordForgot() {
 
   const dispatch = useDispatch();
   const isSuccessPost = useSelector(store => store.user.success);
-  
-  const [valueEmail, setValueEmail] = useState('');
-  const onChangeEmail = e => {
-    setValueEmail(e.target.value);
-  }
+
+  const { values, handleChange } = useForm({ email: ''});
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-    dispatch(restorePassword(valueEmail));
+    dispatch(restorePassword(values.email));
   }
 
   if (isSuccessPost) {
@@ -29,8 +27,8 @@ function PasswordForgot() {
       <h2 className={`text text_type_main-medium ${styles.title}`}>Восстановление пароля</h2>
       <EmailInput
         placeholder={'Укажите e-mail'}
-        onChange={onChangeEmail}
-        value={valueEmail}
+        onChange={handleChange}
+        value={values.email}
         name={'email'}
         isIcon={false}
         extraClass="mt-6 mb-6"

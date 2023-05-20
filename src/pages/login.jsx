@@ -1,47 +1,40 @@
 import styles from "./login.module.css";
 import { EmailInput, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { loginUser } from "../services/actions/user";
+import { useForm } from "../hooks/useForm";
 
 function Login() {
+
+  const { values, handleChange } = useForm({ email: '', password: ''});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const isSuccessLogin = useSelector(store => store.user.authorizedUser);
 
-  const [valueEmail, setValueEmail] = useState('')
-  const onChangeEmail = e => {
-    setValueEmail(e.target.value)
-  }
-
-  const [valuePassword, setValuePassword] = useState('');
-  const onChangePassword = e => {
-    setValuePassword(e.target.value)
-  }
-
   const handlerSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser(valueEmail, valuePassword));
+    dispatch(loginUser(values.email, values.password));
   }
 
   if(isSuccessLogin) {
-    return <Navigate to="/react-burger"/>;
+    navigate(-1);
   }
 
   return (
     <form className={styles.content} onSubmit={handlerSubmit}>
       <h2 className={`text text_type_main-medium ${styles.title}`}>Вход</h2>
       <EmailInput
-        onChange={onChangeEmail}
-        value={valueEmail}
+        onChange={handleChange}
+        value={values.email}
         name={'email'}
         isIcon={false}
         extraClass="mt-6"
       />
       <PasswordInput
-        onChange={onChangePassword}
-        value={valuePassword}
+        onChange={handleChange}
+        value={values.password}
         name={'password'}
         extraClass="mt-6 mb-6"
       />

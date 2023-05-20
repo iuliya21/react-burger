@@ -22,8 +22,8 @@ function App() {
   const dispatch = useDispatch();
   const cookie = getCookie('accessToken');
   const userToken = localStorage.getItem('refreshToken');
-  let location = useLocation();
-  let background = location.state?.background; 
+  const location = useLocation();
+  const background = location.state?.background; 
 
   useEffect(() => {
     dispatch(getIngredients());

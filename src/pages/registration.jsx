@@ -1,29 +1,20 @@
 import styles from "./registration.module.css";
 import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 import { registerUser } from "../services/actions/user";
+import { useForm } from "../hooks/useForm";
 
 function Registration() {
 
   const dispatch = useDispatch();
-  const [valueName, setValueName] = useState('');
   const inputRefName = useRef(null);
-
-  const [valueEmail, setValueEmail] = useState('')
-  const onChangeEmail = e => {
-    setValueEmail(e.target.value);
-  }
-
-  const [valuePassword, setValuePassword] = useState('');
-  const onChangePassword = e => {
-    setValuePassword(e.target.value);
-  }
+  const { values, handleChange } = useForm({ name: '', email: '', password: '', });
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser(valueEmail, valuePassword, valueName));
+    dispatch(registerUser(values.email, values.password, values.name));
   }
   
   return (
@@ -32,8 +23,8 @@ function Registration() {
       <Input
         type={'text'}
         placeholder={'Имя'}
-        onChange={e => setValueName(e.target.value)}
-        value={valueName}
+        onChange={handleChange}
+        value={values.name}
         name={'name'}
         error={false}
         ref={inputRefName}
@@ -42,15 +33,15 @@ function Registration() {
         extraClass="mt-6"
       />
       <EmailInput
-        onChange={onChangeEmail}
-        value={valueEmail}
+        onChange={handleChange}
+        value={values.email}
         name={'email'}
         isIcon={false}
         extraClass="mt-6"
       />
       <PasswordInput
-        onChange={onChangePassword}
-        value={valuePassword}
+        onChange={handleChange}
+        value={values.password}
         name={'password'}
         extraClass="mt-6 mb-6"
       />
