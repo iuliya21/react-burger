@@ -11,10 +11,17 @@ export const CLEAR_CONSTRUCTOR = 'CLEAR_CONSTRUCTOR';
 export const MOVE_INGREDIENT = "MOVE_INGREDIENT";
 export const SELECT_INGREDIENT = 'SELECT_INGREDIENT';
 export const DELETE_INFO_INGREDIENT = 'DELETE_INFO_INGREDIENT';
+export const RESTORE_PASSWORD_REQUEST = 'RESTORE_PASSWORD_REQUEST';
+export const RESTORE_PASSWORD_SUCCESS = 'RESTORE_PASSWORD_SUCCESS';
+export const RESTORE_PASSWORD_FAILED = 'RESTORE_PASSWORD_FAILED';
+export const RESTORE_PASSWORD_RESET = 'RESTORE_PASSWORD_RESET';
+export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
+export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
+export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
 
-const UrlAdress = 'https://norma.nomoreparties.space/api';
+export const UrlAdress = 'https://norma.nomoreparties.space/api';
 
-const checkResponse = (res) => { // проверка запроса
+export const checkResponse = (res) => { // проверка запроса
   if(res.ok) {
     return res.json();
   } else {
@@ -22,8 +29,9 @@ const checkResponse = (res) => { // проверка запроса
   }
 }
 
-const request = (url, options) => {
-  return fetch(`${UrlAdress}/${url}`, options).then(res => checkResponse(res))
+export const request = async (url, options) => {
+  const res = await fetch(`${UrlAdress}/${url}`, options);
+  return checkResponse(res);
 }
 
 const dataPost = (ingredients) => {
@@ -80,6 +88,7 @@ export const setOrder = (ingredients) => {
     });
   }
 }
+
 
 export const getDetailsIngredient = (ingredient) => {
   return {

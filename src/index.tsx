@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 import App from './components/app/app';
 import store from './services/store';
+import { BrowserRouter} from 'react-router-dom';
 
 
 const root = createRoot(
@@ -13,7 +14,9 @@ const root = createRoot(
 root.render(
   <StrictMode>
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
   </StrictMode>
 );

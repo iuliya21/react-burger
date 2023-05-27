@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import styles from "./burger-constructor.module.css";
@@ -8,15 +8,15 @@ import OrderDetails from "../order-details/order-details";
 import { setOrder, ADD_INGREDIENT, ADD_BUN, MOVE_INGREDIENT } from "../../services/actions";
 import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constructor-sorted";
 import { v4 as uuidv4 } from 'uuid';
-import { useModal } from "../../hooks/useModal";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
-
+import { useNavigate } from "react-router-dom";
 
 function BurgerConstructor() {
 
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const [openModal, setOpenModal] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   const dispatch = useDispatch();
+  const navigation = useNavigate();
   
   const ingredients = useSelector(store => store.burgerIngredients.ingredients); // ингредиенты из стора
   const bun = useSelector(store => store.burgerIngredients.bun); // булки из стора
@@ -24,11 +24,15 @@ function BurgerConstructor() {
   const numberOrder = useSelector(store => store.numberOrder.order); // номер заказа из стора
   const burger = [...buns, ...ingredients];
 
-  const [disabled, setDisabled] = useState(true);
+  useEffect(() => {
+    checkBurger();
+  }, [burger])
 
   const checkBurger = () => {
     if(bun.length > 0 && ingredients.length > 0) {
-      setDisabled(false)
+      setDisabled(false);
+    } else {
+      setDisabled(true)
     }
   }
 
@@ -72,11 +76,21 @@ function BurgerConstructor() {
 
   const showModal = () => { // открыть модальное окно
     dispatch(setOrder(burger.map(item => item._id)));
-    openModal();
+    // openModal();
+    setOpenModal(true);
   }
 
   const hideModal = () => { // скрыть модальное окно
-    closeModal();
+    // closeModal();
+    setOpenModal(false);
+  }
+
+  const onClickHandler = () => {
+    if(!localStorage.getItem("refreshToken")) {
+      navigation('/react-burger/login');
+    } else {
+      showModal(); setDisabled(true); 
+    }
   }
 
   const numberBun = 0; // индекс из массива булок, чтобы при рендере булки были одинаковыми
@@ -129,19 +143,24 @@ function BurgerConstructor() {
       </div>
       <div className={styles.order}>
         <div className={styles.resultSum}>
-          {burger.length > 0 && (
+          {bun.length < 1 ? (
+            <p className="text text_type_main-medium">Выберите булку</p>
+          ) : ingredients.length < 2 ? (
+            <p className="text text_type_main-medium">Выберите начинку</p>
+          ) : ''}
+          {burger.length > 2 && (
             <>
               <p className="text text_type_digits-medium">{totalPrice}</p>
               <div className={styles.diamond}></div>
             </>
           )}
         </div>
-        <Button htmlType="button" type="primary" size="large" onClick={() => {showModal()}} disabled={disabled}>
+        <Button htmlType="button" type="primary" size="large" onClick={() => {onClickHandler()}} disabled={disabled}>
           Оформить заказ
         </Button>
       </div>
 
-      {isModalOpen && (
+      {openModal && (
         <Modal onClosePopup={hideModal}>
           <OrderDetails numberOrder={numberOrder}/>
         </Modal>

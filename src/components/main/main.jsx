@@ -3,16 +3,22 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import styles from './main.module.css';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
+import { Outlet, useParams, useLocation } from 'react-router-dom';
 
 function Main() {
 
-  return(
-    <main className={styles.main}>
-      <DndProvider backend={HTML5Backend}>
-        <BurgerIngredients />
-        <BurgerConstructor />
-      </DndProvider>
-    </main>
+  const params = useParams();
+  const location = useLocation();
+  const background = location.state?.background;
+  
+  return (params.id && !(location.state && background)) ? 
+    (<Outlet />) :
+      (<main className={styles.main}>
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
+      </main>
   );
 }
 

@@ -7,6 +7,7 @@ import Modal from '../modal/modal';
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getDetailsIngredient, deleteDetailsIngredient } from "../../services/actions";
 import { useModal } from "../../hooks/useModal";
+import { useNavigate } from 'react-router-dom';
 
 function BurgerIngredients() {
 
@@ -19,6 +20,7 @@ function BurgerIngredients() {
   const bunsRef = useRef();
   const saucesRef = useRef();
   const mainRef = useRef();
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -30,6 +32,7 @@ function BurgerIngredients() {
   const hideModal = () => { // закрытие модального окна
     dispatch(deleteDetailsIngredient());
     closeModal();
+    navigate('/react-burger');
   }
 
   const handleScroll = () => {
