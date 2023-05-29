@@ -16,6 +16,7 @@ import ProtectedRouteElement from '../protected-route-element/protected-route-el
 import LogoutUserRoute from "../logout-user-route/logout-user-route.jsx";
 import IngredientsPage from "../../pages/ingredients.jsx";
 import ErrorPage from "../../pages/not-found.jsx";
+import Feed from "../../pages/order-feed.jsx";
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
           <Route path="/react-burger/profile/*" element={<ProtectedRouteElement element={<Profile />}/>}>
             <Route path="" element={<UserInfo />}/>
           </Route>
+          <Route path="/react-burger/feed" element={<Feed />}></Route>
           <Route path="*" element={<ErrorPage />}></Route>
         </Routes>
     </>

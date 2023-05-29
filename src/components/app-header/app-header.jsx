@@ -14,10 +14,11 @@ function AppHeader() {
             <BurgerIcon type={location.pathname === "/react-burger" ? "primary" : "secondary"} />
             Конструктор
           </NavLink>
-          <button className={styles.button}>
-            <ListIcon type="secondary" />
-            <p className="text text_type_main-default text_color_inactive">Лента заказов</p>
-          </button>
+          <NavLink to="/react-burger/feed" className={({isActive}) => isActive ? `${styles.activeLink} text text_type_main-default` 
+          : `${styles.link} text text_type_main-default`}>
+            <ListIcon type={location.pathname.includes("/react-burger/feed") ? "primary" : "secondary"} />
+            Лента заказов
+          </NavLink>
         </div>
         <div className={styles.logo}>
           <Logo />

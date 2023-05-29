@@ -3,8 +3,8 @@ import { getIngredientsReducer } from "../reducers/getIngredientsReducer";
 import { burgerConstructorReducer } from "../reducers/burgerConstructorReducer";
 import { ingredientDetailsReducer } from "./ingredientDetailsReducer";
 import { orderReducer } from "./orderReducer";
-//import { restorePasswordReducer } from "./restorePasswordReducer";
 import { userReducer } from "./userReducer";
+import { wsFeedReducer } from "./wsFeedReducer";
 
 export const rootReducer = combineReducers({
   ingredients: getIngredientsReducer,
@@ -12,4 +12,5 @@ export const rootReducer = combineReducers({
   ingredientDetails: ingredientDetailsReducer,
   numberOrder: orderReducer,
   user: userReducer,
+  wsFeed: wsFeedReducer,
 });
