@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import AppHeader from "../app-header/app-header.jsx";
 import Main from "../main/main.jsx";
 import Login from "../../pages/login.jsx";
@@ -17,6 +17,7 @@ import LogoutUserRoute from "../logout-user-route/logout-user-route.jsx";
 import IngredientsPage from "../../pages/ingredients.jsx";
 import ErrorPage from "../../pages/not-found.jsx";
 import Feed from "../../pages/order-feed.jsx";
+import FeedInfo from "../feed-info/feed-info.jsx";
 
 function App() {
 
@@ -24,7 +25,7 @@ function App() {
   const cookie = getCookie('accessToken');
   const userToken = localStorage.getItem('refreshToken');
   const location = useLocation();
-  const background = location.state?.background; 
+  const background = location.state?.background;
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -52,7 +53,9 @@ function App() {
           <Route path="/react-burger/profile/*" element={<ProtectedRouteElement element={<Profile />}/>}>
             <Route path="" element={<UserInfo />}/>
           </Route>
-          <Route path="/react-burger/feed" element={<Feed />}></Route>
+          <Route path="/react-burger/feed" element={<Feed />} location={background || location}>
+            <Route path=":id" element={<FeedInfo />}/>
+          </Route>
           <Route path="*" element={<ErrorPage />}></Route>
         </Routes>
     </>

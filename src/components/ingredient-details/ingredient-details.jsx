@@ -10,7 +10,6 @@ function IngredientDetails() {
 
   const ingredients = useSelector(store => store.ingredients.data);
 
-
   useEffect(()=>{
     setElement(ingredients.find(ing => ing._id === id))
   }, [ingredients]);

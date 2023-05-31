@@ -1,5 +1,5 @@
 import styles from "./info-user.module.css";
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { patchUser, getUser } from "../services/actions/user";

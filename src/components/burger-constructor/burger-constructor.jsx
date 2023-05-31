@@ -76,12 +76,10 @@ function BurgerConstructor() {
 
   const showModal = () => { // открыть модальное окно
     dispatch(setOrder(burger.map(item => item._id)));
-    // openModal();
     setOpenModal(true);
   }
 
   const hideModal = () => { // скрыть модальное окно
-    // closeModal();
     setOpenModal(false);
   }
 
