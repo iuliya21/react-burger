@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./order-feed.module.css";
 import { WS_CLOSE_CONNECTION, WS_CONNECTION_START } from "../services/actions/websocket";
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useLocation, useMatch, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useLocation, useMatch, useNavigate, useParams } from "react-router-dom";
 import { useModal } from "../hooks/useModal";
 import Modal from "../components/modal/modal";
 import FeedInfo from "../components/feed-info/feed-info";
@@ -13,12 +13,17 @@ import { v4 as uuidv4 } from 'uuid';
 
 function Feed () {
 
+  const params = useParams();
+  const location = useLocation();
+  const background = location.state?.background;
+
   const { isModalOpen, openModal, closeModal } = useModal();
   const dispatch = useDispatch();
   const { orders, total, totalToday } = useSelector(store => store.wsFeed);
   const ingredients = useSelector(store => store.ingredients.data); // все ингредиенты
   
   const navigate = useNavigate();
+  
   const match = useMatch(':id');
   const { id } = match?.params || {};
 
@@ -64,8 +69,9 @@ function Feed () {
     return sum;
   }
    
-  return ingredients ? (
-    <div className={styles.container}>
+  return (params.id && !(location.state && background)) ?
+    (<Outlet />) :
+    (<div className={styles.container}>
       <h2 className={`text text_type_main-large ${styles.title}`}>Лента заказов</h2>
       <div className={styles.box}>
         <div className={styles.leftContainer}>
@@ -168,10 +174,9 @@ function Feed () {
             <FeedInfo />
           </Modal>
         }
-        
     </div>
 
-  ) : null
+  )
 }
 
 export default Feed;

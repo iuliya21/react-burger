@@ -5,28 +5,14 @@ import { diffToString, diffDays } from "../../utils";
 import { v4 as uuidv4 } from 'uuid';
 import { useLocation, useMatch, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { WS_CONNECTION_START, WS_CLOSE_CONNECTION } from "../../services/actions/websocket";
 
 function FeedInfo () {
 
-  //const { id } = useParams();
-  const location = useLocation();
-  const match = useMatch(':id');
-  const { id } = match?.params || {};
-  console.log(id, location, match);
-  // const [order, setOrder] = useState();
-  // const dispatch = useDispatch();
-  const orders = useSelector(store => store.wsFeed.orders);
-
-  // useEffect(() => {
-  //   dispatch({
-  //     type: WS_CONNECTION_START
-  //   });
-  //   return () => {
-  //     dispatch({
-  //       type: WS_CLOSE_CONNECTION
-  //     })
-  //   }
-  // }, []);
+  const { id } = useParams();
+  
+  // const [order, setOrder] = useState(undefined);
+  // const orders = useSelector(store => store.wsFeed);
 
   // useEffect(() => {
   //   setOrder(orders.find(order => order.number === id))
