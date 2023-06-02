@@ -31,9 +31,10 @@ export const wsFeedUserReducer = (state = initialState, action) => {
       };
     }
     case WS_GET_MESSAGE_USER: {
+      const orders = action.payload.orders.reverse()
       return {
         ...state,
-        orders: action.payload.orders
+        orders: orders
       };
     }
     default: return state;

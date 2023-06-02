@@ -22,7 +22,7 @@ function OrdersUserHistory() {
   const { isModalOpen, openModal, closeModal } = useModal();
   const navigate = useNavigate();
 
-  const orders = useSelector(store => store.wsFeedUser.orders).reverse();
+  const orders = useSelector(store => store.wsFeedUser.orders);
   const authUser = useSelector(store => store.user.authorizedUser);
   const ingredients = useSelector(store => store.ingredients.data);
 
@@ -53,9 +53,9 @@ function OrdersUserHistory() {
     return sum;
   }
 
-  return (params.id && !background) ?
-    (<Outlet />) :
-    (<div className={styles.container}>
+  return (params.id && !background) ? 
+  (<Outlet />) :
+  (<div className={styles.container}>
       <ul className={styles.list}>
         {orders.map((order) => {
           const _id = order._id;

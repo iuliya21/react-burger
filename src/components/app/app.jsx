@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Outlet } from 'react-router-dom';
 import AppHeader from "../app-header/app-header.jsx";
 import Main from "../main/main.jsx";
 import Login from "../../pages/login.jsx";
