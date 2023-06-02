@@ -23,7 +23,7 @@ function BurgerConstructor() {
   const buns = bun.slice(bun.length - 1); // оставляем в массиве только последний элемент
   const numberOrder = useSelector(store => store.numberOrder.order); // номер заказа из стора
   const burger = [...buns, ...ingredients, ...buns];
-  let loader = useSelector(store => store.numberOrder.loading);
+  const loader = useSelector(store => store.numberOrder.loading);
 
   useEffect(() => {
     checkBurger();

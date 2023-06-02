@@ -1,6 +1,11 @@
+import { getCookie } from "../../utils/cookieFunction";
+import { updateUserToken } from "../actions/user";
+
 export const socketMiddleware = (wsUrl, wsActions) => {
   return (store) => {
     let socket = null;
+    const cookie = getCookie('accessToken');
+    const userToken = localStorage.getItem('refreshToken');
 
     return (next) => (action) => {
       const { dispatch } = store;
@@ -33,6 +38,9 @@ export const socketMiddleware = (wsUrl, wsActions) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
           const { success, ...restData } = parsedData;
+          if (!cookie && userToken) {
+            dispatch(updateUserToken())
+          }
           dispatch({
             type: onMessage,
             payload: restData,

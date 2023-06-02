@@ -22,7 +22,6 @@ function FeedInfo() {
     setOrder(ordersCurrent.find(order => order._id === id));
   }, [ordersCurrent]);
   
-
   const ingredients = useSelector(store => store.ingredients.data); // все ингредиенты с сервера
 
   if (order) {

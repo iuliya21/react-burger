@@ -45,7 +45,7 @@ function Feed() {
   )
 
   const OrdersPending = useMemo(() =>
-    orders.filter((item) => item.status === 'pending' || "created"),
+    orders.filter((item) => item.status !== 'done'),
     [orders]
   )
 
@@ -72,6 +72,7 @@ function Feed() {
               const todayDate = new Date();
               const diffDate = diffDays(orderDate, todayDate);
               const orderMinutes = orderDate.getMinutes().toString().length < 2 ? `0${orderDate.getMinutes()}` : orderDate.getMinutes();
+              
               return (
                 <li className={styles.orderElement} key={uuidv4()} onClick={() => {
                   navigate(`/react-burger/feed/${_id}`, { state: { background: true } });
