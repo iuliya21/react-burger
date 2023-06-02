@@ -1,17 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./order-feed.module.css";
 import { WS_CLOSE_CONNECTION, WS_CONNECTION_START } from "../services/actions/websocket";
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Outlet, useLocation, useMatch, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useModal } from "../hooks/useModal";
 import Modal from "../components/modal/modal";
 import FeedInfo from "../components/feed-info/feed-info";
-import { getDetailsOrder, deleteDetailsOrder } from "../services/actions";
 import { diffToString, diffDays } from "../utils";
 import { v4 as uuidv4 } from 'uuid';
 
-function Feed () {
+function Feed() {
 
   const params = useParams();
   const location = useLocation();
@@ -21,11 +20,8 @@ function Feed () {
   const dispatch = useDispatch();
   const { orders, total, totalToday } = useSelector(store => store.wsFeed);
   const ingredients = useSelector(store => store.ingredients.data); // все ингредиенты
-  
+
   const navigate = useNavigate();
-  
-  const match = useMatch(':id');
-  const { id } = match?.params || {};
 
   useEffect(() => {
     dispatch({
@@ -38,23 +34,17 @@ function Feed () {
     }
   }, []);
 
-  const showModal = (order) => {
-    dispatch(getDetailsOrder(order));
-    openModal();
-  }
-
   const hideModal = () => {
-    dispatch(deleteDetailsOrder());
     closeModal();
     navigate('/react-burger/feed');
   }
 
-  const ordersDone = useMemo(() => 
+  const ordersDone = useMemo(() =>
     orders.filter((item) => item.status === 'done'),
     [orders]
   )
 
-  const OrdersPending = useMemo(() => 
+  const OrdersPending = useMemo(() =>
     orders.filter((item) => item.status === 'pending' || "created"),
     [orders]
   )
@@ -62,14 +52,14 @@ function Feed () {
   const totalPrice = (burger) => {
     let sum = 0;
     burger.forEach(ing => {
-      if(ing !== null) {
+      if (ing !== null) {
         sum += ingredients.find(el => el._id === ing).price;
       }
     });
     return sum;
   }
-   
-  return (params.id && !(location.state && background)) ?
+
+  return (params.id && !background) ?
     (<Outlet />) :
     (<div className={styles.container}>
       <h2 className={`text text_type_main-large ${styles.title}`}>Лента заказов</h2>
@@ -77,23 +67,22 @@ function Feed () {
         <div className={styles.leftContainer}>
           <ul className={styles.list}>
             {orders.map((order) => {
-              const number = order.number;
+              const _id = order._id;
               const orderDate = new Date(Date.parse(order.createdAt));
               const todayDate = new Date();
               const diffDate = diffDays(orderDate, todayDate);
               const orderMinutes = orderDate.getMinutes().toString().length < 2 ? `0${orderDate.getMinutes()}` : orderDate.getMinutes();
               return (
                 <li className={styles.orderElement} key={uuidv4()} onClick={() => {
-                  if(id !== number) {
-                    navigate(`/react-burger/feed/${number}`, { state: { background: true }});
-                  };
-                  showModal(order)}}>
+                  navigate(`/react-burger/feed/${_id}`, { state: { background: true } });
+                  openModal();
+                }}>
                   <div className={`${styles.infoOrder} mb-6`}>
                     <p className="text text_type_digits-default">#{order.number}</p>
                     <p className="text text_type_main-default text_color_inactive">
-                    {`${diffToString(diffDate)}, ${orderDate.getHours()}:${orderMinutes}
-                      i-GMT${orderDate.getTimezoneOffset()>0?`+${orderDate.getTimezoneOffset()/60}`
-                      :orderDate.getTimezoneOffset()/60}`}
+                      {`${diffToString(diffDate)}, ${orderDate.getHours()}:${orderMinutes}
+                      i-GMT${orderDate.getTimezoneOffset() > 0 ? `+${orderDate.getTimezoneOffset() / 60}`
+                          : orderDate.getTimezoneOffset() / 60}`}
                     </p>
                   </div>
                   <h2 className="text text_type_main-medium mb-6">{order.name}</h2>
@@ -103,21 +92,21 @@ function Feed () {
                         if (ingredient !== null) {
                           if (index > 0 && index <= 5) {
                             return (
-                              <li key={uuidv4()} style={{zIndex: index}} className={styles.imgElement}>
-                                <img src={ingredients.find((el) => el._id === ingredient).image_mobile} 
-                                alt={ingredients.find((el) => el._id === ingredient).name}
-                                className={styles.image} />
+                              <li key={uuidv4()} style={{ zIndex: index }} className={styles.imgElement}>
+                                <img src={ingredients.find((el) => el._id === ingredient).image_mobile}
+                                  alt={ingredients.find((el) => el._id === ingredient).name}
+                                  className={styles.image} />
                               </li>
                             )
                           }
                           if (order.ingredients.length > 5) {
                             if (index === 0) {
                               return (
-                                <li key={uuidv4()} style={{zIndex: index}} className={`${styles.imgElement} ${styles.last}`}>
-                                  <p className={`${styles.text}`}>+{order.ingredients.length - 6}</p>
-                                  <img src={ingredients.find((el) => el._id === ingredient).image_mobile} 
-                                  alt={ingredients.find((el) => el._id === ingredient).name}
-                                  className={styles.image} />
+                                <li key={uuidv4()} style={{ zIndex: index }} className={`${styles.imgElement} ${styles.last}`}>
+                                  <p className={`${styles.text}`}>+{order.ingredients.length - 5}</p>
+                                  <img src={ingredients.find((el) => el._id === ingredient).image_mobile}
+                                    alt={ingredients.find((el) => el._id === ingredient).name}
+                                    className={styles.image} />
                                 </li>
                               )
                             }
@@ -127,7 +116,7 @@ function Feed () {
                     </ul>
                     <div className={styles.price}>
                       <p className="text text_type_digits-default">{totalPrice(order.ingredients)}</p>
-                      <CurrencyIcon type="primary"/>
+                      <CurrencyIcon type="primary" />
                     </div>
                   </div>
                 </li>
@@ -169,14 +158,14 @@ function Feed () {
         </div>
       </div>
 
-      {isModalOpen && 
-          <Modal onClosePopup={hideModal}>
-            <FeedInfo />
-          </Modal>
-        }
+      {isModalOpen &&
+        <Modal onClosePopup={hideModal}>
+          <FeedInfo />
+        </Modal>
+      }
     </div>
 
-  )
+    )
 }
 
 export default Feed;

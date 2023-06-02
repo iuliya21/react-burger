@@ -1,3 +1,5 @@
+import { getCookie } from "../../utils/cookieFunction";
+
 export const GET_LIST_INGREDIENTS_REQUEST = 'GET_LIST_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
 export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
@@ -18,8 +20,6 @@ export const RESTORE_PASSWORD_RESET = 'RESTORE_PASSWORD_RESET';
 export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
 export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
-export const SELECT_ORDER = 'SELECT_ORDER';
-export const DELETE_INFO_ORDER = 'SELECT_ORDER';
 
 export const UrlAdress = 'https://norma.nomoreparties.space/api';
 
@@ -39,7 +39,7 @@ export const request = async (url, options) => {
 const dataPost = (ingredients) => {
   return {
     method: 'POST',
-      headers: {'Content-Type': 'application/json'}, 
+      headers: { "Content-Type": "application/json", authorization: "Bearer " + getCookie("accessToken") }, 
       body: JSON.stringify({
         "ingredients": ingredients
       })
@@ -103,17 +103,4 @@ export const deleteDetailsIngredient = () => {
   return {
     type: DELETE_INFO_INGREDIENT,
   };
-}
-
-export const getDetailsOrder = (order) => {
-  return {
-    type: SELECT_ORDER,
-    data: order,
-  };
-}
-
-export const deleteDetailsOrder = () => {
-  return {
-    type: DELETE_INFO_ORDER,
-  }
 }

@@ -1,9 +1,10 @@
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import styles from './app-header.module.css';
 
 function AppHeader() {
   const location = useLocation();
+  const navigate = useNavigate();
   
   return (
     <header className={styles.header}>
@@ -20,7 +21,7 @@ function AppHeader() {
             Лента заказов
           </NavLink>
         </div>
-        <div className={styles.logo}>
+        <div className={styles.logo} onClick={() => navigate("/react-burger")}>
           <Logo />
         </div>
         <div className={styles.rightContainer}>

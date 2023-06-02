@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 function IngredientDetails() {
 
   const { id } = useParams();
-  const [ingredient, setElement] = useState(undefined);
+  const [ingredient, setElement] = useState(null);
 
   const ingredients = useSelector(store => store.ingredients.data);
 

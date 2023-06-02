@@ -1,8 +1,8 @@
 .content {
   display: flex;
   column-gap: 60px;
-  max-width: 860px;
   margin: 100px auto 0;
+  max-width: fit-content;
 }
 
 .navigation {
