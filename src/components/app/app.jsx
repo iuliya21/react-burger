@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Outlet } from 'react-router-dom';
 import AppHeader from "../app-header/app-header.jsx";
 import Main from "../main/main.jsx";
 import Login from "../../pages/login.jsx";
@@ -16,43 +16,50 @@ import ProtectedRouteElement from '../protected-route-element/protected-route-el
 import LogoutUserRoute from "../logout-user-route/logout-user-route.jsx";
 import IngredientsPage from "../../pages/ingredients.jsx";
 import ErrorPage from "../../pages/not-found.jsx";
+import Feed from "../../pages/order-feed.jsx";
+import FeedInfo from "../feed-info/feed-info.jsx";
+import OrdersUserHistory from "../order-user-history/order-user.history.jsx";
 
 function App() {
 
   const dispatch = useDispatch();
   const cookie = getCookie('accessToken');
   const userToken = localStorage.getItem('refreshToken');
-  const location = useLocation();
-  const background = location.state?.background; 
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
 
   useEffect(() => {
-    if(!cookie && userToken) {
+    if (!cookie && userToken) {
       dispatch(updateUserToken())
-    } else if(cookie && userToken) {
+    } else if (cookie && userToken) {
       dispatch(getUser());
     }
   }, [cookie, userToken]);
 
-  return(
+  return (
     <>
       <AppHeader />
-        <Routes>
-          <Route path="/react-burger" element={<Main />} location={background || location}>
-            <Route path="ingredients/:id" element={<IngredientsPage />}/>
+      <Routes>
+        <Route path="/react-burger" element={<Main />}>
+          <Route path="ingredients/:id" element={<IngredientsPage />} />
+        </Route>
+        <Route path="/react-burger/login" element={<LogoutUserRoute element={<Login />} />} />
+        <Route path="/react-burger/register" element={<LogoutUserRoute element={<Registration />} />} />
+        <Route path="/react-burger/forgot-password" element={<LogoutUserRoute element={<PasswordForgot />} />} />
+        <Route path="/react-burger/reset-password" element={<LogoutUserRoute element={<PasswordReset />} />} />
+        <Route path="/react-burger/profile/*" element={<ProtectedRouteElement element={<Profile />} />}>
+          <Route path="" element={<UserInfo />} />
+          <Route path="orders" element={<OrdersUserHistory />}>
+            <Route path=":id" element={<FeedInfo />} />
           </Route>
-          <Route path="/react-burger/login" element={<LogoutUserRoute element={<Login />} />}/>
-          <Route path="/react-burger/register" element={<LogoutUserRoute element={<Registration />} />}/>
-          <Route path="/react-burger/forgot-password" element={<LogoutUserRoute element={<PasswordForgot />} />}/>
-          <Route path="/react-burger/reset-password" element={<LogoutUserRoute element={<PasswordReset />} />}/>
-          <Route path="/react-burger/profile/*" element={<ProtectedRouteElement element={<Profile />}/>}>
-            <Route path="" element={<UserInfo />}/>
-          </Route>
-          <Route path="*" element={<ErrorPage />}></Route>
-        </Routes>
+        </Route>
+        <Route path="/react-burger/feed" element={<Feed />}>
+          <Route path=":id" element={<FeedInfo />} />
+        </Route>
+        <Route path="*" element={<ErrorPage />}></Route>
+      </Routes>
     </>
   );
 }

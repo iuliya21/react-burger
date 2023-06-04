@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import styles from "./profile.module.css";
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { logoutUser } from "../services/actions/user";
 
 function Profile() {
@@ -8,13 +8,18 @@ function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const params = useParams();
+  const location = useLocation();
+  const background = location.state?.background;
+
   const handlerLogout = () => {
     dispatch(logoutUser());
     navigate('/react-burger/login');
   }
 
-  return (
-    <div className={styles.content}>
+  return (params.id && !background) ? 
+  (<Outlet />) :
+    (<div className={styles.content}>
       <div className={styles.navigation}>
         <ul className={`text text_type_main-medium ${styles.list}`}>
           <li className={styles.element}>

@@ -1,3 +1,5 @@
+import { getCookie } from "../../utils/cookieFunction";
+
 export const GET_LIST_INGREDIENTS_REQUEST = 'GET_LIST_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
 export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
@@ -37,7 +39,7 @@ export const request = async (url, options) => {
 const dataPost = (ingredients) => {
   return {
     method: 'POST',
-      headers: {'Content-Type': 'application/json'}, 
+      headers: { "Content-Type": "application/json", authorization: "Bearer " + getCookie("accessToken") }, 
       body: JSON.stringify({
         "ingredients": ingredients
       })

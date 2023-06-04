@@ -24,7 +24,7 @@ export const orderReducer = (state = initialState, action) => {
     case GET_NUMBER_ORDER_FAILED: {
       return {
         ...state,
-        loading: true,
+        loading: false,
         failed: true,
       };
     }

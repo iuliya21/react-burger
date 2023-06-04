@@ -22,7 +22,8 @@ function BurgerConstructor() {
   const bun = useSelector(store => store.burgerIngredients.bun); // булки из стора
   const buns = bun.slice(bun.length - 1); // оставляем в массиве только последний элемент
   const numberOrder = useSelector(store => store.numberOrder.order); // номер заказа из стора
-  const burger = [...buns, ...ingredients];
+  const burger = [...buns, ...ingredients, ...buns];
+  const loader = useSelector(store => store.numberOrder.loading);
 
   useEffect(() => {
     checkBurger();
@@ -76,12 +77,10 @@ function BurgerConstructor() {
 
   const showModal = () => { // открыть модальное окно
     dispatch(setOrder(burger.map(item => item._id)));
-    // openModal();
     setOpenModal(true);
   }
 
   const hideModal = () => { // скрыть модальное окно
-    // closeModal();
     setOpenModal(false);
   }
 
@@ -145,7 +144,7 @@ function BurgerConstructor() {
         <div className={styles.resultSum}>
           {bun.length < 1 ? (
             <p className="text text_type_main-medium">Выберите булку</p>
-          ) : ingredients.length < 2 ? (
+          ) : ingredients.length < 1 ? (
             <p className="text text_type_main-medium">Выберите начинку</p>
           ) : ''}
           {burger.length > 2 && (
@@ -162,7 +161,7 @@ function BurgerConstructor() {
 
       {openModal && (
         <Modal onClosePopup={hideModal}>
-          <OrderDetails numberOrder={numberOrder}/>
+          <OrderDetails numberOrder={numberOrder} loader={loader}/>
         </Modal>
       )}
     </div>
