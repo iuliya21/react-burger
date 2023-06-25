@@ -11,7 +11,7 @@ import Profile from "../../pages/profile.jsx";
 import UserInfo from "../../pages/info-user.jsx";
 import { getCookie } from "../../utils/cookieFunction.js";
 import { updateUserToken, getUser } from "../../services/actions/user.js";
-import { getIngredients } from '../../services/actions';
+import { getIngredients } from '../../services/actions/index.js';
 import ProtectedRouteElement from '../protected-route-element/protected-route-element.jsx';
 import LogoutUserRoute from "../logout-user-route/logout-user-route.jsx";
 import IngredientsPage from "../../pages/ingredients.jsx";
@@ -19,10 +19,12 @@ import ErrorPage from "../../pages/not-found.jsx";
 import Feed from "../../pages/order-feed.jsx";
 import FeedInfo from "../feed-info/feed-info.jsx";
 import OrdersUserHistory from "../order-user-history/order-user.history.jsx";
+import { useAppDispatch } from "../../hooks/customHooks";
 
 function App() {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   const cookie = getCookie('accessToken');
   const userToken = localStorage.getItem('refreshToken');
 

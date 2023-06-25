@@ -9,7 +9,7 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
-  WS_CLOSE_CONNECTION } from "../services/actions/websocket";
+  WS_CLOSE_CONNECTION } from "./actions/websocket";
 import { 
   WS_CLOSE_CONNECTION_USER, 
   WS_CONNECTION_CLOSED_USER, 
