@@ -1,12 +1,18 @@
-import { GET_NUMBER_ORDER, GET_NUMBER_ORDER_SUCCESS, GET_NUMBER_ORDER_FAILED } from "../actions";
+import { GET_NUMBER_ORDER, GET_NUMBER_ORDER_SUCCESS, GET_NUMBER_ORDER_FAILED, TGetNumberOrderActions } from "../actions";
 
-const initialState = {
+type TGetNumberOrderState = {
+  order: number,
+  loading: boolean,
+  failed: boolean,
+}
+
+const initialState: TGetNumberOrderState = {
   order: 0,
   loading: false,
   failed: false,
 }
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action: TGetNumberOrderActions): TGetNumberOrderState => {
   switch(action.type) {
     case GET_NUMBER_ORDER: {
       return {

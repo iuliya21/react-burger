@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import styles from "./burger-constructor.module.css";
 import { ConstructorElement, Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -8,22 +7,25 @@ import OrderDetails from "../order-details/order-details";
 import { setOrder, ADD_INGREDIENT, ADD_BUN, MOVE_INGREDIENT } from "../../services/actions";
 import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constructor-sorted";
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/customHooks";
 
 function BurgerConstructor() {
 
   const [openModal, setOpenModal] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  // const navigation: NavigateFunction = useNavigate();
   const navigation = useNavigate();
   
-  const ingredients = useSelector(store => store.burgerIngredients.ingredients); // ингредиенты из стора
-  const bun = useSelector(store => store.burgerIngredients.bun); // булки из стора
+  const ingredients = useAppSelector(store => store.burgerIngredients.ingredients); // ингредиенты из стора
+  const bun = useAppSelector(store => store.burgerIngredients.bun); // булки из стора
   const buns = bun.slice(bun.length - 1); // оставляем в массиве только последний элемент
-  const numberOrder = useSelector(store => store.numberOrder.order); // номер заказа из стора
+  const numberOrder = useAppSelector(store => store.numberOrder.order); // номер заказа из стора
   const burger = [...buns, ...ingredients, ...buns];
-  const loader = useSelector(store => store.numberOrder.loading);
+  const loader = useAppSelector(store => store.numberOrder.loading);
+  
 
   useEffect(() => {
     checkBurger();

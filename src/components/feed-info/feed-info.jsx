@@ -12,7 +12,7 @@ function FeedInfo() {
   const location = useLocation();
   const checkLocation = location.pathname.includes('feed');
 
-  const [order, setOrder] = useState(null);
+  const [order, setOrder] = useState();
   const orders = useSelector(store => store.wsFeed.orders);
   const ordersUser = useSelector(store => store.wsFeedUser.orders);
 
@@ -100,6 +100,10 @@ function FeedInfo() {
     )
   }
 
+  return (
+    <div>
+    </div>
+  )
 }
 
 export default FeedInfo;

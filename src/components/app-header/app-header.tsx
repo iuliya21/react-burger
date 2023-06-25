@@ -1,10 +1,10 @@
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, Location, NavigateFunction } from 'react-router-dom';
 import styles from './app-header.module.css';
 
 function AppHeader() {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const location: Location = useLocation();
+  const navigate: NavigateFunction = useNavigate();
   
   return (
     <header className={styles.header}>
