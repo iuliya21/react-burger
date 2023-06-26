@@ -1,33 +1,100 @@
 import { request } from "./index";
 import { setCookie, getCookie } from "../../utils/cookieFunction";
+import { AppThunk } from "../types/types";
 
-export const RESTORE_PASSWORD_REQUEST = 'RESTORE_PASSWORD_REQUEST';
-export const RESTORE_PASSWORD_SUCCESS = 'RESTORE_PASSWORD_SUCCESS';
-export const RESTORE_PASSWORD_FAILED = 'RESTORE_PASSWORD_FAILED';
-export const SUCCESS_RESET = 'SUCCESS_RESET';
-export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
-export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
-export const REGISTER_USER_FAILED = 'REGISTER_USER_FAILED';
-export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
-export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
-export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILED = 'LOGIN_FAILED';
-export const UPDATE_TOKEN_REQUEST = 'UPDATE_TOKEN_REQUEST';
-export const UPDATE_TOKEN_SUCCESS = 'UPDATE_TOKEN_SUCCESS';
-export const UPDATE_TOKEN_FAILED = 'UPDATE_TOKEN_FAILED';
-export const GET_USER_REQUEST = 'GET_USER_REQUEST';
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const GET_USER_FAILED = 'GET_USER_FAILED';
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAILED = 'LOGOUT_FAILED';
-export const PATCH_USER_REQUEST = 'PATCH_USER_REQUEST';
-export const PATCH_USER_SUCCESS = 'PATCH_USER_SUCCESS';
-export const PATCH_USER_FAILED = 'PATCH_USER_FAILED';
+export const RESTORE_PASSWORD_REQUEST: 'RESTORE_PASSWORD_REQUEST' = 'RESTORE_PASSWORD_REQUEST';
+export const RESTORE_PASSWORD_SUCCESS: 'RESTORE_PASSWORD_SUCCESS' = 'RESTORE_PASSWORD_SUCCESS';
+export const RESTORE_PASSWORD_FAILED: 'RESTORE_PASSWORD_FAILED' = 'RESTORE_PASSWORD_FAILED';
+export const SUCCESS_RESET: 'SUCCESS_RESET' = 'SUCCESS_RESET';
+export const REGISTER_USER_REQUEST: 'REGISTER_USER_REQUEST' = 'REGISTER_USER_REQUEST';
+export const REGISTER_USER_SUCCESS: 'REGISTER_USER_SUCCESS' = 'REGISTER_USER_SUCCESS';
+export const REGISTER_USER_FAILED: 'REGISTER_USER_FAILED' = 'REGISTER_USER_FAILED';
+export const RESET_PASSWORD_REQUEST: 'RESET_PASSWORD_REQUEST' = 'RESET_PASSWORD_REQUEST';
+export const RESET_PASSWORD_SUCCESS: 'RESET_PASSWORD_SUCCESS' = 'RESET_PASSWORD_SUCCESS';
+export const RESET_PASSWORD_FAILED: 'RESET_PASSWORD_FAILED' = 'RESET_PASSWORD_FAILED';
+export const LOGIN_REQUEST: 'LOGIN_REQUEST' = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS: 'LOGIN_SUCCESS' = 'LOGIN_SUCCESS';
+export const LOGIN_FAILED: 'LOGIN_FAILED' = 'LOGIN_FAILED';
+export const UPDATE_TOKEN_REQUEST: 'UPDATE_TOKEN_REQUEST' = 'UPDATE_TOKEN_REQUEST';
+export const UPDATE_TOKEN_SUCCESS: 'UPDATE_TOKEN_SUCCESS' = 'UPDATE_TOKEN_SUCCESS';
+export const UPDATE_TOKEN_FAILED: 'UPDATE_TOKEN_FAILED' = 'UPDATE_TOKEN_FAILED';
+export const GET_USER_REQUEST: 'GET_USER_REQUEST' = 'GET_USER_REQUEST';
+export const GET_USER_SUCCESS: 'GET_USER_SUCCESS' = 'GET_USER_SUCCESS';
+export const GET_USER_FAILED: 'GET_USER_FAILED' = 'GET_USER_FAILED';
+export const LOGOUT_REQUEST: 'LOGOUT_REQUEST' = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS: 'LOGOUT_SUCCESS' = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILED: 'LOGOUT_FAILED' = 'LOGOUT_FAILED';
+export const PATCH_USER_REQUEST: 'PATCH_USER_REQUEST' = 'PATCH_USER_REQUEST';
+export const PATCH_USER_SUCCESS: 'PATCH_USER_SUCCESS' = 'PATCH_USER_SUCCESS';
+export const PATCH_USER_FAILED: 'PATCH_USER_FAILED' = 'PATCH_USER_FAILED';
 
-const valuePasswordPost = (inputEmail) => {
+type TRestorePasswordRequest = {
+  readonly type: typeof RESTORE_PASSWORD_REQUEST,
+}
+
+type TRestorePasswordSuccess = {
+  readonly type: typeof RESTORE_PASSWORD_SUCCESS,
+  success: boolean,
+}
+
+type TRestorePasswordFailed = {
+  readonly type: typeof RESTORE_PASSWORD_FAILED,
+  error: string,
+}
+
+type TResetSuccess = {
+  readonly type: typeof SUCCESS_RESET,
+  success: boolean,
+}
+
+type TRegisterUserRequest = {
+  readonly type: typeof REGISTER_USER_REQUEST,
+}
+
+type TRegisterUserSuccess = {
+  readonly type: typeof REGISTER_USER_SUCCESS,
+  success: boolean,
+  email: string,
+  name: string,
+  accessToken: string,
+  refreshToken: string,
+}
+
+type TRegisterUserFailed = {
+  readonly type: typeof REGISTER_USER_FAILED,
+  error: string,
+}
+
+type TResetPasswordRequest = {
+  readonly type: typeof RESET_PASSWORD_REQUEST,
+}
+
+type TResetPasswordSuccess = {
+  readonly type: typeof RESET_PASSWORD_SUCCESS,
+  reset: boolean,
+}
+
+type TResetPasswordFailed = {
+  readonly type: typeof RESET_PASSWORD_FAILED,
+  error: string,
+}
+
+type TLoginRequest = {
+  readonly type: typeof LOGIN_REQUEST,
+  error: string,
+}
+
+type TLoginSuccess = {
+  readonly type: typeof LOGIN_SUCCESS,
+  error: string,
+}
+
+type TLoginFailed = {
+  readonly type: typeof LOGIN_FAILED,
+  error: string,
+}
+
+const valuePasswordPost = (inputEmail: string) => {
   return {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -37,7 +104,7 @@ const valuePasswordPost = (inputEmail) => {
   }
 }
 
-export const restorePassword = (inputEmail) => {
+export const restorePassword: AppThunk<void> = (inputEmail: string) => {
   return (dispatch) => {
     dispatch({
       type: RESTORE_PASSWORD_REQUEST,
@@ -58,7 +125,7 @@ export const restorePassword = (inputEmail) => {
   }
 }
 
-const registerPost = (inputEmail, inputPassword, inputName) => {
+const registerPost = (inputEmail: string, inputPassword: string, inputName: string) => {
   return {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -70,7 +137,7 @@ const registerPost = (inputEmail, inputPassword, inputName) => {
   }
 }
 
-export const registerUser = (inputEmail, inputPassword, inputName) => {
+export const registerUser: AppThunk<void> = (inputEmail, inputPassword, inputName) => {
   return(dispatch) => {
     dispatch({
       type: REGISTER_USER_REQUEST
@@ -97,7 +164,7 @@ export const registerUser = (inputEmail, inputPassword, inputName) => {
   }
 }
 
-const resetPasswordPost = (inputPassword, inputCode) => {
+const resetPasswordPost = (inputPassword: string, inputCode: string) => {
   return {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -108,7 +175,7 @@ const resetPasswordPost = (inputPassword, inputCode) => {
   }
 }
 
-export const resetPassword = (inputPassword, inputCode) => {
+export const resetPassword: AppThunk<void> = (inputPassword: string, inputCode: string) => {
   return(dispatch) => {
     dispatch({
       type: RESET_PASSWORD_REQUEST
@@ -129,7 +196,7 @@ export const resetPassword = (inputPassword, inputCode) => {
   }
 }
 
-const loginUserPost = (inputEmail, inputPassword) => {
+const loginUserPost = (inputEmail: string, inputPassword: string) => {
   return {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -140,7 +207,7 @@ const loginUserPost = (inputEmail, inputPassword) => {
   }
 }
 
-export const loginUser = (inputEmail, inputPassword) => {
+export const loginUser: AppThunk<void> = (inputEmail: string, inputPassword: string) => {
   return(dispatch) => {
     dispatch({
       type: LOGIN_REQUEST,
@@ -177,7 +244,7 @@ const refreshToken = () => {
   }
 }
 
-export const updateUserToken = () => {
+export const updateUserToken: AppThunk<void> = () => {
   return (dispatch) => {
     dispatch({
       type: UPDATE_TOKEN_REQUEST
@@ -208,7 +275,7 @@ const userGet = () => {
   }
 }
 
-export const getUser = () => {
+export const getUser: AppThunk<void> = () => {
   return(dispatch) => {
     dispatch({
       type: GET_USER_REQUEST
@@ -242,7 +309,7 @@ const userLogoutData = () => {
   }
 }
 
-export const logoutUser = () => {
+export const logoutUser: AppThunk<void> = () => {
   return(dispatch) => {
     dispatch({
       type: LOGOUT_REQUEST
@@ -266,7 +333,7 @@ export const logoutUser = () => {
   }
 }
 
-const patchUserData = (inputEmail, inputName, inputPassword) => {
+const patchUserData = (inputEmail: string, inputName: string, inputPassword: string) => {
   return {
     method: "PATCH",
     headers: {"Content-Type": "application/json", Authorization: "Bearer " + getCookie("accessToken")},
@@ -278,7 +345,7 @@ const patchUserData = (inputEmail, inputName, inputPassword) => {
   }
 }
 
-export const patchUser = (inputEmail, inputName, inputPassword) => {
+export const patchUser: AppThunk<void> = (inputEmail: string, inputName: string, inputPassword: string) => {
   return(dispatch) => {
     dispatch({
       type: PATCH_USER_REQUEST
@@ -300,3 +367,7 @@ export const patchUser = (inputEmail, inputName, inputPassword) => {
       })
   }
 }
+
+export type TRestorePasswordActions = TRestorePasswordRequest | TRestorePasswordSuccess | TRestorePasswordFailed | TResetSuccess;
+export type TRegisterUserActions = TRegisterUserRequest | TRegisterUserSuccess | TRegisterUserFailed;
+export type TResetPasswordActions = TResetPasswordRequest | TResetPasswordSuccess | TResetPasswordFailed;

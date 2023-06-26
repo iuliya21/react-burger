@@ -2,6 +2,7 @@ import {Action, ActionCreator} from "redux";
 import { ThunkAction } from "redux-thunk";
 import store from "../store";
 import { TBurgerConstructorActions, TGetIngredientsActions, TGetNumberOrderActions, TIngredientDetailsActions } from "../actions";
+import { TRegisterUserActions, TResetPasswordActions, TRestorePasswordActions } from "../actions/user";
 
 export type TIngredient = {
   id: string,
@@ -25,6 +26,6 @@ export type TIngredient = {
 export type RootState = ReturnType<typeof store.getState>; //получаем типизацию store.getState
 
 export type AppDispatch = typeof store.dispatch; //получаем типизацию store.dispatch
-type TApplicationActions = TGetIngredientsActions | TGetNumberOrderActions | TIngredientDetailsActions | TBurgerConstructorActions;
+type TApplicationActions = TGetIngredientsActions | TGetNumberOrderActions | TIngredientDetailsActions | TBurgerConstructorActions | TRestorePasswordActions | TRegisterUserActions | TResetPasswordActions;
 
 export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, RootState, Action, TApplicationActions>>;

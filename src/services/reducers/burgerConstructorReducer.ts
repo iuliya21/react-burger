@@ -30,7 +30,7 @@ export const burgerConstructorReducer = (state = initialState, action: TBurgerCo
     case DELETE_INGREDIENT: {
       const newIngredientsState = {...state};
       const indexIngredient = newIngredientsState.ingredients.findIndex(
-        (item) => item._id === action.data.id
+        (item) => item._id === action.data
       );
       console.log(newIngredientsState);
       if (indexIngredient !== -1) {

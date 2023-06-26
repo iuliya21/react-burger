@@ -14,13 +14,6 @@ export const CLEAR_CONSTRUCTOR: 'CLEAR_CONSTRUCTOR' = 'CLEAR_CONSTRUCTOR';
 export const MOVE_INGREDIENT: "MOVE_INGREDIENT" = "MOVE_INGREDIENT";
 export const SELECT_INGREDIENT: 'SELECT_INGREDIENT' = 'SELECT_INGREDIENT';
 export const DELETE_INFO_INGREDIENT: 'DELETE_INFO_INGREDIENT' = 'DELETE_INFO_INGREDIENT';
-export const RESTORE_PASSWORD_REQUEST: 'RESTORE_PASSWORD_REQUEST' = 'RESTORE_PASSWORD_REQUEST';
-export const RESTORE_PASSWORD_SUCCESS: 'RESTORE_PASSWORD_SUCCESS' = 'RESTORE_PASSWORD_SUCCESS';
-export const RESTORE_PASSWORD_FAILED: 'RESTORE_PASSWORD_FAILED' = 'RESTORE_PASSWORD_FAILED';
-export const RESTORE_PASSWORD_RESET: 'RESTORE_PASSWORD_RESET' = 'RESTORE_PASSWORD_RESET';
-export const REGISTER_USER_REQUEST: 'REGISTER_USER_REQUEST' = 'REGISTER_USER_REQUEST';
-export const REGISTER_USER_SUCCESS: 'REGISTER_USER_SUCCESS' = 'REGISTER_USER_SUCCESS';
-export const REGISTER_USER_FAILED: 'REGISTER_USER_FAILED' = 'REGISTER_USER_FAILED';
 
 export const UrlAdress = 'https://norma.nomoreparties.space/api';
 
@@ -78,7 +71,7 @@ export type TAddBun = {
 
 export type TDeleteIngredient = {
   readonly type: typeof DELETE_INGREDIENT,
-  data: TIngredient,
+  data: string, //передаем _id ингредиента
 }
 
 export type TMoveIngredient = {
@@ -158,14 +151,14 @@ export const setOrder: AppThunk<void> = (ingredients: TIngredient[]) => {
 }
 
 
-export const getDetailsIngredient = (ingredient: TIngredient) => {
+export const getDetailsIngredient = (ingredient: TIngredient): TSelectIngredient => {
   return {
     type: SELECT_INGREDIENT,
     data: ingredient,
   };
 }
 
-export const deleteDetailsIngredient = () => {
+export const deleteDetailsIngredient = (): TDeleteInfoIngredient => {
   return {
     type: DELETE_INFO_INGREDIENT,
   };

@@ -16,6 +16,7 @@ function PasswordForgot() {
   const handlerSubmit = (e) => {
     e.preventDefault();
     dispatch(restorePassword(values.email));
+    
   }
 
   if (isSuccessPost) {
