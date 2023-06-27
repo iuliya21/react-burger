@@ -1,16 +1,21 @@
 import { useRef, RefObject } from "react";
-import {useDrop, useDrag} from "react-dnd";
-import { useDispatch } from "react-redux";
+import {useDrop, useDrag, XYCoord } from "react-dnd";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor-sorted.module.css";
 import { DELETE_INGREDIENT } from "../../services/actions";
 import { TIngredient } from "../../services/types/types";
 import { useAppDispatch } from "../../hooks/customHooks";
 
+
 type TIngredientSorted = {
   index: number,
   ing: TIngredient,
   moveIngredient: Function,
+}
+
+type TDragItem = {
+    index: number,
+    type: string
 }
 
 function BurgerConstructorSorted(props: TIngredientSorted) {
@@ -28,21 +33,21 @@ function BurgerConstructorSorted(props: TIngredientSorted) {
     })
   }
 
-  const [, drop] = useDrop({
+  const [, drop] = useDrop<TDragItem>({
     accept: 'ingredientList',
-    hover(item: any, monitor) {
+    hover(item, monitor) {
       if (!ref.current) {
           return;
       }
-      const dragIndex: any = item.index;
+      const dragIndex = item.index;
       const hoverIndex = index;
       if(dragIndex === hoverIndex) {
         return;
       }
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      const clientOffset: any = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }

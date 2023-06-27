@@ -3,26 +3,27 @@ import styles from "./feed-info.module.css";
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { diffToString, diffDays } from "../../utils";
 import { v4 as uuidv4 } from 'uuid';
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, Location } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAppSelector } from "../../hooks/customHooks";
+import { TIngredient, TOrder } from "../../services/types/types";
 
 function FeedInfo() {
 
-  const { id } = useParams();
-  const location = useLocation();
+  const { id } = useParams<{ id: string }>();
+  const location: Location = useLocation();
   const checkLocation = location.pathname.includes('feed');
-
-  const [order, setOrder] = useState();
-  const orders = useSelector(store => store.wsFeed.orders);
-  const ordersUser = useSelector(store => store.wsFeedUser.orders);
+  const [order, setOrder] = useState<TOrder|null>(null);
+  const orders = useAppSelector(store => store.wsFeed.orders);
+  const ordersUser = useAppSelector(store => store.wsFeedUser.orders);
 
   const ordersCurrent = checkLocation === true ? orders : ordersUser;
   
   useEffect(() => {
-    setOrder(ordersCurrent.find(order => order._id === id));
-  }, [ordersCurrent]);
+    setOrder(ordersCurrent.find(order => order._id === id) || null);
+  }, [id, ordersCurrent]);
   
-  const ingredients = useSelector(store => store.ingredients.data); // все ингредиенты с сервера
+  const ingredients = useAppSelector(store => store.ingredients.data); // все ингредиенты с сервера
 
   if (order) {
     const status = order.status === 'done' ? 'Выполнен' : 'Готовится';
@@ -31,23 +32,23 @@ function FeedInfo() {
     const diffDate = diffDays(orderDate, todayDate);
     const orderMinutes = orderDate.getMinutes().toString().length < 2 ? `0${orderDate.getMinutes()}` : orderDate.getMinutes();
 
-    const totalPrice = (burger) => {
+    const totalPrice = (burger: string[]) => {
       let sum = 0;
       burger.forEach(ing => {
         if (ing !== null) {
-          sum += ingredients.find(el => el._id === ing).price;
+          sum += ingredients?.find(el => el._id === ing)?.price ?? 0;
         }
       });
       return sum;
     }
 
-    const countDublicate = (arr) => {
-      const counts = {};
+    const countDublicate = (arr: string[]): { [key: string]: number } => {
+      const counts: { [key: string]: number } = {};
       arr.forEach(el => {
         const item = el;
         counts[item] = counts[item] ? counts[item] + 1 : 1;
       });
-      const duplicates = {};
+      const duplicates: { [key: string]: number } = {};
       for (const item in counts) {
         if (counts[item] >= 1) {
           duplicates[item] = counts[item];
@@ -68,14 +69,14 @@ function FeedInfo() {
         <h2 className="text text_type_main-medium mb-6">Состав:</h2>
         <ul className={styles.list}>
           {orderSorted.map((ing, i) => {
-            const price = ingredients.find((el) => el._id === ing).price;
+            const price = ingredients?.find((el: TIngredient) => el._id === ing)?.price;
             return (
               <li key={uuidv4()} className={styles.ingredients}>
                 <div className={styles.ingredientInfo}>
-                  <img src={ingredients.find((el) => el._id === ing).image_mobile}
-                    alt={ingredients.find((el) => el._id === ing).name}
+                  <img src={ingredients?.find((el: TIngredient) => el._id === ing)?.image_mobile}
+                    alt={ingredients?.find((el: TIngredient) => el._id === ing)?.name}
                     className={styles.image} />
-                  <p className={`${styles.text} text text_type_main-default`}>{ingredients.find((el) => el._id === ing).name}</p>
+                  <p className={`${styles.text} text text_type_main-default`}>{ingredients?.find((el: TIngredient) => el._id === ing)?.name}</p>
                 </div>
                 <div className={`${styles.priceIngredient}`}>
                   <p className="text text_type_digits-default">{`${countSorted[i]} x ${price}`}</p>
