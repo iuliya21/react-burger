@@ -23,6 +23,8 @@ export type TIngredient = {
   key?: string,
   uuid?: string,
   _id: string,
+  index?: number,
+  props?: any,
 }
 
 export type TOrder = {
@@ -33,6 +35,15 @@ export type TOrder = {
   status: string,
   updateAt: string,
   _id: string,
+}
+
+export type TWsActions = {
+  wsStart: any,
+  wsClose: any,
+  onOpen: any,
+  onClose: any,
+  onError: any,
+  onMessage: any,
 }
 
 export type RootState = ReturnType<typeof store.getState>; //получаем типизацию store.getState

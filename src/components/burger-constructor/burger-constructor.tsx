@@ -9,6 +9,7 @@ import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constru
 import { v4 as uuidv4 } from 'uuid';
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/customHooks";
+import { TIngredient } from "../../services/types/types";
 
 function BurgerConstructor() {
 
@@ -16,8 +17,8 @@ function BurgerConstructor() {
   const [disabled, setDisabled] = useState(true);
 
   const dispatch = useAppDispatch();
-  // const navigation: NavigateFunction = useNavigate();
-  const navigation = useNavigate();
+  const navigation: NavigateFunction = useNavigate();
+
   
   const ingredients = useAppSelector(store => store.burgerIngredients.ingredients); // ингредиенты из стора
   const bun = useAppSelector(store => store.burgerIngredients.bun); // булки из стора
@@ -26,7 +27,6 @@ function BurgerConstructor() {
   const burger = [...buns, ...ingredients, ...buns];
   const loader = useAppSelector(store => store.numberOrder.loading);
   
-
   useEffect(() => {
     checkBurger();
   }, [burger])
@@ -41,7 +41,7 @@ function BurgerConstructor() {
 
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",
-    drop(item) {
+    drop(item: TIngredient) {
       if(item.props.type === 'bun') {
         dispatch({
           type: ADD_BUN,
@@ -49,7 +49,7 @@ function BurgerConstructor() {
         })
       } 
       else {
-        addIngredient(item, uuidv4());
+        addIngredient(item);
       }
     },
     collect: (monitor) => ({
@@ -59,7 +59,7 @@ function BurgerConstructor() {
 
   const outlineColor = isHover ? 'lightgreen' : '#131316';
 
-  const addIngredient = (ing) => {
+  const addIngredient = (ing: TIngredient) => {
     const uuid = uuidv4();
     dispatch({
       type: ADD_INGREDIENT,
@@ -69,7 +69,7 @@ function BurgerConstructor() {
     checkBurger();
   }
 
-  const moveIngredient = useCallback((dragIndex, hoverIndex) => {
+  const moveIngredient = useCallback((dragIndex: number, hoverIndex: number): void => {
     dispatch({
       type: MOVE_INGREDIENT,
       itemFrom: dragIndex,

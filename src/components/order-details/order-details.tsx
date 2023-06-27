@@ -1,8 +1,12 @@
 import Loader from "../loader/loader";
 import styles from "./order-details.module.css";
-import PropTypes from "prop-types";
 
-function OrderDetails({ numberOrder, loader }) {
+type TOrderDetails = {
+  numberOrder: number,
+  loader: boolean,
+}
+
+function OrderDetails({ numberOrder, loader }: TOrderDetails) {
 
   return (
     <div className={styles.container}>
@@ -15,10 +19,4 @@ function OrderDetails({ numberOrder, loader }) {
     </div>
   )
 }
-
-OrderDetails.propTypes = {
-  numberOrder: PropTypes.number,
-  loader: PropTypes.bool,
-}
-
 export default OrderDetails;
