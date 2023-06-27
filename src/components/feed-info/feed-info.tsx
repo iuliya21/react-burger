@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
 import styles from "./feed-info.module.css";
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { diffToString, diffDays } from "../../utils";
