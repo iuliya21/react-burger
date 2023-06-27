@@ -81,16 +81,84 @@ type TResetPasswordFailed = {
 
 type TLoginRequest = {
   readonly type: typeof LOGIN_REQUEST,
-  error: string,
 }
 
 type TLoginSuccess = {
   readonly type: typeof LOGIN_SUCCESS,
-  error: string,
+  authorizedUser: boolean,
+  accessToken: string,
+  refreshToken: string,
+  email: string,
+  name: string,
+  success: boolean,
 }
 
 type TLoginFailed = {
   readonly type: typeof LOGIN_FAILED,
+  error: string,
+}
+
+type TUpdateTokenRequest = {
+  readonly type: typeof UPDATE_TOKEN_REQUEST,
+}
+
+type TUpdateTokenSuccess = {
+  readonly type: typeof UPDATE_TOKEN_SUCCESS,
+  accessToken: string,
+  refreshToken: string,
+}
+
+type TUpdateTokenFailed = {
+  readonly type: typeof UPDATE_TOKEN_FAILED,
+  error: string,
+}
+
+type TGetUserRequest = {
+  readonly type: typeof GET_USER_REQUEST,
+}
+
+type TGetUserSuccess = {
+  readonly type: typeof GET_USER_SUCCESS,
+  email: string,
+  name: string,
+  success: boolean,
+}
+
+type TGetUserFailed = {
+  readonly type: typeof GET_USER_FAILED,
+  error: string,
+}
+
+type TLogoutRequest = {
+  readonly type: typeof LOGOUT_REQUEST,
+}
+
+type TLogoutSuccess = {
+  readonly type: typeof LOGOUT_SUCCESS,
+  accessToken: string,
+  refreshToken: string,
+  success: boolean,
+}
+
+type TLogoutFailed = {
+  readonly type: typeof LOGOUT_FAILED,
+  error: string,
+}
+
+type TPatchUserRequest = {
+  readonly type: typeof PATCH_USER_REQUEST,
+}
+
+type TPatchUserSuccess = {
+  readonly type: typeof PATCH_USER_SUCCESS,
+  email: string,
+  name: string,
+  success: boolean,
+}
+
+
+type TPatchUserFailed = {
+  readonly type: typeof PATCH_USER_FAILED,
   error: string,
 }
 
@@ -211,6 +279,7 @@ export const loginUser: AppThunk<void> = (inputEmail: string, inputPassword: str
   return(dispatch) => {
     dispatch({
       type: LOGIN_REQUEST,
+      
     });
     request('auth/login', loginUserPost(inputEmail, inputPassword))
     .then((res) => {
@@ -222,7 +291,8 @@ export const loginUser: AppThunk<void> = (inputEmail: string, inputPassword: str
             accessToken: res.accessToken,
             refreshToken: res.refreshToken,
             email: res.user.email,
-            name: res.user.name
+            name: res.user.name,
+            success: res.success,
           });
     })
     .catch(err => {
@@ -321,7 +391,8 @@ export const logoutUser: AppThunk<void> = () => {
         dispatch({
           type: LOGOUT_SUCCESS,
           accessToken: "",
-          refreshToken: ""
+          refreshToken: "",
+          success: res.success,
         });
       })
     .catch(err => {
@@ -371,3 +442,8 @@ export const patchUser: AppThunk<void> = (inputEmail: string, inputName: string,
 export type TRestorePasswordActions = TRestorePasswordRequest | TRestorePasswordSuccess | TRestorePasswordFailed | TResetSuccess;
 export type TRegisterUserActions = TRegisterUserRequest | TRegisterUserSuccess | TRegisterUserFailed;
 export type TResetPasswordActions = TResetPasswordRequest | TResetPasswordSuccess | TResetPasswordFailed;
+export type TLoginActions = TLoginRequest | TLoginSuccess | TLoginFailed;
+export type TUpdateTokenActions = TUpdateTokenRequest | TUpdateTokenSuccess | TUpdateTokenFailed;
+export type TGetUserActions = TGetUserRequest | TGetUserSuccess | TGetUserFailed;
+export type TLogoutActions = TLogoutRequest | TLogoutSuccess | TLogoutFailed;
+export type TPatchUserActions = TPatchUserRequest | TPatchUserSuccess | TPatchUserFailed;

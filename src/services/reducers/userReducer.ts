@@ -22,9 +22,31 @@ import {
   LOGOUT_SUCCESS, 
   LOGOUT_FAILED,
   PATCH_USER_REQUEST,
-  PATCH_USER_SUCCESS } from "../actions/user";
+  PATCH_USER_SUCCESS,
+  PATCH_USER_FAILED,
+  TRegisterUserActions,
+  TRestorePasswordActions,
+  TResetPasswordActions,
+  TLoginActions,
+  TUpdateTokenActions,
+  TGetUserActions,
+  TLogoutActions,
+  TPatchUserActions} from "../actions/user";
 
-const initialState = {
+type TUserActions = {
+  loading: boolean,
+  success: boolean,
+  email: string,
+  name: string,
+  accessToken: string,
+  refreshToken: string,
+  error: string,
+  authorizedUser: boolean,
+  failed: boolean,
+  reset: boolean,
+}
+
+const initialState: TUserActions = {
   loading: false,
   success: false,
   email: "",
@@ -37,7 +59,8 @@ const initialState = {
   reset: false,
 }
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TRegisterUserActions | TRestorePasswordActions | 
+  TResetPasswordActions | TLoginActions | TUpdateTokenActions | TGetUserActions | TLogoutActions | TPatchUserActions): TUserActions => {
   switch(action.type) {
     case REGISTER_USER_REQUEST: {
       return {
@@ -114,7 +137,6 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        authorizedUser: action.authorizedUser
       };
     }
     case LOGIN_SUCCESS: {
@@ -216,7 +238,7 @@ export const userReducer = (state = initialState, action) => {
         success: action.success
       }
     }
-    case LOGOUT_FAILED: {
+    case PATCH_USER_FAILED: {
       return {
         ...state,
         failed: true,
