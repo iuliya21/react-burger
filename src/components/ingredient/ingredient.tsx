@@ -1,19 +1,27 @@
-import { useSelector } from "react-redux";
 import { useDrag } from 'react-dnd/dist/hooks';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient.module.css';
-import PropTypes from 'prop-types';
 import { useNavigate, useMatch } from 'react-router-dom';
+import { useAppSelector } from "../../hooks/customHooks";
 
-function Ingredient(props) {
+type TIngredientProps = {
+  name: string,
+  price: number,
+  image: string,
+  openModal: Function,
+  _id: string,
+  type: string,
+}
+
+function Ingredient(props: TIngredientProps) {
 
   const {name, price, image, openModal, _id, type} = props;
   const navigate = useNavigate();
   const match = useMatch('ingredients/:id');
   const { id } = match?.params || {};
 
-  let countIngredients = useSelector(store => store.burgerIngredients.ingredients.filter(ing => ing._id === _id).length);
-  const bun = useSelector(store => store.burgerIngredients.bun);
+  let countIngredients = useAppSelector(store => store.burgerIngredients.ingredients.filter(ing => ing._id === _id).length);
+  const bun = useAppSelector(store => store.burgerIngredients.bun);
   const buns = bun.slice(bun.length - 1);
   let countBun = buns.filter(ing => ing._id === _id).length * 2;
 
@@ -43,14 +51,5 @@ function Ingredient(props) {
     </li>
   )
 }
-
-Ingredient.propTypes = {
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  openModal: PropTypes.func.isRequired,
-  _id: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-};
 
 export default Ingredient;

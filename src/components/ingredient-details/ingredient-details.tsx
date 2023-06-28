@@ -2,18 +2,22 @@ import { useSelector } from "react-redux";
 import styles from "./ingredient-details.module.css";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { TIngredient } from "../../services/types/types";
+import { useAppSelector } from "../../hooks/customHooks";
 
 function IngredientDetails() {
 
   const { id } = useParams();
-  const [ingredient, setElement] = useState(null);
+  const [ingredient, setElement] = useState<TIngredient | null>(null);
 
-  const ingredients = useSelector(store => store.ingredients.data);
+  const ingredients = useAppSelector(store => store.ingredients.data);
 
-  useEffect(()=>{
-    setElement(ingredients.find(ing => ing._id === id))
-  }, [ingredients]);
-  
+  useEffect(() => {
+    const foundIngredient = ingredients ? ingredients.find(ing => ing._id === id) : null;
+    setElement(foundIngredient || null);
+  }, [ingredients, id]);
+
+
   return ingredient ? (
     <div className={styles.container}>
       <div className={styles.header}>

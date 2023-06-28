@@ -1,4 +1,5 @@
 import { Action, ActionCreator } from "redux";
+import { ReactElement } from "react";
 import { ThunkAction } from "redux-thunk";
 import store from "../store";
 import { TBurgerConstructorActions, TGetIngredientsActions, TGetNumberOrderActions, TIngredientDetailsActions } from "../actions";
@@ -44,6 +45,11 @@ export type TWsActions = {
   onClose: any,
   onError: any,
   onMessage: any,
+}
+
+export type TModal = {
+  children: ReactElement,
+  onClosePopup: () => void,
 }
 
 export type RootState = ReturnType<typeof store.getState>; //получаем типизацию store.getState

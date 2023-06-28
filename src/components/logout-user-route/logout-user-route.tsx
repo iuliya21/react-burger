@@ -1,14 +1,14 @@
 import { Navigate } from "react-router-dom";
-import PropTypes from 'prop-types';
+import { ReactElement } from 'react';
 
-function LogoutUserRoute ({element}) {
+type TLogoutUser = {
+  element: ReactElement,
+}
+
+function LogoutUserRoute ({ element }: TLogoutUser) {
   const isLogin = localStorage.getItem("refreshToken");
 
   return !isLogin ? element : <Navigate to="/react-burger"/>;
 }
-
-LogoutUserRoute.propTypes = {
-  element: PropTypes.element.isRequired
-};
 
 export default LogoutUserRoute;

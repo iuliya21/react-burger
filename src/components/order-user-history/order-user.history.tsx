@@ -7,24 +7,26 @@ import { getCookie } from "../../utils/cookieFunction";
 import { diffToString, diffDays } from "../../utils";
 import { v4 as uuidv4 } from 'uuid';
 import { useModal } from "../../hooks/useModal";
-import { useLocation, useNavigate, useParams, Outlet } from "react-router-dom";
+import { useLocation, useNavigate, useParams, Outlet, Location } from "react-router-dom";
 import Modal from "../modal/modal";
 import FeedInfo from "../feed-info/feed-info";
+import { useAppDispatch, useAppSelector } from "../../hooks/customHooks";
+import { TIngredient } from "../../services/types/types";
 
 
 function OrdersUserHistory() {
 
   const params = useParams();
-  const location = useLocation();
-  const background = location.state?.background;
+  const location: Location = useLocation();
+  const background: boolean = location.state?.background;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isModalOpen, openModal, closeModal } = useModal();
   const navigate = useNavigate();
 
-  const orders = useSelector(store => store.wsFeedUser.orders);
-  const authUser = useSelector(store => store.user.authorizedUser);
-  const ingredients = useSelector(store => store.ingredients.data);
+  const orders = useAppSelector(store => store.wsFeedUser.orders);
+  const authUser = useAppSelector(store => store.user.authorizedUser);
+  const ingredients = useAppSelector(store => store.ingredients.data);
 
   useEffect(() => {
     dispatch({
@@ -38,24 +40,31 @@ function OrdersUserHistory() {
     };
   }, [authUser]);
 
-  const hideModal = () => {
-    closeModal();
-    navigate('/react-burger/profile/orders')
-  }
+  const getIngredientPrice = (ing: TIngredient | string) => {
+    const ingredient = ingredients?.find(el => el._id === ing);
+    return ingredient ? ingredient.price : 0;
+  };
 
-  const totalPrice = (burger) => {
+  const totalPrice = (burger: TIngredient[] | string[]) => {
     let sum = 0;
     burger.forEach(ing => {
       if (ing !== null) {
-        sum += ingredients.find(el => el._id === ing).price;
+        sum += getIngredientPrice(ing);
       }
     });
     return sum;
   }
 
-  return (params.id && !background) ? 
-  (<Outlet />) :
-  (<div className={styles.container}>
+  const hideModal = () => {
+    closeModal();
+    navigate('/react-burger/profile/orders')
+  }
+
+
+
+  return (params.id && !background) ?
+    (<Outlet />) :
+    (<div className={styles.container}>
       <ul className={styles.list}>
         {orders.map((order) => {
           const _id = order._id;
@@ -68,7 +77,7 @@ function OrdersUserHistory() {
           const orderMinutes = orderDate.getMinutes().toString().length < 2 ? `0${orderDate.getMinutes()}` : orderDate.getMinutes();
           return (
             <li className={styles.element} key={_id} onClick={() => {
-              
+
               navigate(`/react-burger/profile/orders/${_id}`, { state: { background: true } });
               openModal();
             }}>
@@ -91,8 +100,8 @@ function OrdersUserHistory() {
                       if (index > 0 && index <= 5) {
                         return (
                           <li key={uuidv4()} style={{ zIndex: index }} className={styles.ingredient}>
-                            <img src={ingredients.find((el) => el._id === ingredient).image_mobile}
-                              alt={ingredients.find((el) => el._id === ingredient).name}
+                            <img src={ingredients?.find((el) => el._id === ingredient)?.image_mobile}
+                              alt={ingredients?.find((el) => el._id === ingredient)?.name}
                               className={styles.image} />
                           </li>
                         )
@@ -102,8 +111,8 @@ function OrdersUserHistory() {
                           return (
                             <li key={uuidv4()} style={{ zIndex: index }} className={`${styles.ingredient} ${styles.last}`}>
                               <p className={`${styles.text}`}>+{order.ingredients.length - 5}</p>
-                              <img src={ingredients.find((el) => el._id === ingredient).image_mobile}
-                                alt={ingredients.find((el) => el._id === ingredient).name}
+                              <img src={ingredients?.find((el) => el._id === ingredient)?.image_mobile}
+                                alt={ingredients?.find((el) => el._id === ingredient)?.name}
                                 className={styles.image} />
                             </li>
                           )
@@ -123,9 +132,9 @@ function OrdersUserHistory() {
       </ul>
 
       {isModalOpen &&
-      <Modal onClosePopup={hideModal}>
-        <FeedInfo />
-      </Modal>}
+        <Modal onClosePopup={hideModal}>
+          <FeedInfo />
+        </Modal>}
     </div>
     )
 }
