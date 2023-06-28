@@ -1,19 +1,20 @@
 import styles from "./login.module.css";
 import { EmailInput, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from "../services/actions/user";
 import { useForm } from "../hooks/useForm";
+import { useAppDispatch, useAppSelector } from "../hooks/customHooks";
 
 function Login() {
-
-  const { values, handleChange } = useForm({ email: '', password: ''});
-  const dispatch = useDispatch();
+  
+  const { values, handleChange } = useForm();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const isSuccessLogin = useSelector(store => store.user.authorizedUser);
+  const isSuccessLogin = useAppSelector(store => store.user.authorizedUser);
 
-  const handlerSubmit = (e) => {
+  const handlerSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     dispatch(loginUser(values.email, values.password));
   }

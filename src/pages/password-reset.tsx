@@ -1,16 +1,16 @@
 import styles from "./password-reset.module.css";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from 'react-router-dom';
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { SUCCESS_RESET, resetPassword } from "../services/actions/user";
 import { useForm } from "../hooks/useForm";
+import { useAppDispatch, useAppSelector } from "../hooks/customHooks";
 
 function PasswordReset() {
 
-  const dispatch = useDispatch();
-  const isSuccessReset = useSelector(store => store.user.reset);
-  const { values, handleChange } = useForm({ password: '', code: ''});
+  const dispatch = useAppDispatch();
+  const isSuccessReset = useAppSelector(store => store.user.reset);
+  const { values, handleChange } = useForm();
 
   useEffect(() => {
     dispatch({
@@ -18,7 +18,7 @@ function PasswordReset() {
     });
   }, []);
 
-  const handlerSubmit = (e) => {
+  const handlerSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     dispatch(resetPassword(values.password, values.code));
   }
@@ -40,7 +40,7 @@ function PasswordReset() {
       <Input
         type={'text'}
         placeholder={'Введите код из письма'}
-        value={values.code}
+        value={values.code || ""}
         onChange={handleChange}
         name={'code'}
         error={false}

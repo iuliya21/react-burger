@@ -1,16 +1,16 @@
-import { useDispatch } from "react-redux";
 import styles from "./profile.module.css";
-import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate, useParams, Location } from 'react-router-dom';
 import { logoutUser } from "../services/actions/user";
+import { useAppDispatch } from "../hooks/customHooks";
 
 function Profile() {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const params = useParams();
-  const location = useLocation();
-  const background = location.state?.background;
+  const location: Location = useLocation();
+  const background: boolean = location.state?.background;
 
   const handlerLogout = () => {
     dispatch(logoutUser());

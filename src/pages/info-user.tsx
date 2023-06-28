@@ -1,17 +1,18 @@
 import styles from "./info-user.module.css";
-import { useRef, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useRef, useEffect, ChangeEvent } from "react";
 import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { patchUser, getUser } from "../services/actions/user";
 import { useModal } from "../hooks/useModal";
 import Modal from "../components/modal/modal";
 import { useForm } from "../hooks/useForm";
+import { useAppSelector, useAppDispatch } from "../hooks/customHooks";
 
 function UserInfo() {
-  const {name, email, success} = useSelector(store => store.user);
-  const inputRef = useRef(null);
-  const dispatch = useDispatch();
-  const { values, handleChange, setValues } = useForm({ name: '', email: '', password: ''});
+  
+  const {name, email, success} = useAppSelector(store => store.user);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
+  const { values, handleChange, setValues } = useForm();
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
@@ -29,26 +30,29 @@ function UserInfo() {
   }, [name, email]);
 
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0);
-    inputRef.current.disabled = false;
-    inputRef.current.classList.remove('input__textfield-disabled');
+      const inputElement = inputRef.current as HTMLInputElement;
+      setTimeout(() => inputElement.focus(), 0);
+      inputElement.disabled = false;
+      inputElement.classList.remove('input__textfield-disabled');
+    
   }
 
   const onBlur = () => {
-    inputRef.current.disabled = true;
-    inputRef.current.classList.add('input__textfield-disabled');
+    const inputElement = inputRef.current as HTMLInputElement;
+    inputElement.disabled = true;
+    inputElement.classList.add('input__textfield-disabled');
   }
 
   const handlerCancel = () => {
-    setValues({name: name, email: email, password: '********'})
+    setValues({name: name, email: email, password: ''})
   }
 
-  const handlerSubmit = (e) => {
+  const handlerSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    dispatch(patchUser(values.email, values.name, values.password));
-    if(success) {
-      showModal();
-    }
+      dispatch(patchUser(values.email, values.name, values.password));
+      if(success) {
+        showModal();
+      }
   }
 
   return (

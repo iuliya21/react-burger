@@ -1,19 +1,18 @@
 import styles from "./password-forgot.module.css";
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from 'react-router-dom';
 import { restorePassword } from "../services/actions/user";
 import { useForm } from "../hooks/useForm";
+import { useAppDispatch, useAppSelector } from "../hooks/customHooks";
 
 function PasswordForgot() {
 
-  const dispatch = useDispatch();
-  const isSuccessPost = useSelector(store => store.user.success);
+  const dispatch = useAppDispatch();
+  const isSuccessPost = useAppSelector(store => store.user.success);
 
-  const { values, handleChange } = useForm({ email: ''});
+  const { values, handleChange } = useForm();
 
-  const handlerSubmit = (e) => {
+  const handlerSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     dispatch(restorePassword(values.email));
     

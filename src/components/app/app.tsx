@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Routes, Route } from 'react-router-dom';
 import AppHeader from "../app-header/app-header";
 import Main from "../main/main";
-import Login from "../../pages/login.jsx";
+import Login from "../../pages/login";
 import Registration from "../../pages/registration";
 import PasswordForgot from "../../pages/password-forgot";
 import PasswordReset from "../../pages/password-reset";

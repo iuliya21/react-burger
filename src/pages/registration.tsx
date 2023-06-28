@@ -5,14 +5,15 @@ import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 import { registerUser } from "../services/actions/user";
 import { useForm } from "../hooks/useForm";
+import { useAppDispatch } from "../hooks/customHooks";
 
 function Registration() {
 
-  const dispatch = useDispatch();
-  const inputRefName = useRef(null);
-  const { values, handleChange } = useForm({ name: '', email: '', password: '', });
+  const dispatch = useAppDispatch();
+  const inputRefName = useRef<HTMLInputElement>(null);
+  const { values, handleChange } = useForm();
 
-  const handlerSubmit = (e) => {
+  const handlerSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     dispatch(registerUser(values.email, values.password, values.name));
   }
