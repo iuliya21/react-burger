@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, KeyboardEvent } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './modal.module.css';
@@ -16,10 +16,10 @@ function Modal({ children, onClosePopup }: TModal) {
       }
     };
 
-    document.addEventListener("keydown", closeByEsc as unknown as EventListener);
+    document.addEventListener("keydown", closeByEsc);
 
     return () => {
-      document.removeEventListener("keydown", closeByEsc as unknown as EventListener);
+      document.removeEventListener("keydown", closeByEsc);
     }
   }, []);
 

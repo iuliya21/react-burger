@@ -13,28 +13,28 @@ type TWsUserPayload = {
   totalToday: number,
 }
 
-type TWsConnectionUserStart = {
+export type TWsConnectionUserStart = {
   readonly type: typeof WS_CONNECTION_START_USER,
 }
 
-type TWsConnectionUserSuccess = {
+export type TWsConnectionUserSuccess = {
   readonly type: typeof WS_CONNECTION_SUCCESS_USER,
 }
 
-type TWsConnectionUserError = {
+export type TWsConnectionUserError = {
   readonly type: typeof WS_CONNECTION_ERROR_USER,
 }
 
-type TWsConnectionUserEClosed = {
+export type TWsConnectionUserEClosed = {
   readonly type: typeof WS_CONNECTION_CLOSED_USER,
 }
 
-type TWsGetMessageUser = {
+export type TWsGetMessageUser = {
   readonly type: typeof WS_GET_MESSAGE_USER,
   payload: TWsUserPayload,
 }
 
-type TWsUserCloseConnection = {
+export type TWsUserCloseConnection = {
   readonly type: typeof WS_CLOSE_CONNECTION_USER,
 }
 

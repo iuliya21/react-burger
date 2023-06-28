@@ -1,5 +1,5 @@
 import styles from "./info-user.module.css";
-import { useRef, useEffect, ChangeEvent } from "react";
+import { useRef, useEffect, FormEvent } from "react";
 import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { patchUser, getUser } from "../services/actions/user";
 import { useModal } from "../hooks/useModal";
@@ -47,7 +47,7 @@ function UserInfo() {
     setValues({name: name, email: email, password: ''})
   }
 
-  const handlerSubmit = (e: { preventDefault: () => void; }) => {
+  const handlerSubmit = (e: FormEvent) => {
     e.preventDefault();
       dispatch(patchUser(values.email, values.name, values.password));
       if(success) {

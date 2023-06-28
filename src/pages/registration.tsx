@@ -1,6 +1,6 @@
 import styles from "./registration.module.css";
 import { EmailInput, Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState, useRef } from "react";
+import { useRef, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 import { registerUser } from "../services/actions/user";
@@ -13,7 +13,7 @@ function Registration() {
   const inputRefName = useRef<HTMLInputElement>(null);
   const { values, handleChange } = useForm();
 
-  const handlerSubmit = (e: { preventDefault: () => void; }) => {
+  const handlerSubmit = (e: FormEvent) => {
     e.preventDefault();
     dispatch(registerUser(values.email, values.password, values.name));
   }

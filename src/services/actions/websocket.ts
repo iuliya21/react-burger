@@ -13,29 +13,31 @@ type TWsPayload = {
   totalToday: number,
 }
 
-type TWsConnectionStart = {
+export type TWsConnectionStart = {
   readonly type: typeof WS_CONNECTION_START,
 }
 
-type TWsConnectionSuccess = {
+export type TWsConnectionSuccess = {
   readonly type: typeof WS_CONNECTION_SUCCESS,
 }
 
-type TWsConnectionError = {
+export type TWsConnectionError = {
   readonly type: typeof WS_CONNECTION_ERROR,
 }
 
-type TWsConnectionClosed = {
+export type TWsConnectionClosed = {
   readonly type: typeof WS_CONNECTION_CLOSED,
 }
 
-type TWsGetMessage = {
+export type TWsGetMessage = {
   readonly type: typeof WS_GET_MESSAGE,
   payload: TWsPayload,
 }
 
-type TWsCloseConnection = {
+export type TWsCloseConnection = {
   readonly type: typeof WS_CLOSE_CONNECTION,
 }
+
+
 
 export type TWebSocketActions = TWsConnectionStart | TWsConnectionSuccess | TWsConnectionError | TWsConnectionClosed | TWsGetMessage | TWsCloseConnection;

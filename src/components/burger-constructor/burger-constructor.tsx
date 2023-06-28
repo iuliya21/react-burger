@@ -7,7 +7,7 @@ import OrderDetails from "../order-details/order-details";
 import { setOrder, ADD_INGREDIENT, ADD_BUN, MOVE_INGREDIENT } from "../../services/actions";
 import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constructor-sorted";
 import { v4 as uuidv4 } from 'uuid';
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/customHooks";
 import { TIngredient } from "../../services/types/types";
 
@@ -17,7 +17,7 @@ function BurgerConstructor() {
   const [disabled, setDisabled] = useState(true);
 
   const dispatch = useAppDispatch();
-  const navigation: NavigateFunction = useNavigate();
+  const navigation = useNavigate();
 
   
   const ingredients = useAppSelector(store => store.burgerIngredients.ingredients); // ингредиенты из стора
@@ -42,10 +42,11 @@ function BurgerConstructor() {
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",
     drop(item: TIngredient) {
-      if(item.props.type === 'bun') {
+      // console.log(item.ingredient.type);
+      if(item.ingredient.type === 'bun') {
         dispatch({
           type: ADD_BUN,
-          data: item.props,
+          data: item.ingredient,
         })
       } 
       else {
@@ -59,11 +60,11 @@ function BurgerConstructor() {
 
   const outlineColor = isHover ? 'lightgreen' : '#131316';
 
-  const addIngredient = (ing: TIngredient) => {
+  const addIngredient = (data: TIngredient) => {
     const uuid = uuidv4();
     dispatch({
       type: ADD_INGREDIENT,
-      data: ing.props,
+      data: data.ingredient,
       uuid: uuid,
     })
     checkBurger();

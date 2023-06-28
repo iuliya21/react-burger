@@ -24,7 +24,7 @@ function BurgerConstructorSorted(props: TIngredientSorted) {
   const { index, moveIngredient } = props;
 
   const dispatch = useAppDispatch();
-  const ref = useRef() as RefObject<HTMLDivElement>;
+  const ref = useRef<HTMLDivElement>(null);
 
   const removeIngredient = (ing: TIngredient) => {
     dispatch({

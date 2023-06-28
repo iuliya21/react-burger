@@ -84,7 +84,7 @@ function BurgerIngredients() {
         <ul className={styles.listElements}>
           {ingredients.map(obj => {
             if(obj.type === "bun") {
-              return <Ingredient key={obj._id} {...obj} openModal={() => showModal(obj)} />
+              return <Ingredient key={obj._id} ingredient={obj} openModal={() => showModal(obj)} />
             }
           })}
         </ul>
@@ -92,7 +92,7 @@ function BurgerIngredients() {
         <ul className={styles.listElements}>
           {ingredients.map(obj => {
             if(obj.type === "sauce") {
-              return <Ingredient key={obj._id} {...obj} openModal={() => showModal(obj)} />
+              return <Ingredient key={obj._id} ingredient={obj} openModal={() => showModal(obj)} />
             }
           })}
         </ul>
@@ -100,7 +100,7 @@ function BurgerIngredients() {
         <ul className={styles.listElements}>
           {ingredients.map(obj => {
             if(obj.type === "main") {
-              return <Ingredient key={obj._id} {...obj} openModal={() => showModal(obj)} />
+              return <Ingredient key={obj._id} ingredient={obj} openModal={() => showModal(obj)} />
             }
           })}
         </ul>

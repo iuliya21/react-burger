@@ -1,4 +1,4 @@
-import { request } from "./index";
+import { TServerResponse, request } from "./index";
 import { setCookie, getCookie } from "../../utils/cookieFunction";
 import { AppThunk } from "../types/types";
 
@@ -172,12 +172,16 @@ const valuePasswordPost = (inputEmail: string) => {
   }
 }
 
+type TRestorePasswordResponse = TServerResponse<{
+  success: boolean;
+}>;
+
 export const restorePassword: AppThunk<void> = (inputEmail: string) => {
   return (dispatch) => {
     dispatch({
       type: RESTORE_PASSWORD_REQUEST,
     });
-    request('password-reset', valuePasswordPost(inputEmail))
+    request<TRestorePasswordResponse>('password-reset', valuePasswordPost(inputEmail))
     .then(res => {
       dispatch({
         type: RESTORE_PASSWORD_SUCCESS,
@@ -205,12 +209,23 @@ const registerPost = (inputEmail: string, inputPassword: string, inputName: stri
   }
 }
 
+type TUser = {
+  email: string;
+  name: string,
+}
+
+type TUserResponse = TServerResponse<{
+  user: TUser;
+  accessToken: string;
+  refreshToken: string;
+}>;
+
 export const registerUser: AppThunk<void> = (inputEmail, inputPassword, inputName) => {
   return(dispatch) => {
     dispatch({
       type: REGISTER_USER_REQUEST
     });
-    request('auth/register', registerPost(inputEmail, inputPassword, inputName))
+    request<TUserResponse>('auth/register', registerPost(inputEmail, inputPassword, inputName))
     .then(res => {
         setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
         localStorage.setItem("refreshToken", res.refreshToken);
@@ -243,12 +258,16 @@ const resetPasswordPost = (inputPassword: string, inputCode: string) => {
   }
 }
 
+type TResetPasswordResponse = TServerResponse<{
+  reset: boolean;
+}>;
+
 export const resetPassword: AppThunk<void> = (inputPassword: string, inputCode: string) => {
   return(dispatch) => {
     dispatch({
       type: RESET_PASSWORD_REQUEST
     });
-    request('password-reset/reset', resetPasswordPost(inputPassword, inputCode))
+    request<TResetPasswordResponse>('password-reset/reset', resetPasswordPost(inputPassword, inputCode))
     .then(res => {
       dispatch({
         type: RESET_PASSWORD_SUCCESS,
@@ -281,7 +300,7 @@ export const loginUser: AppThunk<void> = (inputEmail: string, inputPassword: str
       type: LOGIN_REQUEST,
       
     });
-    request('auth/login', loginUserPost(inputEmail, inputPassword))
+    request<TUserResponse>('auth/login', loginUserPost(inputEmail, inputPassword))
     .then((res) => {
           setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
           localStorage.setItem("refreshToken", res.refreshToken);
@@ -319,7 +338,7 @@ export const updateUserToken: AppThunk<void> = () => {
     dispatch({
       type: UPDATE_TOKEN_REQUEST
     });
-    request('auth/token', refreshToken())
+    request<TUserResponse>('auth/token', refreshToken())
       .then((res) => {
         setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
         localStorage.setItem("refreshToken", res.refreshToken);
@@ -350,7 +369,7 @@ export const getUser: AppThunk<void> = () => {
     dispatch({
       type: GET_USER_REQUEST
     })
-    request('auth/user', userGet())
+    request<TUserResponse>('auth/user', userGet())
       .then(res => {
         dispatch({
           type: GET_USER_SUCCESS,
@@ -384,7 +403,7 @@ export const logoutUser: AppThunk<void> = () => {
     dispatch({
       type: LOGOUT_REQUEST
     });
-    request('auth/logout', userLogoutData())
+    request<TUserResponse>('auth/logout', userLogoutData())
       .then(res => {
         setCookie("accessToken", "");
         localStorage.removeItem("refreshToken");
@@ -421,7 +440,7 @@ export const patchUser: AppThunk<void> = (inputEmail: string, inputName: string,
     dispatch({
       type: PATCH_USER_REQUEST
     });
-    request('auth/user', patchUserData(inputEmail, inputName, inputPassword))
+    request<TUserResponse>('auth/user', patchUserData(inputEmail, inputName, inputPassword))
       .then(res => {
         dispatch({
           type: PATCH_USER_SUCCESS,

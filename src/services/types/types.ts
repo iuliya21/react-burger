@@ -2,7 +2,7 @@ import { Action, ActionCreator } from "redux";
 import { ReactElement } from "react";
 import { ThunkAction } from "redux-thunk";
 import store from "../store";
-import { TBurgerConstructorActions, TGetIngredientsActions, TGetNumberOrderActions, TIngredientDetailsActions } from "../actions";
+import { TBurgerConstructorActions, TGetIngredientsActions, TGetIngredientsRequest, TGetNumberOrderActions, TIngredientDetailsActions } from "../actions";
 import { TGetUserActions, TLoginActions, TLogoutActions, TPatchUserActions, TRegisterUserActions, TResetPasswordActions, TRestorePasswordActions, TUpdateTokenActions } from "../actions/user";
 import { TWebSocketActions } from "../actions/websocket";
 import { TWebSocketUserActions } from "../actions/websocket-user";
@@ -25,7 +25,7 @@ export type TIngredient = {
   uuid?: string,
   _id: string,
   index?: number,
-  props?: any,
+  ingredient: TIngredient
 }
 
 export type TOrder = {
@@ -38,13 +38,13 @@ export type TOrder = {
   _id: string,
 }
 
-export type TWsActions = {
-  wsStart: any,
-  wsClose: any,
-  onOpen: any,
-  onClose: any,
-  onError: any,
-  onMessage: any,
+export type TwsActions = {
+  wsStart: "WS_CONNECTION_START" | "WS_CONNECTION_START_USER",
+  wsClose: "WS_CLOSE_CONNECTION" | "WS_CLOSE_CONNECTION_USER",
+  onOpen: "WS_CONNECTION_SUCCESS" | "WS_CONNECTION_SUCCESS_USER",
+  onClose: "WS_CONNECTION_CLOSED" | "WS_CONNECTION_CLOSED_USER",
+  onError: "WS_CONNECTION_ERROR" | "WS_CONNECTION_ERROR_USER",
+  onMessage: "WS_GET_MESSAGE" | "WS_GET_MESSAGE_USER"
 }
 
 export type TModal = {
@@ -52,10 +52,10 @@ export type TModal = {
   onClosePopup: () => void,
 }
 
-export type RootState = ReturnType<typeof store.getState>; //получаем типизацию store.getState
+export type RootState = ReturnType<typeof store.getState>;
 
-export type AppDispatch = typeof store.dispatch; //получаем типизацию store.dispatch
-type TApplicationActions = TGetIngredientsActions | TGetNumberOrderActions | TIngredientDetailsActions | TBurgerConstructorActions | TRestorePasswordActions
+export type AppDispatch = typeof store.dispatch;
+export type TApplicationActions = TGetIngredientsActions | TGetNumberOrderActions | TIngredientDetailsActions | TBurgerConstructorActions | TRestorePasswordActions
  | TRegisterUserActions | TResetPasswordActions | TLoginActions | TUpdateTokenActions | TGetUserActions | TLogoutActions | TPatchUserActions | TWebSocketActions | TWebSocketUserActions;
 
 export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, RootState, Action, TApplicationActions>>;

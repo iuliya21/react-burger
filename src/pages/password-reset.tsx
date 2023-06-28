@@ -1,5 +1,5 @@
 import styles from "./password-reset.module.css";
-import { useEffect } from "react";
+import { useEffect, FormEvent } from "react";
 import { Link, Navigate } from 'react-router-dom';
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { SUCCESS_RESET, resetPassword } from "../services/actions/user";
@@ -18,7 +18,7 @@ function PasswordReset() {
     });
   }, []);
 
-  const handlerSubmit = (e: { preventDefault: () => void; }) => {
+  const handlerSubmit = (e: FormEvent) => {
     e.preventDefault();
     dispatch(resetPassword(values.password, values.code));
   }

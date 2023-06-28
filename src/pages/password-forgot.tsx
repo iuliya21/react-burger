@@ -4,6 +4,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { restorePassword } from "../services/actions/user";
 import { useForm } from "../hooks/useForm";
 import { useAppDispatch, useAppSelector } from "../hooks/customHooks";
+import { FormEvent } from 'react';
 
 function PasswordForgot() {
 
@@ -12,7 +13,7 @@ function PasswordForgot() {
 
   const { values, handleChange } = useForm();
 
-  const handlerSubmit = (e: { preventDefault: () => void; }) => {
+  const handlerSubmit = (e: FormEvent) => {
     e.preventDefault();
     dispatch(restorePassword(values.email));
     

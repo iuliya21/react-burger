@@ -3,19 +3,16 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import styles from './ingredient.module.css';
 import { useNavigate, useMatch } from 'react-router-dom';
 import { useAppSelector } from "../../hooks/customHooks";
+import { TIngredient } from '../../services/types/types';
 
 type TIngredientProps = {
-  name: string,
-  price: number,
-  image: string,
-  openModal: Function,
-  _id: string,
-  type: string,
+  ingredient: TIngredient,
+  openModal: Function
 }
 
-function Ingredient(props: TIngredientProps) {
+function Ingredient({ ingredient, openModal }: TIngredientProps) {
 
-  const {name, price, image, openModal, _id, type} = props;
+  const {name, price, image, _id, type} = ingredient;
   const navigate = useNavigate();
   const match = useMatch('ingredients/:id');
   const { id } = match?.params || {};
@@ -31,7 +28,7 @@ function Ingredient(props: TIngredientProps) {
 
   const [, dragRef] = useDrag({
     type: "ingredient",
-    item: { props },
+    item: { ingredient },
   });
 
   return (
