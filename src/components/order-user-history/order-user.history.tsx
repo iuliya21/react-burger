@@ -40,12 +40,12 @@ function OrdersUserHistory() {
     };
   }, [authUser]);
 
-  const getIngredientPrice = (ing: TIngredient | string) => {
+  const getIngredientPrice = (ing: string) => {
     const ingredient = ingredients?.find(el => el._id === ing);
     return ingredient ? ingredient.price : 0;
   };
 
-  const totalPrice = (burger: TIngredient[] | string[]) => {
+  const totalPrice = (burger: string[]) => {
     let sum = 0;
     burger.forEach(ing => {
       if (ing !== null) {

@@ -9,7 +9,7 @@ import BurgerConstructorSorted from "../burger-constructor-sorted/burger-constru
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/customHooks";
-import { TIngredient } from "../../services/types/types";
+import { TConstructorIngredient, TIngredient } from "../../services/types/types";
 
 function BurgerConstructor() {
 
@@ -41,8 +41,7 @@ function BurgerConstructor() {
 
   const [{ isHover }, dropRef] = useDrop({
     accept: "ingredient",
-    drop(item: TIngredient) {
-      // console.log(item.ingredient.type);
+    drop(item: TConstructorIngredient) {
       if(item.ingredient.type === 'bun') {
         dispatch({
           type: ADD_BUN,
@@ -60,7 +59,7 @@ function BurgerConstructor() {
 
   const outlineColor = isHover ? 'lightgreen' : '#131316';
 
-  const addIngredient = (data: TIngredient) => {
+  const addIngredient = (data: TConstructorIngredient) => {
     const uuid = uuidv4();
     dispatch({
       type: ADD_INGREDIENT,

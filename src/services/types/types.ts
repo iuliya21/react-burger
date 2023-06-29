@@ -8,7 +8,7 @@ import { TWebSocketActions } from "../actions/websocket";
 import { TWebSocketUserActions } from "../actions/websocket-user";
 
 export type TIngredient = {
-  id: string,
+  _id: string,
   name: string,
   type: string,
   proteins: number,
@@ -20,12 +20,13 @@ export type TIngredient = {
   image_mobile: string,
   image_large: string,
   __v: number,
-  qty?: number,
-  key?: string,
-  uuid?: string,
-  _id: string,
+}
+
+export type TConstructorIngredient = TIngredient & {
+  id: string;
   index?: number,
-  ingredient: TIngredient
+  ingredient: TIngredient;
+  uuid?: string;
 }
 
 export type TOrder = {

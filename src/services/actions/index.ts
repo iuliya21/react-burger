@@ -1,5 +1,5 @@
 import { getCookie } from "../../utils/cookieFunction";
-import { AppThunk, TIngredient, TOrder } from "../types/types";
+import { AppThunk, TConstructorIngredient, TIngredient, TOrder } from "../types/types";
 
 export const GET_LIST_INGREDIENTS_REQUEST: "GET_LIST_INGREDIENTS_REQUEST" =
   "GET_LIST_INGREDIENTS_REQUEST";
@@ -66,7 +66,7 @@ export type TDeleteInfoIngredient = {
 
 export type TAddIngredient = {
   readonly type: typeof ADD_INGREDIENT;
-  data: TIngredient;
+  data: TConstructorIngredient;
   uuid: string;
 };
 

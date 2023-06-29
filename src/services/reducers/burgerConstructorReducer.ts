@@ -1,8 +1,8 @@
 import { ADD_INGREDIENT, ADD_BUN, DELETE_INGREDIENT, MOVE_INGREDIENT, CLEAR_CONSTRUCTOR, TBurgerConstructorActions } from '../actions';
-import { TIngredient } from "../types/types";
+import { TConstructorIngredient, TIngredient } from "../types/types";
 
 type TBurgerConstructorState = {
-  ingredients: TIngredient[],
+  ingredients: TConstructorIngredient[],
   bun: TIngredient[],
 }
 
@@ -32,7 +32,6 @@ export const burgerConstructorReducer = (state = initialState, action: TBurgerCo
       const indexIngredient = newIngredientsState.ingredients.findIndex(
         (item) => item._id === action.data
       );
-      console.log(newIngredientsState);
       if (indexIngredient !== -1) {
         newIngredientsState.ingredients.splice(indexIngredient, 1);
       }
