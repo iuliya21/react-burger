@@ -19,3 +19,5 @@
   <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original-wordmark.svg" title="reactjs" alt="reactjs" width="45" height="45"/>&nbsp
   <img src="https://github.com/devicons/devicon/blob/master/icons/redux/redux-original.svg" title="redux" alt="redux" width="45" height="45"/>&nbsp;
 </div>
+
+https://github.com/iuliya21/react-burger/assets/106624168/96a4098c-98a9-49d0-9a2b-b8054c8178b7
