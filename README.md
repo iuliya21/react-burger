@@ -9,7 +9,7 @@
 - Просмотр истории заказов пользователя и общий список заказов в реальном времени;
 - Личный кабинет пользователя, возможность изменять свои данные в нем - имя, пароль, почту, возможность выйти из профиля.
 
-<h3 align="center"><i>Технологический стек</i></h3>
+<h3 align="center"><i>Стек</i></h3>
 <p align="center">React.js, Typescript, Redux, Websocket, JSON Web Token, Drag'n'Drop, REST API.</p>
 
 <div align="center">
